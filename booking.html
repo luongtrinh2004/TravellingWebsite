@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Welcome to Phenikaa Travel - Explore the World">
+  <meta name="author" content="Mr. Khoa & Mr. Dong & Mr. Luong">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>PHENIKAA TRAVEL</title>
+  <link rel="stylesheet" href="./css/home.css" type="text/css">
+  <link rel="stylesheet" href="./css/booking.css" type="text/css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display+SC:ital,wght@0,400;0,700&display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display+SC:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,100;0,200;0,300;0,600;1,100&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+</head>
+
+<body>
+  <!-- Header -->
+  <section class="header">
+    <nav class="phenikaatravel-header" style="background: url('./images/Home/HBG.png') center center/cover no-repeat;">
+      <div class="nav-container">
+        <img src="./images/Home/logomain.png" alt="Logo" class="logo">
+        <h1 class="navbar-brand" id="animated-text"><a href="index.html">PHENIKAA TRAVEL</a></h1>
+        <div class="auth-section">
+          <div class="register-section">
+            <a href="#" class="register-link" onclick="document.getElementById('registerModal').style.display='block'">
+              <img src="./images/Home/icontuvan.png" alt="Icon Tư Vấn" class="icon-tuvan"> Đăng Ký Tư Vấn
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <nav>
+      <div class="navigation-links" id="navLinks">
+        <ul>
+          <li><a href="./index.html">HOME</a></li>
+          <li><a href="./asia.html">ASIA</a></li>
+          <li><a href="./europe.html">EUROPE</a></li>
+          <li><a href="./africa.html">AFRICA</a></li>
+          <li><a href="./americas.html">AMERICAS</a></li>
+          <li>
+            <a href="#" class="info-link"
+              onclick="document.getElementById('infoModal').style.display='block'">CONTACT</a>
+          </li>
+          <li><a href="./booking.html">BOOKING</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="background">
+      <div class="overlay"></div>
+      <img src="./images/Home/mainBG.jpg" alt="background">
+    </div>
+
+    <section class="search">
+      <div class="wrapper">
+        <div class="booking-section">
+          <div class="booking-header">
+            <h2 class="booking-title">Tìm Chuyến Đi Của Bạn</h2>
+          </div>
+          <div class="search-content-items row">
+            <div class="search-content-item">
+              <label for="from">Điểm Đi</label>
+              <input class="input-search" type="text" id="from" placeholder="Điểm đi" />
+              <div class="autobox"></div>
+            </div>
+            <div class="search-content-item">
+              <label for="to">Điểm Đến</label>
+              <input class="input-search" type="text" id="to" placeholder="Điểm đến" />
+              <div class="autobox"></div>
+            </div>
+            <div class="search-content-item">
+              <label for="departure-date">Ngày Khởi Hành</label>
+              <input id="departure-date" type="date" />
+            </div>
+            <div class="search-content-item" id="return-date-container" style="display: none;">
+              <label for="return-date">Ngày Về</label>
+              <input id="return-date" type="date" disabled />
+            </div>
+          </div>
+          <div class="return-check-container">
+            <label for="return-check">Vé Khứ Hồi</label>
+            <input type="checkbox" id="return-check" />
+          </div>
+          <button class="search-button">Tìm Kiếm</button>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <div class="advert">
+    <a
+      href="https://www.traveloka.com/vi-vn/promotion/megasale-66?funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_0_11cbc1ae7f2d6be5f3728185b4abe06385d3ef7c_0_3d343da697dff17c605c0afca872703fcfecf55e&internal_source=true">
+      <img src="./images/Booking/advert1.webp">
+    </a>
+  </div>
+
+  <div class="advert">
+    <a
+      href="https://www.traveloka.com/vi-vn/promotion/megasale-66?funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_1_5110d484988b69ce9b0a607dc7fcd0f5b2d595ff_0_dcd9b7f8d34db5cf6a4ed659d18a4d7e54832072&internal_source=true">
+      <img src="./images/Booking/advert2.webp">
+    </a>
+  </div>
+
+
+  <div class="miniadvert">
+    <a
+      href="https://www.traveloka.com/vi-vn/promotion/bay-megasale?funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_2_1c283aea68b8c5f188ecfcfc57d33503d49eb7aa_0_b2e853b0763fb02a6bb803bfbafeda879862d6d2&internal_source=true">
+      <img src="./images/Booking/miniadvert1.webp">
+    </a>
+    <a
+      href="https://www.traveloka.com/vi-vn/promotion/hotel-megasale?funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_2_1c283aea68b8c5f188ecfcfc57d33503d49eb7aa_1_47a7ac39ba393a2333ff63b6ead36cc804af35f0&internal_source=true">
+      <img src="./images/Booking/miniadvert2.webp">
+    </a>
+    <a
+      href="https://www.traveloka.com/vi-vn/promotion/vui-megasale?funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_2_1c283aea68b8c5f188ecfcfc57d33503d49eb7aa_2_ec0966b1da0f537bbdff97fb2f1b9f6d83d6fa7d&internal_source=true">
+      <img src="./images/Booking/miniadvert3.webp">
+    </a>
+    <a
+      href="https://www.traveloka.com/vi-vn/promotion/bus-megasale?funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_2_1c283aea68b8c5f188ecfcfc57d33503d49eb7aa_3_53396fcd2463847aa5372699f6cfe69acaf72b2a&internal_source=true">
+      <img src="./images/Booking/miniadvert4.webp">
+    </a>
+    <a
+      href="https://www.traveloka.com/vi-vn/promotion/paylater-hcvn?funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_2_1c283aea68b8c5f188ecfcfc57d33503d49eb7aa_4_69a748661c8826fb40c2d8cd19ae669a522683d9&internal_source=true">
+      <img src="./images/Booking/miniadvert5.webp">
+    </a>
+    <a
+      href="https://www.traveloka.com/vi-vn/promotion/vnpartnership21?funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_2_1c283aea68b8c5f188ecfcfc57d33503d49eb7aa_5_bb53b172f1eccecec17aa166900e32eac9b8fa5e&internal_source=true">
+      <img src="./images/Booking/miniadvert6.webp">
+    </a>
+  </div>
+
+
+
+  <div class="advert">
+    <a
+      href="https://www.traveloka.com/vi-vn/promotion/megasale-sanngoc?funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_3_2e44e559857fba76b7d2863a64074dfa91e5e4b6_0_f32a4b8bb0de578752a86b6ec932d16cf8f4e382&internal_source=true">
+      <img src="./images/Booking/advert3.webp">
+    </a>
+    <a
+      href="https://www.traveloka.com/vi-vn/promotion/vntopspendermega66?funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_3_2e44e559857fba76b7d2863a64074dfa91e5e4b6_1_a45c7085a0ceb3554b0d7bf7e64725c43006ef2c&internal_source=true">
+      <img src="./images/Booking/advert4.webp">
+    </a>
+  </div>
+
+  <div class="advert">
+    <a
+      href="https://www.traveloka.com/vi-vn/promotion/megasale-66?funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_1_5110d484988b69ce9b0a607dc7fcd0f5b2d595ff_0_dcd9b7f8d34db5cf6a4ed659d18a4d7e54832072&internal_source=true">
+      <img src="./images/Booking/advert5.webp">
+    </a>
+  </div>
+
+
+  <!-- New Section for Flight Deals -->
+  <div class="flight-deals">
+    <h2><img src="./images/Booking/icontravel.png" class="icon">Vé máy bay tặng hành lý miễn phí</h2>
+    <div class="deals-wrapper">
+      <div class="deals-container">
+        <div class="deal-item large">
+          <img src="./images/Booking/deal1.jpeg" alt="Deal 1" />
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/flight/fullsearch?ap=SGN.HAN&dt=08-12-2024.NA&ps=1.0.0&sc=ECONOMY&internal_source=true">
+            <img src="./images/Booking/HoGuom.png" alt="Deal 1" />
+          </a>
+          <div class="deal-info">
+            <p>TP HCM - Hà Nội </p>
+            <p>19/12/2024</p>
+            <p>VND1.004.628</p>
+          </div>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/flight/fullsearch?ap=HAN.SGN&dt=18-12-2024.NA&ps=1.0.0&sc=ECONOMY&internal_source=true">
+            <img src="./images/Booking/HCM.png" alt="Deal 2" />
+          </a>
+          <div class="deal-info">
+            <p>Hà Nội - TP HCM</p>
+            <p>15/12/2024</p>
+            <p>VND1.004.628</p>
+          </div>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/flight/fullsearch?ap=HAN.DAD&dt=17-10-2024.NA&ps=1.0.0&sc=ECONOMY&internal_source=true">
+            <img src="./images/Booking/DaNang.png" alt="Deal 3" />
+          </a>
+          <div class="deal-info">
+            <p>Hà Nội - Đà Nẵng</p>
+            <p>17/10/2024</p>
+            <p>VND1.013.241</p>
+          </div>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/flight/fullsearch?ap=SGN.DLI&dt=25-12-2024.NA&ps=1.0.0&sc=ECONOMY&mch=true&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=S_5_6ab362586e9ae8d5c2ff4067c1bebbf62db36d72_3_7b6d4d4ac8c279e578351c89f209cc3345108b19&internal_source=true">
+            <img src="./images/Booking/DaLat.png" alt="Deal 4" />
+          </a>
+          <div class="deal-info">
+            <p>TP HCM - Đà Lạt</p>
+            <p>18/12/2024</p>
+            <p>VND680.739</p>
+          </div>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/flight/fullsearch?ap=SGN.DLI&dt=19-11-2024.NA&ps=1.0.0&sc=ECONOMY&internal_source=true">
+            <img src="./images/Booking/Hue.jpeg" alt="Deal 4" />
+          </a>
+          <div class="deal-info">
+            <p>TP HCM - Huế</p>
+            <p>18/12/2024</p>
+            <p>VND680.739</p>
+          </div>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/flight/fullsearch?ap=SGN.UIH&dt=23-10-2024.NA&ps=1.0.0&sc=ECONOMY&mch=true&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=S_5_096f34881551e83a409971ed65f36b630606ec8f_5_3dc37ac5144555f45f3fc40e0cde46021b87f0b1&internal_source=true">
+            <img src="./images/Booking/QuyNhon1.webp" alt="Deal 1" />
+          </a>
+          <div class="deal-info">
+            <p>TP HCM - Quy Nhơn</p>
+            <p>19/12/2024</p>
+            <p>VND1.004.628</p>
+          </div>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/flight/fullsearch?ap=SGN.PQC&dt=23-10-2024.NA&ps=1.0.0&sc=ECONOMY&mch=true&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=S_5_096f34881551e83a409971ed65f36b630606ec8f_6_0c45fb39a623c02b00a061422d0a2b530e783747&internal_source=true">
+            <img src="./images/Booking/PhuQuoc1.webp" alt="Deal 2" />
+          </a>
+          <div class="deal-info">
+            <p>TP HCM - Phú Quốc</p>
+            <p>15/12/2024</p>
+            <p>VND1.004.628</p>
+          </div>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/flight/fullsearch?ap=SGN.CXR&dt=30-12-2024.NA&ps=1.0.0&sc=ECONOMY&mch=true&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=S_5_096f34881551e83a409971ed65f36b630606ec8f_7_3debe844cc4be99167aa4f6a4f5ea8f0d8144745&internal_source=true">
+            <img src="./images/Booking/NhaTrang1.webp" alt="Deal 3" />
+          </a>
+          <div class="deal-info">
+            <p>TP HCM - Nha Trang</p>
+            <p>17/10/2024</p>
+            <p>VND1.013.241</p>
+          </div>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/flight/fullsearch?ap=SGN.VCL&dt=28-11-2024.NA&ps=1.0.0&sc=ECONOMY&mch=true&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=S_5_096f34881551e83a409971ed65f36b630606ec8f_8_e78b7a48dc9d7048a85f6e907f2c51cdfd35695e&internal_source=true">
+            <img src="./images/Booking/ChuLai1.webp" alt="Deal 3" />
+          </a>
+          <div class="deal-info">
+            <p>TP HCM - Chu Lai</p>
+            <p>17/10/2024</p>
+            <p>VND1.013.241</p>
+          </div>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/flight/fullsearch?ap=SGN.VDO&dt=30-10-2024.NA&ps=1.0.0&sc=ECONOMY&mch=true&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=S_5_096f34881551e83a409971ed65f36b630606ec8f_9_08d95e06542d65e23dc559804f906d78bda2b620&internal_source=true">
+            <img src="./images/Booking/QuangNinh1.webp" alt="Deal 3" />
+          </a>
+          <div class="deal-info">
+            <p>TP HCM - Quảng Ninh</p>
+            <p>17/10/2024</p>
+            <p>VND1.013.241</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+      onclick="window.location.href='https://www.traveloka.com/vi-vn/promotion/bay-megasale?funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=86792&internal_source=true'">
+      Xem thêm ưu đãi vé máy bay
+    </button>
+  </div>
+
+  <div class="hotel-deals">
+    <h2><img src="./images/Booking/iconhotel.png" class="icon">Khách sạn ưu đãi nửa giá</h2>
+    <div class="deals-wrapper">
+      <div class="deals-container">
+        <div class="deal-item">
+          <img src="./images/Booking/deal2.jpeg" alt="Deal 1" />
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/hotel/search?spec=29-07-2024.30-07-2024.1.1.HOTEL_GEO.10009889.Ba%20Ria%20-%20Vung%20Tau.1&quickFilter=64&contexts=%7B%22accessCode%22:%22908765VNFLASH1356%22%7D&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_6_93ea793d79f007380b590fb7e154f06e0d2cf0a7_0_6dda1cac2f0a86d504bd3246f09ba8125f1024f1&internal_source=true">
+            <img src="./images/Booking/VungTau.webp" alt="Deal 1" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/hotel/search?spec=29-07-2024.30-07-2024.1.1.HOTEL_GEO.10010083.Da%20Nang.1&quickFilter=64&contexts=%7B%22accessCode%22:%22908765VNFLASH1356%22%7D&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_6_93ea793d79f007380b590fb7e154f06e0d2cf0a7_1_78ce13d34d194e1c07d4a229e67480ca319def46&internal_source=true">
+            <img src="./images/Booking/DaNang.webp" alt="Deal 2" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/hotel/search?spec=29-07-2024.30-07-2024.1.1.HOTEL_GEO.10009825.Binh%20Thuan.1&quickFilter=64&contexts=%7B%22accessCode%22:%22908765VNFLASH1356%22%7D&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_6_93ea793d79f007380b590fb7e154f06e0d2cf0a7_2_d692842507114771db3486a8492cc436e681fae0&internal_source=true">
+            <img src="./images/Booking/PhanThiet.webp" alt="Deal 3" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/hotel/search?spec=29-07-2024.30-07-2024.1.1.HOTEL_GEO.10009841.Khanh%20Hoa%20Province.1&quickFilter=64&contexts=%7B%22accessCode%22:%22908765VNFLASH1356%22%7D&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_6_93ea793d79f007380b590fb7e154f06e0d2cf0a7_3_f9df6be3fdb94bffac03fcd04e05f97d3e2f90e0&internal_source=true">
+            <img src="./images/Booking/NhaTrang.webp" alt="Deal 4" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/hotel/search?spec=29-07-2024.30-07-2024.1.1.HOTEL_GEO.10009794.Ho%20Chi%20Minh.1&quickFilter=64&contexts=%7B%22accessCode%22:%22908765VNFLASH1356%22%7D&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_6_93ea793d79f007380b590fb7e154f06e0d2cf0a7_4_ec01e2368913dd55a37fceafbed9ff4e78d94fde&internal_source=true">
+            <img src="./images/Booking/HCM.webp" alt="Deal 4" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            herf="https://www.traveloka.com/vi-vn/hotel/search?spec=29-07-2024.30-07-2024.1.1.HOTEL_GEO.10010000.Lam%20Dong%20Province.1&quickFilter=64&contexts=%7B%22accessCode%22:%22908765VNFLASH1356%22%7D&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_6_93ea793d79f007380b590fb7e154f06e0d2cf0a7_5_5a73e8d7b3b082c25cb013dd83f175b19aede137&internal_source=true">
+            <img src="./images/Booking/DaLat.webp" alt="Deal 1" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/hotel/search?spec=29-07-2024.30-07-2024.1.1.HOTEL_GEO.10009843.Hanoi.1&quickFilter=64&contexts=%7B%22accessCode%22:%22908765VNFLASH1356%22%7D&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_6_93ea793d79f007380b590fb7e154f06e0d2cf0a7_6_37122372c7d0cc70306de011bbb875665cb34b97&internal_source=true">
+            <img src="./images/Booking/HaNoi.webp" alt="Deal 1" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/hotel/search?spec=29-07-2024.30-07-2024.1.1.HOTEL_GEO.10009833.Kien%20Giang%20Province.1&quickFilter=64&contexts=%7B%22accessCode%22:%22908765VNFLASH1356%22%7D&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_6_93ea793d79f007380b590fb7e154f06e0d2cf0a7_7_825e2562a41b4ebd33fc91f4fc3b19cf2b50b740&internal_source=true">
+            <img src="./images/Booking/PhuQuoc.webp" alt="Deal 2" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/hotel/search?spec=29-07-2024.30-07-2024.1.1.HOTEL_GEO.10009974.Binh%20Dinh%20Province.1&quickFilter=64&contexts=%7B%22accessCode%22:%22908765VNFLASH1356%22%7D&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_6_93ea793d79f007380b590fb7e154f06e0d2cf0a7_8_569a14ff88277fb87f90ae4aec727a37ed6442a4&internal_source=true">
+            <img src="./images/Booking/QuyNhon.webp" alt="Deal 3" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/hotel/search?spec=29-07-2024.30-07-2024.1.1.HOTEL_GEO.10010312.Hue%20Province.1&quickFilter=64&contexts=%7B%22accessCode%22:%22908765VNFLASH1356%22%7D&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_6_93ea793d79f007380b590fb7e154f06e0d2cf0a7_9_730883a8dccf3d3a3864d0a86385151c8ee5c8e9&internal_source=true">
+            <img src="./images/Booking/Hue.webp" alt="Deal 4" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/hotel/search?spec=29-07-2024.30-07-2024.1.1.HOTEL_GEO.10009805.Quang%20Nam%20Province.1&quickFilter=64&contexts=%7B%22accessCode%22:%22908765VNFLASH1356%22%7D&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_6_93ea793d79f007380b590fb7e154f06e0d2cf0a7_10_7970afb03f0df9304d62ab4336a49c227905bef6&internal_source=true">
+            <img src="./images/Booking/HoiAn.webp" alt="Deal 4" />
+          </a>
+        </div>
+      </div>
+    </div>
+    <button
+      onclick="window.location.href='https://www.traveloka.com/vi-vn/hotel?funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=87061&internal_source=true'">
+      Xem thêm ưu đãi đặt khách sạn
+    </button>
+  </div>
+
+
+  <div class="ticket-deals">
+    <h2><img src="./images/Booking/iconticket.png" class="icon">Vé vui chơi giảm 50%</h2>
+    <div class="deals-wrapper">
+      <div class="deals-container">
+        <div class="deal-item">
+          <img src="./images/Booking/deal4.jpeg" alt="Deal 1" />
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/activities/country/product/v-zoodoo--lt-2001455035254?funnel_source=Merchandising.AA.vn-xp-cards-web-VN-LandingPage&funnel_id=M_0_8b24b50af31ae7e49a95c2b3f398025372912303_0_678bb5dc3e7b46f40f144ef25b32886a62c3674c&internal_source=true">
+            <img src="./images/Booking/1.webp" alt="Deal 1" />
+          </a>
+          <div class="ticketdeal-info">
+            <h10>Vé ZooDoo Đà Lạt</h10>
+            <p><del>VND 150.000</del></p>
+            <p>VND 130.000</p>
+          </div>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/activities/country/product/v-xe-but-hop-on-hop-off-si-gn-2001438308062?funnel_source=Merchandising.AA.vn-xp-cards-web-VN-LandingPage&funnel_id=M_0_8b24b50af31ae7e49a95c2b3f398025372912303_1_b567bf7a065dc905aa06d015f41c3386bd9c8785&internal_source=true">
+            <img src="./images/Booking/2.webp" alt="Deal 2" />
+          </a>
+          <div class="ticketdeal-info">
+            <h10>Vé Xe Bus Saigon hai tầng</h10>
+            <p><del>VND 150.000</del></p>
+            <p>VND 139.000</p>
+          </div>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/activities/country/product/du-ngon-sng-hn-v-m-trn-du-thuyn-m-xun-2001540807078?funnel_source=Merchandising.AA.vn-xp-cards-web-VN-LandingPage&funnel_id=M_0_8b24b50af31ae7e49a95c2b3f398025372912303_2_77f40a3394887eec64e3b0ca2dd466dc4a072deb&internal_source=true">
+            <img src="./images/Booking/3.webp" alt="Deal 3" />
+          </a>
+          <div class="ticketdeal-info">
+            <h10>Vé tàu nghe nhạc sông Hàn</h10>
+            <p><del>VND 155.000</del></p>
+            <p>VND 110.000</p>
+          </div>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/activities/country/product/v-show-k-c-hi-an-2001400570194?funnel_source=Merchandising.AA.vn-xp-cards-web-VN-LandingPage&funnel_id=M_0_8b24b50af31ae7e49a95c2b3f398025372912303_3_32e5b8257576bf2380e3b5ac330cdfb22400a1eb&internal_source=true">
+            <img src="./images/Booking/4.webp" alt="Deal 4" />
+          </a>
+          <div class="ticketdeal-info">
+            <h10>Vé vui chơi Hội An </h10>
+            <p><del>VND 1.200.000</del></p>
+            <p>VND 540.000</p>
+          </div>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/activities/country/product/v-xe-but-2-tng-tp-h-ch-minh-city-sightseeing-6768580343678?funnel_source=Merchandising.AA.vn-xp-cards-web-VN-LandingPage&funnel_id=M_0_8b24b50af31ae7e49a95c2b3f398025372912303_4_ca1231101045a1e5536210cad6732b6135173ed3&internal_source=true">
+            <img src="./images/Booking/5.webp" alt="Deal 4" />
+          </a>
+          <div class="ticketdeal-info">
+            <h10>Vé xe xích lô du lịch HCM </h10>
+            <p><del>VND 150.000</del></p>
+            <p>VND 130.000</p>
+          </div>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/activities/country/product/du-thuyn-sng-hoi-v-show-k-c-hi-an-tour-na-ngy-9743630199334?funnel_source=Merchandising.AA.vn-xp-cards-web-VN-LandingPage&funnel_id=M_0_8b24b50af31ae7e49a95c2b3f398025372912303_5_7eb1de7b26216eca627277b06d62d9694f413cb4&internal_source=true">
+            <img src="./images/Booking/6.webp" alt="Deal 1" />
+          </a>
+          <div class="ticketdeal-info">
+            <h10>Du Thuyền trên sông Hoài</h10>
+            <p><del>VND 720.000</del></p>
+            <p>VND 648.000</p>
+          </div>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/activities/country/product/sun-world-ba-na-hills-ti--nng-2000908871772?funnel_source=Merchandising.AA.vn-xp-cards-web-VN-LandingPage&funnel_id=M_0_8b24b50af31ae7e49a95c2b3f398025372912303_6_c515f3bd1bd28e31202d1d03bd91fbadb38bbb64&internal_source=true">
+            <img src="./images/Booking/7.webp" alt="Deal 1" />
+          </a>
+          <div class="ticketdeal-info">
+            <h10>Tour Bà Nà Hills</h10>
+            <p><del>VND 150.000</del></p>
+            <p>VND 130.000</p>
+          </div>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/activities/country/product/v-tham-quan-rng-da-by-mu-bng-thuyn-thng-8127488081576?funnel_source=Merchandising.AA.vn-xp-cards-web-VN-LandingPage&funnel_id=M_0_8b24b50af31ae7e49a95c2b3f398025372912303_7_33d822ce900681a66a17b50d5de7e745c81fb1c0&internal_source=true">
+            <img src="./images/Booking/8.webp" alt="Deal 2" />
+          </a>
+          <div class="ticketdeal-info">
+            <h10>Vé du lịch huyền thúng</h10>
+            <p><del>VND 150.000</del></p>
+            <p>VND 130.000</p>
+          </div>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/activities/country/product/tour-khm-ph-b-n-hills-cu-vng--nng-1-ngy-2001357730516?funnel_source=Merchandising.AA.vn-xp-cards-web-VN-LandingPage&funnel_id=M_0_aee595684f0dbb311851c6eafa904d24526f685b_8_a13a6a01baaf9a952bf46fe6cc4d13d502004602&internal_source=true">
+            <img src="./images/Booking/11.webp" alt="Deal 3" />
+          </a>
+          <div class="ticketdeal-info">
+            <h10>Dino Park Phan Thiết</h10>
+            <p><del>VND 150.000</del></p>
+            <p>VND 130.000</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+      onclick="window.location.href='https://www.traveloka.com/vi-vn/activities?funnel_source=Merchandising.AA.vn-xp-cards-web-VN-LandingPage&funnel_id=40532&internal_source=true'">
+      Xem thêm ưu đãi vé vui chơi
+    </button>
+  </div>
+
+  <div class="car-deals">
+    <h2><img src="./images/Booking/iconcar.png" class="icon">Vé xe khách giảm 50%</h2>
+    <div class="deals-wrapper">
+      <div class="deals-container">
+        <div class="deal-item">
+          <img src="./images/Booking/deal3.jpeg" alt="Deal 1" />
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/bus-and-shuttle/search?st=a10010002.a10009843&stt=CITY_GEO.CITY_GEO&stn=T%E1%BB%89nh%20L%C3%A0o%20Cai.Hanoi&dt=13-04-2024.null&ps=1&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_7_e3335f8454732ccbec297f886facd089d1afe897_0_f644b6e2a4e073485d13d496e01bd4f516ead380&internal_source=true">
+            <img src="./images/Booking/LC-HN.jpeg" alt="Deal 1" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/bus-and-shuttle/search?st=a10009860.a10009843&stt=CITY_GEO.CITY_GEO&stn=T%E1%BB%89nh%20Ngh%E1%BB%87%20An.Hanoi&dt=13-04-2024.null&ps=1&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_7_e3335f8454732ccbec297f886facd089d1afe897_1_f2ab7f5b3ac3cbf9de334c241028311a29b5cb55&internal_source=true">
+            <img src="./images/Booking/NA-HN.jpeg" alt="Deal 2" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/bus-and-shuttle/search?st=a10009897.a10009843&stt=CITY_GEO.CITY_GEO&stn=T%E1%BB%89nh%20Ninh%20B%C3%ACnh.Hanoi&dt=13-04-2024.null&ps=1&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_7_e3335f8454732ccbec297f886facd089d1afe897_2_3ab8784a6051fe374b42f9e29dd0bcccec2f3b96&internal_source=true">
+            <img src="./images/Booking/NB-HN.jpeg" alt="Deal 3" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/bus-and-shuttle/search?st=a30010592.a10009843&stt=CITY_GEO.CITY_GEO&stn=Th%C3%A0nh%20ph%E1%BB%91%20H%C3%A0%20Giang.Hanoi&dt=13-04-2024.null&ps=1&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_7_e3335f8454732ccbec297f886facd089d1afe897_3_c058a89bf5949fa814f48f5040410af6967096ba&internal_source=true">
+            <img src="./images/Booking/HG-HN.jpeg" alt="Deal 4" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/bus-and-shuttle/search?st=a10009794.a10009974&stt=CITY_GEO.CITY_GEO&stn=Ho%20Chi%20Minh%20City.B%C3%ACnh%20%C4%90%E1%BB%8Bnh&dt=13-04-2024.null&ps=1&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_7_e3335f8454732ccbec297f886facd089d1afe897_4_8ed1cfa45a2b8deff65622bf34400d0968ec96f3&internal_source=true">
+            <img src="./images/Booking/HCM-BD.webp" alt="Deal 1" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/bus-and-shuttle/search?st=a10009794.a10009825&stt=CITY_GEO.CITY_GEO&stn=Th%C3%A0nh%20ph%E1%BB%91%20H%E1%BB%93%20Ch%C3%AD%20Minh.B%C3%ACnh%20Thu%E1%BA%ADn&dt=13-04-2024.null&ps=1&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_7_e3335f8454732ccbec297f886facd089d1afe897_5_273b631bb48bb703906236fd4f3346f00e302a73&internal_source=true">
+            <img src="./images/Booking/HCM-BT.webp" alt="Deal 1" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/bus-and-shuttle/search?st=a10010083.a10010311&stt=CITY_GEO.CITY_GEO&stn=%C4%90%C3%A0%20N%E1%BA%B5ng.Th%C3%A0nh%20ph%E1%BB%91%20Hu%E1%BA%BF&dt=13-04-2024.null&ps=1&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_7_e3335f8454732ccbec297f886facd089d1afe897_6_81dadc1a7b8f4231c650e5a9ff078601045b0e64&internal_source=true">
+            <img src="./images/Booking/ĐN-H.webp" alt="Deal 2" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/bus-and-shuttle/search?st=a10009843.a10010083&stt=CITY_GEO.CITY_GEO&stn=Hanoi.Da%20Nang&dt=13-04-2024.null&ps=1&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_7_e3335f8454732ccbec297f886facd089d1afe897_7_a09bb56f860b51ec0b809f44683e0fef54b72928&internal_source=true">
+            <img src="./images/Booking/HN-ĐN.webp" alt="Deal 3" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/bus-and-shuttle/search?st=a10009794.a10009888&stt=CITY_GEO.CITY_GEO&stn=Ho%20Chi%20Minh%20City.Th%C3%A0nh%20ph%E1%BB%91%20V%C5%A9ng%20T%C3%A0u&dt=13-04-2024.null&ps=1&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_7_e3335f8454732ccbec297f886facd089d1afe897_10_a3635fee848475fbbeb1ed169fb0c801a43e741f&internal_source=true">
+            <img src="./images/Booking/HCM-VT.webp" alt="Deal 4" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/bus-and-shuttle/search?st=a10009794.a10009833&stt=CITY_GEO.CITY_GEO&stn=Ho%20Chi%20Minh%20City.T%E1%BB%89nh%20Ki%C3%AAn%20Giang&dt=13-04-2024.null&ps=1&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_7_e3335f8454732ccbec297f886facd089d1afe897_11_ea1d07c57aa77ca6f4d3e62a9c26ca3b96a89b90&internal_source=true">
+            <img src="./images/Booking/HCM-KG.webp" alt="Deal 4" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/bus-and-shuttle/search?st=a10010000.a10009794&stt=CITY_GEO.CITY_GEO&stn=T%E1%BB%89nh%20L%C3%A2m%20%C4%90%E1%BB%93ng.Ho%20Chi%20Minh%20City&dt=13-04-2024.null&ps=1&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_7_e3335f8454732ccbec297f886facd089d1afe897_12_24dc3a52f9be7f6305fcb1fbdeaea23c9bebb73d&internal_source=true">
+            <img src="./images/Booking/LD-HCM.webp" alt="Deal 4" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/bus-and-shuttle/search?st=a10009825.a10009794&stt=CITY_GEO.CITY_GEO&stn=B%C3%ACnh%20Thu%E1%BA%ADn.Ho%20Chi%20Minh%20City&dt=13-04-2024.null&ps=1&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_7_e3335f8454732ccbec297f886facd089d1afe897_13_ac270ec48670fe137a7cc5ea7c531b9946000841&internal_source=true">
+            <img src="./images/Booking/BT-HCM.webp" alt="Deal 4" />
+          </a>
+        </div>
+        <div class="deal-item">
+          <a
+            href="https://www.traveloka.com/vi-vn/bus-and-shuttle/search?st=a10009841.a10009794&stt=CITY_GEO.CITY_GEO&stn=Kh%C3%A1nh%20H%C3%B2a.Ho%20Chi%20Minh%20City&dt=13-04-2024.null&ps=1&funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=M_7_e3335f8454732ccbec297f886facd089d1afe897_14_3a4334173a765d4ebf82984f21889e8be3497cb6&internal_source=true">
+            <img src="./images/Booking/KH-HCM.webp" alt="Deal 4" />
+          </a>
+        </div>
+      </div>
+    </div>
+    <button
+      onclick="window.location.href='https://www.traveloka.com/vi-vn/promotion/bus-megasale?funnel_source=Merchandising.mainAppHomePage.mainAppHomePage-V2-SSR-web-VN-LandingPage&funnel_id=86793&internal_source=true'">
+      Xem thêm ưu đãi đặt xe khách
+    </button>
+  </div>
+
+
+  <section class="Counseling">
+    <h1><b>Luôn được cập nhật về các lời khuyên du lịch, đề xuất và khuyến mãi mới nhất.</b></h1>
+    <div class="email">
+      <label for="email"><i class="fas fa-envelope"></i></label>
+      <input type="email" id="input" placeholder="Địa chỉ email của bạn">
+      <button id="signup" onclick="document.getElementById('successModal').style.display='block'">Đăng ký tin</button>
+    </div>
+    <p><b>Có chuyến đi mơ ước của bạn trong tầm tay của bạn. Tải xuống ứng dụng.</b></p>
+    <img src="./images/Booking/footer.png">
+  </section>
+
+
+
+  <!-- Footer -->
+
+
+  <section class="footer">
+    <hr />
+    <br />
+    <h4>PHENIKAA TRAVEL&reg;</h4>
+    <br />
+    <p class="copyright">&copy; 2024 PHENIKAA TRAVEL. All Rights Reserved.</p>
+  </section>
+
+  <!-- Scroll-->
+  <div class="scroll-to-top">
+    <a href="#" class="scroll-up">
+      <img src="./images/Icons/double-arrow.png" alt="back to top" />
+    </a>
+  </div>
+
+  <!-- Modals -->
+  <!-- Register Modal -->
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="registerClose">&times;</span>
+      <form id="registerForm" onsubmit="return handleRegister(event)">
+        <h2>Đăng Ký Nhận Tư Vấn Du Lịch</h2>
+        <div class="form-section">
+          <label for="fullName">Họ và Tên</label>
+          <input type="text" id="fullName" name="fullName" required />
+        </div>
+        <div class="form-section">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
+          <label for="phone">Số Điện Thoại</label>
+          <input type="text" id="phone" name="phone" required />
+        </div>
+        <div class="form-section">
+          <label for="address">Địa Chỉ</label>
+          <input type="text" id="address" name="address" required />
+        </div>
+        <div class="form-section">
+          <label for="dob">Ngày Sinh</label>
+          <input type="date" id="dob" name="dob" required />
+        </div>
+        <div class="form-section">
+          <label for="gender">Giới Tính</label>
+          <div class="gender-options">
+            <label for="male">
+              <input type="radio" id="male" name="gender" value="male" required> Nam
+            </label>
+            <label for="female">
+              <input type="radio" id="female" name="gender" value="female" required> Nữ
+            </label>
+          </div>
+        </div>
+        <div class="form-section">
+          <label for="hospital">Chọn Nơi Khởi Hành</label>
+          <input type="text" id="hospital" name="hospital" required />
+        </div>
+        <div class="form-section">
+          <label for="department">Chọn Điểm Đến</label>
+          <input type="text" id="department" name="department" required />
+        </div>
+        <div class="form-section">
+          <label for="additionalInfo">Thêm Thông Tin Khác</label>
+          <textarea id="additionalInfo" name="additionalInfo"></textarea>
+        </div>
+        <div class="form-section">
+          <label for="preferredDate">Ngày và Giờ Chuyến Đi</label>
+          <input type="datetime-local" id="preferredDate" name="preferredDate" required />
+        </div>
+        <button type="submit" class="register-btn">Đăng Ký</button>
+      </form>
+      <div class="image-section" style="background-image: url('./images/Home/atv.gif')"></div>
+    </div>
+  </div>
+
+  <!-- Info Modal -->
+  <div id="infoModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="infoClose">&times;</span>
+      <h2>Group Members</h2>
+      <div class="team-container">
+        <div class="member-info" id="olivia-info">
+          <img src="./images/Home/Khoa.jpg" alt="Olivia" />
+          <h3>Vũ Đăng Khoa</h3>
+          <p><strong>Date of Birth:</strong> October 9, 2004</p>
+          <p><strong>Role:</strong> Developer</p>
+          <p><strong>Motto:</strong> "Strive for excellence."</p>
+        </div>
+        <div class="member-info" id="aaron-info">
+          <img src="./images/Home/Luong.jpg" alt="Aaron" />
+          <h3>Trịnh Phúc Lương</h3>
+          <p><strong>Date of Birth:</strong> June 4, 2004</p>
+          <p><strong>Role:</strong> Developer</p>
+          <p><strong>Motto:</strong> "Keep it simple."</p>
+        </div>
+        <div class="member-info" id="casey-info">
+          <img src="./images/Home/Dong.jpg" alt="Casey" />
+          <h3>Nguyễn Sỹ Đồng</h3>
+          <p><strong>Date of Birth:</strong> March 3, 2004</p>
+          <p><strong>Role:</strong> Designer</p>
+          <p><strong>Motto:</strong> "Design is thinking made visual."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="modal">
+    <div class="success-content">
+      <span class="close" id="successClose">&times;</span>
+      <h2>Đăng Ký Thành Công!</h2>
+      <p>Cảm ơn bạn đã đăng ký. Chúng tôi sẽ liên hệ với bạn sớm nhất có thể.</p>
+      <img src="./images/Home/thanks.gif" alt="Hình ảnh minh họa" class="success-image">
+    </div>
+  </div>
+
+  <script src="./js/header.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/animations.js"></script>
+  <script src="./js/modal.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+  <script src="./js/carousel.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  <script src="./js/booking.js"></script>
+  </b<>
+
+</html>
