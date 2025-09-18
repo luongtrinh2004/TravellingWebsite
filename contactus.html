@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ăn Ngon 3 Miền — Liên hệ với chúng tôi</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="images/pho.png?v=1" />
+  <!-- SEO -->
+  <meta name="description" content="Liên hệ với đội ngũ Ăn Ngon 3 Miền để đóng góp ý kiến hoặc hợp tác." />
+  <meta property="og:title" content="Ăn Ngon 3 Miền - Liên hệ" />
+  <meta property="og:description" content="Thông tin liên hệ đội ngũ review quán ăn khắp Việt Nam." />
+  <meta property="og:image" content="images/Home/BG1.jpg" />
+  <meta name="theme-color" content="#ffffff" />
+  <!-- Fonts (VN-ready) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Noto+Serif+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Kaushan+Script&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <style>
+    /* ========= Tokens ========= */
+    :root {
+      --bg: #fff;
+      --text: #141518;
+      --muted: #6e7380;
+      --surface: #fff;
+      --surface-2: #f6f6f7;
+      --border: #e6e6e8;
+      --primary: #2eb872;
+      --primary-600: #249c60;
+      --accent: #ffc107;
+      --shadow: 0 10px 30px rgba(0,0,0,.08), 0 2px 10px rgba(0,0,0,.06);
+      --shadow-sm: 0 4px 12px rgba(0,0,0,.06), 0 1px 4px rgba(0,0,0,.04);
+      --shadow-map: 0 8px 24px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.08);
+      --glass: linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.58));
+      --glass-bd: rgba(255,255,255,.42);
+      --radius: 16px;
+      --radius-sm: 12px;
+      --container: min(1140px, 92vw);
+      --step--1: clamp(.96rem, .92rem + .2vw, 1.06rem);
+      --step-0: clamp(1.06rem, .96rem + .6vw, 1.22rem);
+      --step-1: clamp(1.26rem, 1.06rem + 1vw, 1.62rem);
+      --step-2: clamp(1.64rem, 1.22rem + 2vw, 2.24rem);
+      --step-3: clamp(2.28rem, 1.64rem + 3vw, 3.08rem);
+      --step-4: clamp(2.8rem, 2.2rem + 4vw, 4rem);
+      --gold: #c8a96a;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1115;
+        --text: #f1f1f2;
+        --muted: #b8bdc7;
+        --surface: #151821;
+        --surface-2: #11141b;
+        --border: #262a34;
+        --primary: #2dd38f;
+        --primary-600: #1fb979;
+        --accent: #ffd257;
+        --shadow: 0 14px 34px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.35);
+        --shadow-sm: 0 6px 16px rgba(0,0,0,.3), 0 1px 4px rgba(0,0,0,.2);
+        --shadow-map: 0 12px 28px rgba(0,0,0,.4), 0 2px 8px rgba(0,0,0,.3);
+        --glass: linear-gradient(180deg, rgba(25,28,38,.72), rgba(18,21,32,.52));
+        --glass-bd: rgba(255,255,255,.08);
+        --gold: #e2c889;
+      }
+      img, video { opacity: .98; }
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 500 var(--step-0)/1.8 "Lora", ui-serif, Georgia, "Times New Roman", serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { width: var(--container); margin-inline: auto; }
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      clip-path: inset(50%);
+    }
+
+    /* ========= Header ========= */
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: saturate(180%) blur(10px);
+      background: color-mix(in oklab, var(--bg) 92%, transparent);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner { padding: 12px 0 6px; }
+    .site-title {
+      text-align: center;
+      font-family: "Noto Serif Display", serif;
+      font-weight: 800;
+      font-size: var(--step-3);
+      letter-spacing: .3px;
+      margin: 6px 0 8px;
+      background: linear-gradient(90deg, var(--gold), #d6b375, var(--gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    nav.primary {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      padding-bottom: 10px;
+    }
+    .nav-link {
+      padding: 8px 12px;
+      border-radius: 10px;
+      color: var(--muted);
+      transition: .2s;
+      font-weight: 600;
+    }
+    .nav-link:hover, .nav-link[aria-current="page"] {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    /* ========= Search ========= */
+    .search-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 16px 0 18px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .search {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      width: min(820px, 94vw);
+      margin: 0 auto;
+    }
+    .search input {
+      flex: 1;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      font-size: var(--step--1);
+      background: var(--surface-2);
+      font-weight: 500;
+    }
+    .btn {
+      padding: 14px 18px;
+      border: none;
+      border-radius: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: "Noto Serif Display", serif;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .btn.primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn.primary:hover {
+      background: var(--primary-600);
+    }
+    .btn.ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+    }
+
+    /* ========= Contact Section ========= */
+    .contact-section {
+      padding: 48px 0;
+      background: var(--surface-2);
+    }
+    .section-head {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .section-title {
+      font-family: "Noto Serif Display", serif;
+      font-size: var(--step-2);
+      margin: 0 0 8px;
+      letter-spacing: .2px;
+      font-weight: 700;
+    }
+    .section-desc {
+      margin: 0;
+      color: var(--muted);
+      font-size: var(--step--1);
+      font-weight: 500;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-areas:
+        "a b c d e"
+        "f g h i j";
+      gap: 20px;
+      justify-content: center;
+      padding: 0 10px;
+    }
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+      transition: transform .2s, box-shadow .2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .contact-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+    }
+    .contact-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 12px;
+      border: 2px solid var(--primary);
+    }
+    .contact-name {
+      font-family: "Noto Serif Display", serif;
+      font-weight: 700;
+      font-size: var(--step-0);
+      margin: 0 0 8px;
+    }
+    .contact-details {
+      color: var(--muted);
+      font-size: var(--step--1);
+      margin: 0;
+    }
+    .contact-card:nth-child(1) { grid-area: a; }
+    .contact-card:nth-child(2) { grid-area: b; }
+    .contact-card:nth-child(3) { grid-area: c; }
+    .contact-card:nth-child(4) { grid-area: d; }
+    .contact-card:nth-child(5) { grid-area: e; }
+    .contact-card:nth-child(6) { grid-area: f; }
+    .contact-card:nth-child(7) { grid-area: g; }
+    .contact-card:nth-child(8) { grid-area: h; }
+    .contact-card:nth-child(9) { grid-area: i; }
+    .contact-card:nth-child(10) { grid-area: j; }
+
+    /* ========= Footer ========= */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface-2);
+      padding: 32px 0;
+      color: var(--muted);
+    }
+    footer p {
+      font-weight: 500;
+    }
+    footer .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+  </style>
+</head>
+<body>
+  <a class="visually-hidden" href="#main">Bỏ qua nội dung</a>
+
+  <!-- Header -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <div class="site-title">ĂN NGON 3 MIỀN</div>
+      <nav class="primary" aria-label="Chính">
+        <a class="nav-link" href="index.html">Trang chủ</a>
+        <a class="nav-link" href="#">Cộng đồng</a>
+        <a class="nav-link" href="contactus.html" aria-current="page">Về chúng tôi</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Search -->
+  <!-- <div class="search-wrap">
+    <form class="search container" onsubmit="return false;" role="search" aria-label="Tìm quán ăn">
+      <label for="searchInput" class="visually-hidden">Tìm quán ăn theo tên món, địa điểm hoặc giá</label>
+      <input id="searchInput" name="q" placeholder="Ví dụ: phở Hà Nội, bún bò Huế, 40.000đ..." autocomplete="off" disabled />
+      <button class="btn primary" type="submit" disabled>Tìm kiếm</button>
+    </form>
+  </div> -->
+
+  <!-- Contact Section -->
+  <section class="contact-section" id="main">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">Đội ngũ Ăn Ngon 3 Miền</h2>
+        <p class="section-desc">Gặp gỡ những người đã tạo nên cộng đồng sành ăn này</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <img src="images/places/bunbo-hue.jpg" alt="Ảnh Nguyễn Văn A" class="contact-avatar">
+          <h3 class="contact-name">Nguyễn Văn A</h3>
+          <p class="contact-details">Mã số: 12345678<br>Lớp: CNTT-K61</p>
+        </div>
+        <div class="contact-card">
+          <img src="images/places/bunbo-hue.jpg" alt="Ảnh Trần Thị B" class="contact-avatar">
+          <h3 class="contact-name">Trần Thị B</h3>
+          <p class="contact-details">Mã số: 23456789<br>Lớp: KT-K62</p>
+        </div>
+        <div class="contact-card">
+          <img src="images/places/bunbo-hue.jpg" alt="Ảnh Lê Văn C" class="contact-avatar">
+          <h3 class="contact-name">Lê Văn C</h3>
+          <p class="contact-details">Mã số: 34567890<br>Lớp: ĐTVT-K63</p>
+        </div>
+        <div class="contact-card">
+          <img src="images/places/bunbo-hue.jpg" alt="Ảnh Phạm Thị D" class="contact-avatar">
+          <h3 class="contact-name">Phạm Thị D</h3>
+          <p class="contact-details">Mã số: 45678901<br>Lớp: CNTT-K64</p>
+        </div>
+        <div class="contact-card">
+          <img src="images/places/bunbo-hue.jpg" alt="Ảnh Hoàng Văn E" class="contact-avatar">
+          <h3 class="contact-name">Hoàng Văn E</h3>
+          <p class="contact-details">Mã số: 56789012<br>Lớp: KT-K61</p>
+        </div>
+        <div class="contact-card">
+          <img src="images/places/bunbo-hue.jpg" alt="Ảnh Đỗ Thị F" class="contact-avatar">
+          <h3 class="contact-name">Đỗ Thị F</h3>
+          <p class="contact-details">Mã số: 67890123<br>Lớp: ĐTVT-K62</p>
+        </div>
+        <div class="contact-card">
+          <img src="images/places/bunbo-hue.jpg" alt="Ảnh Trịnh Văn G" class="contact-avatar">
+          <h3 class="contact-name">Trịnh Văn G</h3>
+          <p class="contact-details">Mã số: 78901234<br>Lớp: CNTT-K63</p>
+        </div>
+        <div class="contact-card">
+          <img src="images/places/bunbo-hue.jpg" alt="Ảnh Ngô Thị H" class="contact-avatar">
+          <h3 class="contact-name">Ngô Thị H</h3>
+          <p class="contact-details">Mã số: 89012345<br>Lớp: KT-K64</p>
+        </div>
+        <div class="contact-card">
+          <img src="images/places/bunbo-hue.jpg" alt="Ảnh Vũ Văn I" class="contact-avatar">
+          <h3 class="contact-name">Vũ Văn I</h3>
+          <p class="contact-details">Mã số: 90123456<br>Lớp: ĐTVT-K61</p>
+        </div>
+        <div class="contact-card">
+          <img src="images/places/bunbo-hue.jpg" alt="Ảnh Lý Thị K" class="contact-avatar">
+          <h3 class="contact-name">Lý Thị K</h3>
+          <p class="contact-details">Mã số: 01234567<br>Lớp: CNTT-K62</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="grid">
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Ăn Ngon 3 Miền</strong>
+          <p class="section-desc">Nền tảng review quán ăn khắp Việt Nam. Chia sẻ bởi cộng đồng sành ăn.</p>
+        </div>
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Liên kết</strong>
+          <p class="section-desc"><a href="#">Điều khoản</a> • <a href="#">Bảo mật</a> • <a href="contactus.html">Liên hệ</a></p>
+        </div>
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Cập nhật</strong>
+          <p class="section-desc">Theo dõi chúng tôi để nhận gợi ý quán ngon mỗi tuần.</p>
+        </div>
+      </div>
+      <p style="margin-top:12px;color:var(--muted)">© <span id="year">2025</span> AnNgon3Mien. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Cập nhật năm hiện tại
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Animation khi hover card
+    document.querySelectorAll('.contact-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-5px)';
+        card.style.boxShadow = 'var(--shadow)';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0)';
+        card.style.boxShadow = 'none';
+      });
+    });
+  </script>
+</body>
+</html>

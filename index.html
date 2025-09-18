@@ -4,237 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ăn Ngon 3 Miền — Review quán ăn khắp Việt Nam</title>
-<!-- Favicon -->
-<link rel="icon" type="image/png" href="images/pho.png?v=1" />
-
-
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="images/pho.png?v=1" />
   <!-- SEO -->
   <meta name="description" content="Khám phá quán ăn ngon 3 miền — Bắc, Trung, Nam. Review chân thực, giá cả rõ ràng, gợi ý gần bạn." />
   <meta property="og:title" content="Ăn Ngon 3 Miền" />
   <meta property="og:description" content="Review quán ăn khắp Việt Nam. Tìm kiếm theo món, địa điểm, giá." />
   <meta property="og:image" content="images/Home/BG1.jpg" />
   <meta name="theme-color" content="#ffffff" />
-
   <!-- Fonts (VN-ready) -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Noto+Serif+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Kaushan+Script&display=swap" rel="stylesheet">
-
-  <style>
-    /* ========= Tokens ========= */
-    :root{
-      --bg:#fff; --text:#141518; --muted:#6e7380;
-      --surface:#fff; --surface-2:#f6f6f7; --border:#e6e6e8;
-      --primary:#2eb872; --primary-600:#249c60; --accent:#ffc107;
-      --shadow:0 10px 30px rgba(0,0,0,.08), 0 2px 10px rgba(0,0,0,.06);
-      --glass:linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.58));
-      --glass-bd:rgba(255,255,255,.42);
-      --radius:16px; --radius-sm:12px; --container:min(1140px,92vw);
-      --step--1:clamp(.96rem,.92rem + .2vw,1.06rem);
-      --step-0:clamp(1.06rem,.96rem + .6vw,1.22rem);
-      --step-1:clamp(1.26rem,1.06rem + 1vw,1.62rem);
-      --step-2:clamp(1.64rem,1.22rem + 2vw,2.24rem);
-      --step-3:clamp(2.28rem,1.64rem + 3vw,3.08rem);
-      --step-4:clamp(2.8rem,2.2rem + 4vw,4rem);
-      --gold:#c8a96a;
-    }
-    @media (prefers-color-scheme: dark){
-      :root{
-        --bg:#0f1115; --text:#f1f1f2; --muted:#b8bdc7;
-        --surface:#151821; --surface-2:#11141b; --border:#262a34;
-        --primary:#2dd38f; --primary-600:#1fb979; --accent:#ffd257;
-        --shadow:0 14px 34px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.35);
-        --glass:linear-gradient(180deg, rgba(25,28,38,.72), rgba(18,21,32,.52));
-        --glass-bd:rgba(255,255,255,.08);
-        --gold:#e2c889;
-      }
-      img,video{opacity:.98}
-    }
-
-    *{box-sizing:border-box}
-    html,body{height:100%;scroll-behavior:smooth}
-    body{
-      margin:0; background:var(--bg); color:var(--text);
-      font:400 var(--step-0)/1.72 "Lora", ui-serif, Georgia, "Times New Roman", serif;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-      overflow-x:hidden;
-    }
-    a{color:inherit;text-decoration:none}
-    .container{width:var(--container);margin-inline:auto}
-    .visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;clip-path:inset(50%)}
-
-    /* ========= Header ========= */
-    header.site-header{
-      position:sticky; top:0; z-index:50;
-      backdrop-filter:saturate(180%) blur(10px);
-      background:color-mix(in oklab, var(--bg) 92%, transparent);
-      border-bottom:1px solid var(--border);
-    }
-    .header-inner{ padding:12px 0 6px }
-    .site-title{
-      text-align:center; font-family:"Noto Serif Display", serif; font-weight:800;
-      font-size:var(--step-3); letter-spacing:.3px; margin:6px 0 8px;
-      background:linear-gradient(90deg, var(--gold), #d6b375, var(--gold)); -webkit-background-clip:text; background-clip:text; color:transparent;
-    }
-    nav.primary{ display:flex; justify-content:center; gap:28px; flex-wrap:wrap; padding-bottom:10px }
-    .nav-link{ padding:8px 12px; border-radius:10px; color:var(--muted); transition:.2s; font-weight:600 }
-    .nav-link:hover,.nav-link[aria-current="page"]{ background:var(--surface-2); color:var(--text) }
-
-    /* ========= Search ========= */
-    .search-wrap{ display:flex; justify-content:center; padding:16px 0 18px; border-bottom:1px solid var(--border); background:var(--surface) }
-    .search{ display:flex; gap:10px; align-items:center; width:min(820px,94vw); margin:0 auto }
-    .search input{ flex:1; padding:14px 16px; border:1px solid var(--border); border-radius:14px; font-size:var(--step--1); background:var(--surface-2) }
-    .btn{ padding:14px 18px; border:none; border-radius:14px; font-weight:800; cursor:pointer; font-family:"Noto Serif Display", serif; letter-spacing:.12em; text-transform:uppercase }
-    .btn.primary{ background:var(--primary); color:#fff } .btn.primary:hover{ background:var(--primary-600) }
-    .btn.ghost{ background:transparent; border:1px solid var(--border) }
-
-    /* ========= Hero ========= */
-.hero{
-  position:relative; isolation:isolate;
-  height:100svh;                 /* ép đúng 1 màn hình */
-  width:100vw; left:50%; margin-left:-50vw;
-  display:grid; place-items:center; text-align:center;
-  overflow:hidden; background:#111;
-}
-@supports (height: 100dvh){
-  .hero{ height:100dvh; }        /* fix thanh địa chỉ mobile */
-}
-
-
- /* Hero background full size */
-.hero::before{
-  content:""; position:absolute; inset:0;
-  background-image:url("images/Home/BG1.jpg");
-  background-size:cover;   /* full cover */
-  background-position:center center;
-  background-repeat:no-repeat;
-  width:100%; height:100%;
-  transform:none;          /* bỏ scale để ảnh không bị zoom méo */
-  filter:saturate(1.08) contrast(1.05) brightness(.94);
-  z-index:-2;
-}
-
-.intro-media{
-  position:relative;
-  border-radius:0;
-  overflow:hidden;
-  border:none;
-  background:#000;
-}
-.intro-media img{
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit:cover;
-  aspect-ratio:auto; /* bỏ giới hạn 3:2 */
-}
-    .hero::after{
-      content:""; position:absolute; inset:0;
-      background: radial-gradient(60% 50% at 50% 40%, rgba(0,0,0,.0), rgba(0,0,0,.25) 60%),
-                  linear-gradient(180deg, rgba(0,0,0,.2) 0%, rgba(0,0,0,.5) 80%); z-index:-1;
-    }
-    .hero-content{ color:#fff; padding:52px 16px; max-width:900px }
-    .hero-title{
-      font-family:"Noto Serif Display", serif; font-weight:800; font-size:var(--step-4); line-height:1.04; margin:0 0 10px; letter-spacing:.2px;
-      text-shadow:0 4px 24px rgba(0,0,0,.22),0 1px 2px rgba(0,0,0,.18);
-    }
-    .hero-sub{
-      font-family:"Noto Serif Display", serif; font-style:italic; font-weight:700; font-size:var(--step-1); letter-spacing:.1px; margin:0;
-      text-shadow:0 2px 12px rgba(0,0,0,.18);
-    }
-
-    /* ========= Introduce (bố cục theo mockup) ========= */
-    .introduce{ position:relative; padding:72px 0; background:var(--surface) }
-    .intro-wrap{ display:grid; grid-template-columns:1.05fr .95fr; gap:40px; align-items:center }
-    @media (max-width:980px){ .intro-wrap{ grid-template-columns:1fr; gap:24px } }
-    .intro-left{ padding:10px 6px }
-    .intro-eyebrow{
-      font-family:"Kaushan Script", cursive; color:#d07a2d;
-      font-size:clamp(2.4rem,1.6rem + 3.4vw,4.4rem); line-height:1; margin:0 0 14px;
-      letter-spacing:.02em; text-rendering:optimizeLegibility; -webkit-font-smoothing:antialiased;
-    }
-    .intro-text{ margin:0 0 20px; color:var(--text); max-width:56ch }
-    .intro-cta{ display:inline-block; padding:12px 22px; border-radius:12px; font-family:"Noto Serif Display",serif; font-weight:800; letter-spacing:.14em; text-transform:uppercase; background:#d07a2d; color:#fff; box-shadow:0 6px 16px rgba(208,122,45,.22) }
-    .intro-cta:hover{ background:#b66724 }
-    .intro-media{ position:relative; border-radius:18px; overflow:hidden; border:1px solid var(--border); background:#f2f2f2 }
-    .intro-media img{ width:100%; height:auto; display:block; object-fit:cover; aspect-ratio:3/2 }
-
-    /* ========= Scroll Scene ========= */
-    .scene{ position:relative; isolation:isolate; min-height:120vh }
-    .scene-bg{
-      position:sticky; top:0; height:100vh; width:100vw; left:50%; margin-left:-50vw;
-      background-image:url('images/Home/BG3.png'); background-size:cover; background-position:center;
-      transform:translateZ(0) scale(1.02); filter:brightness(.92) saturate(1.05); z-index:-1;
-    }
-    .panels{ padding:10vh 0; display:grid; gap:28px }
-    .panel{
-      background:var(--glass); border:1px solid var(--glass-bd); border-radius:18px; padding:22px; backdrop-filter:blur(8px);
-      box-shadow:var(--shadow); transform:translateY(24px); opacity:0; will-change:transform,opacity;
-    }
-    .panel.revealed{ transform:translateY(0); opacity:1; transition:.6s ease }
-
-    /* ========= Sections ========= */
-    section{ padding:48px 0 }
-    .section-head{ display:flex; align-items:end; justify-content:space-between; gap:12px; margin-bottom:20px }
-    .section-title{ font-family:"Noto Serif Display", serif; font-size:var(--step-2); margin:0; letter-spacing:.2px }
-    .section-desc{ margin:0; color:var(--muted); font-size:var(--step--1) }
-
-    /* ========= Grid / Cards ========= */
-    .grid{ display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)) }
-
-    .cat-card{
-      position:relative; overflow:hidden; border-radius:var(--radius); border:1px solid var(--border); background:var(--surface);
-      min-height:220px; transition:transform .18s ease, box-shadow .18s ease; display:block;
-    }
-    .cat-card:hover{ transform:translateY(-2px); box-shadow:var(--shadow) }
-    .cat-card img{ width:100%; height:100%; object-fit:cover; display:block }
-    .cat-badge{
-      position:absolute; left:12px; bottom:12px; background:rgba(0,0,0,.62); color:#fff; padding:10px 12px; border-radius:12px; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
-      font-family:"Noto Serif Display", serif;
-    }
-
-    /* ========= Places with map & comments ========= */
-    .place-card{ display:flex; flex-direction:column; border:1px solid var(--border); background:var(--surface); border-radius:var(--radius); overflow:hidden; transition:transform .2s, box-shadow .2s }
-    .place-card:hover{ transform:translateY(-3px); box-shadow:var(--shadow) }
-    .place-media{ aspect-ratio:16/10; width:100%; object-fit:cover; background:#ddd; display:block }
-    .place-body{ padding:16px }
-    .stars{ color:var(--accent); letter-spacing:.8px; font-size:1rem }
-    .place-title{ font-family:"Noto Serif Display", serif; font-weight:700; margin:6px 0 4px; font-size:1.12rem; letter-spacing:.2px }
-    .place-meta{ color:var(--muted); font-size:1rem }
-    .comments{
-      margin-top:10px; padding:10px 12px; background:var(--surface-2); border:1px dashed var(--border); border-radius:12px; font-size:1rem;
-    }
-    .comments strong{ font-family:"Noto Serif Display", serif }
-    .map-embed{
-      margin-top:12px; border-top:1px solid var(--border); background:#000; position:relative;
-      aspect-ratio:16/10; /* responsive map */
-    }
-    .map-embed iframe{
-      position:absolute; inset:0; width:100%; height:100%; border:0; border-radius:0 0 var(--radius) var(--radius);
-    }
-    .card-actions{
-      display:flex; gap:10px; padding:12px 16px; border-top:1px solid var(--border); background:var(--surface-2);
-    }
-    .btn.ghost{ background:transparent; border:1px solid var(--border) }
-
-    /* --- FORCE intro media cover, đè rule cũ --- */
-.introduce .intro-media{
-  border:none !important;
-  border-radius:0 !important;
-  overflow:hidden;
-  background:#000;
-}
-.introduce .intro-media img{
-  width:100% !important;
-  height:60% !important;
-  object-fit:cover !important;
-  aspect-ratio:auto !important;
-  display:block;
-}
-
-
-    /* ========= Footer ========= */
-    footer{ border-top:1px solid var(--border); background:var(--surface-2); padding:32px 0; color:var(--muted) }
-  </style>
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
   <a class="visually-hidden" href="#main">Bỏ qua nội dung</a>
@@ -245,7 +28,7 @@
       <div class="site-title">ĂN NGON 3 MIỀN</div>
       <nav class="primary" aria-label="Chính">
         <a class="nav-link" href="index.html" aria-current="page">Trang chủ</a>
-        <a class="nav-link" href="#">Cộng đồng</a>
+        <a class="nav-link" href="congdong.html">Cộng đồng</a>
         <a class="nav-link" href="contactus.html">Về chúng tôi</a>
       </nav>
     </div>
@@ -276,9 +59,7 @@
         <p class="intro-text">
          Điểm hẹn của tín đồ ẩm thực - Nơi tinh hoa món ngon ba miền hội tụ. Mỗi địa chỉ được khắc họa bằng hình ảnh chân thực, cảm nhận tinh tế và những lát cắt sống động của đời sống ẩm thực. Không chỉ là thông tin, mà còn là hành trình trải nghiệm, dẫn lối đến với văn hóa, con người và bản sắc Việt qua từng món ăn.
         </p>
-        <!-- <a class="intro-cta" href="#category" role="button" aria-label="Xem concept">Concept</a> -->
       </div>
-
       <div class="intro-media" aria-hidden="false">
         <img src="images/intro/intro.jpg" alt="Bàn tiệc hải sản phong cách Hồng Kông">
       </div>
@@ -334,9 +115,8 @@
       <div class="container">
         <div class="section-head">
           <h2 id="topTitle" class="section-title">Top quán ăn trong tuần</h2>
-        <p class="section-desc">Tổng hợp các địa chỉ được cộng đồng khen nhiều nhất</p>
+          <p class="section-desc">Tổng hợp các địa chỉ được cộng đồng khen nhiều nhất</p>
         </div>
-
         <div class="grid">
           <!-- PHỞ HÀ NỘI -->
           <article class="place-card" data-address="49 Bát Đàn, Hoàn Kiếm, Hà Nội">
@@ -356,6 +136,7 @@
             <div class="card-actions">
               <a class="btn ghost" target="_blank" rel="noopener" href="https://www.google.com/maps?q=49%20B%C3%A1t%20%C4%90%C3%A0n%2C%20Ho%C3%A0n%20Ki%E1%BA%BFm%2C%20H%C3%A0%20N%E1%BB%99i">Xem đường đi</a>
               <a class="btn primary" href="#">Đọc review</a>
+
             </div>
           </article>
 
@@ -400,23 +181,6 @@
               <a class="btn primary" href="#">Đọc review</a>
             </div>
           </article>
-
-          <!-- Mở bản đồ tổng
-          <a class="place-card" href="https://www.google.com/maps" target="_blank" rel="noopener" aria-label="Mở bản đồ">
-            <img class="place-media" src="images/places/map-cover.jpg" alt="Mở bản đồ tìm quán gần bạn" loading="lazy" />
-            <div class="place-body">
-              <div class="place-title">Mở Bản đồ 📍</div>
-              <div class="place-meta">Xem quán gần bạn</div>
-              <div class="comments">Mẹo: bật “Ở gần tôi” để lọc theo khoảng cách.</div>
-            </div>
-            <div class="map-embed" aria-hidden="true">
-              <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Vietnam&output=embed"></iframe>
-            </div>
-            <div class="card-actions">
-              <span class="btn ghost">Mẹo định vị</span>
-              <span class="btn primary">Khám phá quanh đây</span>
-            </div>
-          </a> -->
         </div>
       </div>
     </section>
@@ -444,41 +208,6 @@
   </footer>
 
   <!-- Scripts -->
-  <script>
-    // Năm hiện tại
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Tìm kiếm: highlight kết quả trong Top quán
-    function searchPlaces(e){
-      e.preventDefault();
-      const q=(document.getElementById('searchInput').value||'').trim().toLowerCase();
-      if(!q) return false;
-      const cards=document.querySelectorAll('.place-card');
-      let found=false;
-      cards.forEach(c=>{
-        c.style.outline='';
-        if(c.textContent.toLowerCase().includes(q)){
-          c.style.outline='2px solid var(--primary)';
-          if(!found) c.scrollIntoView({behavior:'smooth',block:'center'});
-          found=true;
-        }
-      });
-      if(!found) alert('Không tìm thấy quán ăn phù hợp!');
-      return false;
-    }
-
-    // Reveal panels
-    const io=new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting){ e.target.classList.add('revealed'); io.unobserve(e.target); }
-      });
-    }, {threshold:.18});
-    document.querySelectorAll('.panel').forEach(p=>io.observe(p));
-
-    // Respect reduced motion (đã bỏ hiệu ứng nặng)
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      // no-op
-    }
-  </script>
+  <script src="js/main.js"></script>
 </body>
 </html>
