@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ẩm thực miền Bắc — Hà Nội & Hải Phòng</title>
+  <link rel="icon" type="image/png" href="images/pho.png?v=1" />
+  <meta name="description" content="Khám phá ẩm thực miền Bắc: Hà Nội và Hải Phòng. Ảnh, món ăn gợi ý, bối cảnh lịch sử." />
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Noto+Serif+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Kaushan+Script&display=swap" rel="stylesheet">
+  <!-- Base site CSS -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* ====== Trang thành phố: phong cách review ====== */
+
+    /* Khối thành phố (card lớn, không viền cứng) */
+    .city {
+      background: var(--surface);
+      border-radius: 22px;
+      padding: clamp(18px, 3vw, 28px);
+      margin: 0 0 40px;
+      box-shadow: 0 14px 34px rgba(0,0,0,.08);
+      border: none;
+    }
+    /* Header căn giữa + vàng */
+    .city-head {
+      text-align: center;
+      padding: 2px 6px 14px;
+      border: none;
+      background: transparent;
+    }
+    .city-title {
+      margin: 0;
+      font-family: "Noto Serif Display", serif;
+      font-weight: 800;
+      letter-spacing: .3px;
+      font-size: clamp(1.8rem, 1.2rem + 2.2vw, 2.6rem);
+      color: var(--gold);
+      text-shadow: 0 2px 10px rgba(0,0,0,.06);
+    }
+
+    /* Lưới nội dung 2 cột: trái (ảnh + món), phải (bài viết) */
+    .city-grid {
+      display: grid;
+      grid-template-columns: minmax(320px, 400px) 1fr;
+      gap: clamp(18px, 3vw, 32px);
+      align-items: start;
+      min-height: unset;
+    }
+    @media (max-width: 980px) { .city-grid { grid-template-columns: 1fr; } }
+
+    /* Cột trái: stack ảnh + danh sách món */
+    .city-left {
+        
+      display: grid;
+      gap: 16px; /* đảm bảo khối dưới có cùng bề ngang với ảnh vì cùng cột */
+    }
+
+    /* Ảnh thành phố (card) */
+    .city-photo {
+      overflow: hidden;
+      border-radius: 16px;
+      background: #000;
+      border: none;
+      box-shadow: var(--shadow);
+    }
+    
+    .city-photo img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      aspect-ratio: 4/5;
+      transform: scale(1.02);
+      transition: transform .35s ease, filter .35s ease;
+      filter: saturate(1.02) contrast(1.02);
+    }
+    .city-photo:hover img { transform: scale(1.06); filter: saturate(1.08) contrast(1.06); }
+
+    /* Danh sách món (card container) */
+    .city-dishes {
+      padding: 16px;
+      border-radius: 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+    .dish { margin: 0 0 18px; }
+    .dish:last-child { margin-bottom: 6px; }
+    .dish h4 {
+      margin: 0 0 10px;
+      font-family: "Noto Serif Display", serif;
+      font-size: 1.08rem;
+      letter-spacing: .2px;
+    }
+
+    /* Grid 3 ô bằng nhau cho từng món */
+    .dish-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    @media (max-width: 560px) {
+      .dish-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 380px) {
+      .dish-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Card quán nhỏ */
+    .eat-card {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 12px 10px;
+      text-decoration: none;
+      box-shadow: 0 6px 14px rgba(0,0,0,.06);
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      height: 100%;
+    }
+    .eat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(0,0,0,.12);
+      border-color: color-mix(in oklab, var(--primary), var(--border) 60%);
+    }
+    .eat-title {
+      font-weight: 800;
+      font-family: "Noto Serif Display", serif;
+      letter-spacing: .2px;
+      margin: 0 0 6px;
+      line-height: 1.25;
+    }
+    .eat-meta {
+      color: var(--muted);
+      font-size: .98rem;
+      line-height: 1.45;
+    }
+
+    /* Link xem thêm */
+    .more {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: .96rem; color: var(--primary); font-weight: 700;
+      text-decoration: none;
+    }
+    .more::after { content: "➜"; transform: translateY(1px); }
+
+    /* Cột phải: bài viết review */
+    .city-text {
+      padding: 0;
+      max-width: 760px;
+      line-height: 1.8;
+    }
+    .city-text > p { margin: 0 0 10px; }
+    .city-text h3, .city-text h4 {
+      font-family: "Noto Serif Display", serif;
+      letter-spacing: .2px;
+      margin: 14px 0 8px;
+    }
+    .city-text h3 { font-size: clamp(1.3rem, 1rem + 1vw, 1.6rem); color: var(--text); }
+    .city-text h4 { font-size: 1.14rem; color: var(--primary); }
+
+    /* Viên trang trí nhẹ ở đầu section */
+    .city::before {
+      content: "";
+      display: block;
+      height: 6px;
+      width: 88px;
+      margin: 0 auto 18px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--gold), #d6b375, var(--gold));
+      opacity: .9;
+    }
+  </style>
+</head>
+<body>
+  <a class="visually-hidden" href="#main">Bỏ qua nội dung</a>
+
+  <!-- Header chung của site -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <div class="site-title">ẨM THỰC MIỀN BẮC</div>
+      <nav class="primary" aria-label="Chính">
+        <a class="nav-link" href="index.html">Trang chủ</a>
+        <a class="nav-link" href="congdong.html">Cộng đồng</a>
+        <a class="nav-link" href="contactus.html">Về chúng tôi</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="container" style="padding:28px 0">
+
+      <!-- ===== HÀ NỘI ===== -->
+      <article class="city" id="ha-noi">
+        <header class="city-head">
+          <h2 class="city-title">Hà Nội</h2>
+        </header>
+
+        <div class="city-grid">
+          <!-- Trái: Ảnh + món -->
+          <div class="city-left">
+            <figure class="city-photo" aria-label="Ảnh Hà Nội">
+              <img src="images/categories/1.jpg" alt="Hà Nội — phố cổ, hồ Gươm, mùa thu vàng">
+            </figure>
+
+            <div class="city-dishes">
+              <!-- Phở bò -->
+              <div class="dish">
+                <h4>Phở bò</h4>
+                <div class="dish-grid">
+                  <a class="eat-card" href="shop/pho-lqs.html" aria-label="Phở Bát Đàn">
+                    <div class="eat-title">Phở Lý Quốc Sư</div>
+                    <div class="eat-meta">49 Bát Đàn, Hoàn Kiếm</div>
+                  </a>
+                  <a class="eat-card" href="pho-gia-truyen.html" aria-label="Phở Gia Truyền Hàng Vải">
+                    <div class="eat-title">Phở Gia Truyền</div>
+                    <div class="eat-meta">26 Hàng Vải, Hoàn Kiếm</div>
+                  </a>
+                  <a class="eat-card" href="pho-thin-lo-duc.html" aria-label="Phở Thìn Lò Đúc">
+                    <div class="eat-title">Phở Thìn</div>
+                    <div class="eat-meta">13 Lò Đúc, Hai Bà Trưng</div>
+                  </a>
+                </div>
+                <a class="more" href="pho-ha-noi.html">Xem thêm</a>
+              </div>
+
+              <!-- Bún chả -->
+              <div class="dish">
+                <h4>Bún chả</h4>
+                <div class="dish-grid">
+                  <a class="eat-card" href="bun-cha-huong-lien.html">
+                    <div class="eat-title">Bún chả Hương Liên</div>
+                    <div class="eat-meta">24 Lê Văn Hưu</div>
+                  </a>
+                  <a class="eat-card" href="bun-cha-dac-kim.html">
+                    <div class="eat-title">Bún chả Đắc Kim</div>
+                    <div class="eat-meta">1 Hàng Mành</div>
+                  </a>
+                  <a class="eat-card" href="bun-cha-sinh-tu.html">
+                    <div class="eat-title">Bún chả Sinh Từ</div>
+                    <div class="eat-meta">114B Lò Đúc</div>
+                  </a>
+                </div>
+                <a class="more" href="bun-cha-ha-noi.html">Xem thêm</a>
+              </div>
+
+              <!-- Bún thang -->
+              <div class="dish">
+                <h4>Bún thang</h4>
+                <div class="dish-grid">
+                  <a class="eat-card" href="bun-thang-cau-go.html">
+                    <div class="eat-title">Bún thang Cầu Gỗ</div>
+                    <div class="eat-meta">48 Cầu Gỗ</div>
+                  </a>
+                  <a class="eat-card" href="bun-thang-ba-duc.html">
+                    <div class="eat-title">Bún thang Bà Đức</div>
+                    <div class="eat-meta">48 Cầu Gỗ (ngõ)</div>
+                  </a>
+                  <a class="eat-card" href="bun-thang-hang-hom.html">
+                    <div class="eat-title">Bún thang Hàng Hòm</div>
+                    <div class="eat-meta">11 Hàng Hòm</div>
+                  </a>
+                </div>
+                <a class="more" href="bun-thang-ha-noi.html">Xem thêm</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phải: Bài viết -->
+          <div class="city-text">
+            <p>Trải qua hơn một nghìn năm lịch sử, phong cách ẩm thực Hà Nội được duy trì và truyền lại qua nhiều thế hệ, trở thành nét đặc trưng tinh tế, thanh nhã của người Tràng An.</p>
+
+            <h4>1. Nguồn gốc và bối cảnh lịch sử</h4>
+            <ul>
+              <li><strong>Thăng Long – Kinh đô ngàn năm:</strong> Từ khi vua Lý Công Uẩn dời đô năm 1010, Hà Nội đã trở thành trung tâm chính trị, văn hóa, nơi ẩm thực định hình phong cách cầu kỳ nhưng tinh tế.</li>
+              <li><strong>Ảnh hưởng ngoại lai:</strong> Thời Pháp thuộc, các món bánh mì, cà phê, bít tết du nhập, hòa quyện cùng phở, bún, bánh cuốn… tạo diện mạo đa sắc.</li>
+              <li><strong>Ẩm thực phố phường:</strong> Các món dân dã phát triển thành thương hiệu như phở Bát Đàn, bún chả Hàng Quạt, bánh cuốn Thanh Trì.</li>
+            </ul>
+
+            <h4>2. Đặc trưng và giá trị nghệ thuật</h4>
+            <ul>
+              <li><strong>Tinh tế – thanh nhã:</strong> Quan niệm “ăn để thưởng thức, không chỉ để no”, chú ý sự hài hòa giữa nguyên liệu và nước dùng.</li>
+              <li><strong>Nguyên liệu chọn lọc:</strong> Nước phở trong, bánh phở mềm, thịt bò tái chín vừa, ăn kèm rau thơm.</li>
+              <li><strong>Chú trọng sự hài hòa:</strong> Không quá cay, không quá béo, mà thanh thanh, nhẹ nhàng.</li>
+            </ul>
+
+            <h4>3. Một số món tiêu biểu</h4>
+            <ul>
+              <li><strong>Phở bò:</strong> Nước dùng ngọt thanh, bánh phở mềm, thịt bò chín tới.</li>
+              <li><strong>Bún chả:</strong> Thịt nướng than hoa, ăn kèm nước chấm chua ngọt, rau sống.</li>
+              <li><strong>Bún thang:</strong> Món ăn cầu kỳ với hàng chục nguyên liệu thái chỉ, phối màu đẹp mắt.</li>
+              <li><strong>Nem rán:</strong> Cuốn nhỏ, vàng ruộm, giòn rụm, là món truyền thống trong mâm cỗ.</li>
+            </ul>
+
+            <h4>4. Thẩm mỹ theo mùa</h4>
+            <ul>
+              <li><strong>Xuân:</strong> Bánh trôi, bánh chay dịp Tết Hàn thực.</li>
+              <li><strong>Hạ:</strong> Bún đậu mắm tôm, bún riêu cua.</li>
+              <li><strong>Thu:</strong> Cốm Làng Vòng, ô mai Hàng Đường.</li>
+              <li><strong>Đông:</strong> Bánh trôi tàu, lẩu riêu cua bắp bò.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===== HẢI PHÒNG ===== -->
+      <article class="city" id="hai-phong">
+        <header class="city-head">
+          <h2 class="city-title">Hải Phòng</h2>
+        </header>
+
+        <div class="city-grid">
+          <div class="city-left">
+            <figure class="city-photo" aria-label="Ảnh Hải Phòng">
+              <img src="images/categories/10.jpg" alt="Hải Phòng — thành phố cảng, cầu Bính, nhà Pháp cổ">
+            </figure>
+
+            <div class="city-dishes">
+              <!-- Bánh đa cua -->
+              <div class="dish">
+                <h4>Bánh đa cua</h4>
+                <div class="dish-grid">
+                  <a class="eat-card" href="banh-da-cua-ba-cu.html">
+                    <div class="eat-title">Bánh đa cua bà Cụ</div>
+                    <div class="eat-meta">179 Cầu Đất</div>
+                  </a>
+                  <a class="eat-card" href="banh-da-cua-ly-tieu-long.html">
+                    <div class="eat-title">Bánh đa cua Lý Tiểu Long</div>
+                    <div class="eat-meta">124 Lạch Tray</div>
+                  </a>
+                  <a class="eat-card" href="banh-da-cua-dong-quoc-binh.html">
+                    <div class="eat-title">Bánh đa cua Đồng Quốc Bình</div>
+                    <div class="eat-meta">195 Trần Phú</div>
+                  </a>
+                </div>
+                <a class="more" href="banh-da-cua-hai-phong.html">Xem thêm</a>
+              </div>
+
+              <!-- Bánh mì que -->
+              <div class="dish">
+                <h4>Bánh mì que</h4>
+                <div class="dish-grid">
+                  <a class="eat-card" href="banh-mi-ong-cuong.html">
+                    <div class="eat-title">Bánh mì cay Ông Cường</div>
+                    <div class="eat-meta">184 Hàng Kênh</div>
+                  </a>
+                  <a class="eat-card" href="banh-mi-ba-tau.html">
+                    <div class="eat-title">Bánh mì cay Ba Tàu</div>
+                    <div class="eat-meta">57 Lê Lợi</div>
+                  </a>
+                  <a class="eat-card" href="banh-mi-lan-ong.html">
+                    <div class="eat-title">Bánh mì cay Lãn Ông</div>
+                    <div class="eat-meta">181 Lãn Ông</div>
+                  </a>
+                </div>
+                <a class="more" href="banh-mi-que-hai-phong.html">Xem thêm</a>
+              </div>
+
+              <!-- Nem cua bể -->
+              <div class="dish">
+                <h4>Nem cua bể</h4>
+                <div class="dish-grid">
+                  <a class="eat-card" href="nem-cua-be-cat-dai.html">
+                    <div class="eat-title">Nem cua bể Cát Dài</div>
+                    <div class="eat-meta">Khu Cát Dài</div>
+                  </a>
+                  <a class="eat-card" href="nem-cua-be-cau-dat.html">
+                    <div class="eat-title">Nem cua bể Cầu Đất</div>
+                    <div class="eat-meta">Phố Cầu Đất</div>
+                  </a>
+                  <a class="eat-card" href="nem-cua-be-cho-sat.html">
+                    <div class="eat-title">Nem cua bể chợ Sắt</div>
+                    <div class="eat-meta">Khu chợ Sắt</div>
+                  </a>
+                </div>
+                <a class="more" href="nem-cua-be-hai-phong.html">Xem thêm</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="city-text">
+            <h4>1. Nguồn gốc và bối cảnh lịch sử</h4>
+            <ul>
+              <li><strong>Vị trí địa lý & tài nguyên biển:</strong> Thành phố ven biển với hệ thống cảng lớn, dồi dào hải sản tươi ngon — nền tảng hình thành bản sắc ẩm thực đậm vị biển.</li>
+              <li><strong>Lịch sử giao thương & ảnh hưởng văn hoá:</strong> Từ thời Pháp thuộc tới giai đoạn công nghiệp, Hải Phòng là trung tâm thương mại quan trọng, tiếp nhận ảnh hưởng ẩm thực đa vùng (Quảng Ninh, Thái Bình, Hoa, Pháp).</li>
+              <li><strong>Cộng đồng đa dạng:</strong> Sự giao thoa của nhiều cộng đồng tạo nên phong vị vừa dân dã vừa phóng khoáng.</li>
+            </ul>
+
+            <h4>2. Đặc trưng nổi bật & giá trị nghệ thuật</h4>
+            <ul>
+              <li><strong>Vị đậm đà, thẳng thắn:</strong> Nhiều hải sản, vị cay – nồng – mặn hài hoà.</li>
+              <li><strong>Nguyên liệu tươi:</strong> Cua, tôm, bề bề, sò huyết… kết hợp rau xanh, gia vị địa phương.</li>
+              <li><strong>Chế biến khéo:</strong> Giữ vị tự nhiên, tạo nên món đặc sắc như bánh đa cua, nem cua bể, bánh mì cay.</li>
+            </ul>
+
+            <h4>3. Món tiêu biểu</h4>
+            <ul>
+              <li><strong>Bánh đa cua:</strong> Sợi đỏ dai, nước dùng cua ngọt thanh, thêm chả lá lốt, rau muống, rau rút.</li>
+              <li><strong>Bánh mì que cay:</strong> Ổ nhỏ, pa-tê béo ngậy, tương ớt cay đặc trưng.</li>
+              <li><strong>Nem cua bể:</strong> Nhân đầy đặn, chiên vàng giòn, ăn kèm bún – rau sống.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="grid">
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Ăn Ngon 3 Miền</strong>
+          <p class="section-desc">Nền tảng review quán ăn khắp Việt Nam. Chia sẻ bởi cộng đồng sành ăn.</p>
+        </div>
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Liên kết</strong>
+          <p class="section-desc"><a href="#">Điều khoản</a> • <a href="#">Bảo mật</a> • <a href="contactus.html">Liên hệ</a></p>
+        </div>
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Cập nhật</strong>
+          <p class="section-desc">Theo dõi chúng tôi để nhận gợi ý quán ngon mỗi tuần.</p>
+        </div>
+      </div>
+      <p style="margin-top:12px;color:var(--muted)">© <span id="year"></span> AnNgon3Mien. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
