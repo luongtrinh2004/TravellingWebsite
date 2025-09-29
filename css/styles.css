@@ -294,47 +294,39 @@ nav.primary {
   display: block;
 }
 
-/* ========= Scroll Scene ========= */
-.scene {
-  position: relative;
-  isolation: isolate;
-  min-height: 120vh;
-}
-.scene-bg {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  width: 100vw;
+/* ===== Scene (BG ảnh giữ tỉ lệ) ===== */
+.scene { position: relative; padding: 0; overflow: hidden; }
+
+/* Ảnh nền: full ngang, cao auto theo tỉ lệ */
+.scene-bg { position: relative; z-index: 0; }
+.scene-bg img { width: 100%; height: auto; display: block; }
+
+
+/* Nội dung đè lên ảnh */
+.scene-content {
+  position: absolute;
   left: 50%;
-  margin-left: -50vw;
-  background-image: url('../images/Home/BG3.png');
-  background-size: cover;
-  background-position: center;
-  transform: translateZ(0) scale(1.02);
-  filter: brightness(.92) saturate(1.05);
-  z-index: -1;
+  top: 50%;                 /* giữa theo chiều dọc */
+  transform: translate(-50%, -50%);  /* căn giữa cả ngang lẫn dọc */
+  width: var(--container);
+  z-index: 1;
+  color: var(--text);
+  text-align: center;       /* tuỳ chọn: căn giữa chữ */
 }
-.panels {
-  padding: 10vh 0;
-  display: grid;
-  gap: 28px;
+
+
+/* Khi màn hình hẹp, để nội dung chạy flow bình thường (không absolute) */
+@media (max-width: 768px) {
+  .scene-content {
+    position: static;
+    transform: none;
+    width: auto;
+    padding: 32px 0;
+    text-align: left;  /* hoặc center nếu muốn */
+  }
 }
-.panel {
-  background: var(--glass);
-  border: 1px solid var(--glass-bd);
-  border-radius: 18px;
-  padding: 22px;
-  backdrop-filter: blur(8px);
-  box-shadow: var(--shadow);
-  transform: translateY(24px);
-  opacity: 0;
-  will-change: transform, opacity;
-}
-.panel.revealed {
-  transform: translateY(0);
-  opacity: 1;
-  transition: .6s ease;
-}
+
+
 
 /* ========= Sections ========= */
 section {

@@ -52,10 +52,11 @@
 
     /* Cột trái: stack ảnh + danh sách món */
     .city-left {
-        
       display: grid;
-      gap: 16px; /* đảm bảo khối dưới có cùng bề ngang với ảnh vì cùng cột */
+      gap: 16px;
     }
+    /* Đảm bảo ảnh và danh sách món ngang bằng nhau */
+    .city-left > * { width: 100%; }
 
     /* Ảnh thành phố (card) */
     .city-photo {
@@ -64,14 +65,13 @@
       background: #000;
       border: none;
       box-shadow: var(--shadow);
+      aspect-ratio: 4/5;              /* card ảnh cố định tỉ lệ */
     }
-    
     .city-photo img {
       width: 100%;
       height: 100%;
       display: block;
       object-fit: cover;
-      aspect-ratio: 4/5;
       transform: scale(1.02);
       transition: transform .35s ease, filter .35s ease;
       filter: saturate(1.02) contrast(1.02);
@@ -202,9 +202,10 @@
         <div class="city-grid">
           <!-- Trái: Ảnh + món -->
           <div class="city-left">
-            <figure class="city-photo" aria-label="Ảnh Hà Nội">
+            <!-- Đã đổi FIGURE -> DIV -->
+            <div class="city-photo" aria-label="Ảnh Hà Nội">
               <img src="images/categories/1.jpg" alt="Hà Nội — phố cổ, hồ Gươm, mùa thu vàng">
-            </figure>
+            </div>
 
             <div class="city-dishes">
               <!-- Phở bò -->
@@ -314,9 +315,10 @@
 
         <div class="city-grid">
           <div class="city-left">
-            <figure class="city-photo" aria-label="Ảnh Hải Phòng">
+            <!-- Đã đổi FIGURE -> DIV -->
+            <div class="city-photo" aria-label="Ảnh Hải Phòng">
               <img src="images/categories/10.jpg" alt="Hải Phòng — thành phố cảng, cầu Bính, nhà Pháp cổ">
-            </figure>
+            </div>
 
             <div class="city-dishes">
               <!-- Bánh đa cua -->

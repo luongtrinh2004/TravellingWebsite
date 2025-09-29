@@ -47,10 +47,12 @@
       position:relative; left:50%; margin-left:-50vw; width:100vw;
       overflow:hidden; border-radius:0 0 var(--radius) var(--radius); box-shadow:var(--shadow);
     }
-    .hero-bleed img{
-      display:block; width:100%; height:clamp(220px,40vw,420px);
-      object-fit:cover; object-position:center center;
-    }
+   .hero-bleed img {
+  display: block;
+  width: 100%;   /* full chiều ngang */
+  height: auto;  /* giữ nguyên tỉ lệ gốc */
+  object-fit: contain; /* không cắt ảnh, chỉ cần fit ngang */
+}
 
     /* ===== Layout ===== */
     .wrap{width:var(--container); margin:0 auto; padding:28px 16px}

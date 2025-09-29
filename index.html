@@ -66,50 +66,37 @@
     </div>
   </section>
 
-  <!-- Scroll scene -->
-  <section class="scene" aria-label="Điểm nổi bật">
-    <div class="scene-bg"></div>
-    <div class="container panels">
-      <article class="panel">
-        <h3 style="margin:0 0 6px; font-family:'Noto Serif Display',serif">2000+ quán được review</h3>
-        <p class="section-desc" style="margin:0">Từ hàng quen đến quán must-try – luôn kèm giá & tọa độ.</p>
-      </article>
-      <article class="panel">
-        <h3 style="margin:0 0 6px; font-family:'Noto Serif Display',serif">Bộ lọc thông minh</h3>
-        <p class="section-desc" style="margin:0">Lọc theo món, range giá, địa điểm – tìm nhanh trong 5 giây.</p>
-      </article>
-      <article class="panel">
-        <h3 style="margin:0 0 6px; font-family:'Noto Serif Display',serif">Ảnh thật, nhận xét thực</h3>
-        <p class="section-desc" style="margin:0">Ưu tiên nội dung từ cộng đồng – trải nghiệm chân thực.</p>
-      </article>
+<!-- Chuyên mục nổi bật (BG5) -->
+<section class="scene" aria-labelledby="cateTitle" id="category">
+  <div class="scene-bg">
+    <img src="images/Home/BG5.png" alt="" />
+  </div>
+
+  <!-- Nội dung overlay -->
+  <div class="container scene-content">
+    <div class="section-head">
+      <h2 id="cateTitle" class="section-title">Chuyên mục nổi bật</h2>
+      <p class="section-desc">Khám phá theo vùng miền</p>
     </div>
-  </section>
+    <div class="grid">
+      <a class="cat-card" href="bac.html" aria-label="Quán ăn miền Bắc">
+        <img src="images/categories/mon-bac.png" alt="Ẩm thực miền Bắc: phở, bún chả, bún thang..." loading="lazy" />
+        <span class="cat-badge">Quán ăn Bắc</span>
+      </a>
+      <a class="cat-card" href="trung.html" aria-label="Quán ăn miền Trung">
+        <img src="images/categories/mon-trung.png" alt="Ẩm thực miền Trung: bún bò, mì Quảng, bánh bèo..." loading="lazy" />
+        <span class="cat-badge">Quán ăn Trung</span>
+      </a>
+      <a class="cat-card" href="nam.html" aria-label="Quán ăn miền Nam">
+        <img src="images/categories/mon-nam.png" alt="Ẩm thực miền Nam: cơm tấm, hủ tiếu, bún mắm..." loading="lazy" />
+        <span class="cat-badge">Quán ăn Nam</span>
+      </a>
+    </div>
+  </div>
+</section>
+
 
   <main id="main">
-    <!-- Chuyên mục -->
-    <section aria-labelledby="cateTitle" id="category">
-      <div class="container">
-        <div class="section-head">
-          <h2 id="cateTitle" class="section-title">Chuyên mục nổi bật</h2>
-          <p class="section-desc">Khám phá theo vùng miền</p>
-        </div>
-        <div class="grid">
-          <a class="cat-card" href="bac.html" aria-label="Quán ăn miền Bắc">
-            <img src="images/categories/mon-bac.png" alt="Ẩm thực miền Bắc: phở, bún chả, bún thang..." loading="lazy" />
-            <span class="cat-badge">Quán ăn Bắc</span>
-          </a>
-          <a class="cat-card" href="trung.html" aria-label="Quán ăn miền Trung">
-            <img src="images/categories/mon-trung.png" alt="Ẩm thực miền Trung: bún bò, mì Quảng, bánh bèo..." loading="lazy" />
-            <span class="cat-badge">Quán ăn Trung</span>
-          </a>
-          <a class="cat-card" href="nam.html" aria-label="Quán ăn miền Nam">
-            <img src="images/categories/mon-nam.png" alt="Ẩm thực miền Nam: cơm tấm, hủ tiếu, bún mắm..." loading="lazy" />
-            <span class="cat-badge">Quán ăn Nam</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
     <!-- Top quán ăn (mỗi quán có bình luận + bản đồ) -->
     <section aria-labelledby="topTitle" id="top">
       <div class="container">
@@ -136,7 +123,6 @@
             <div class="card-actions">
               <a class="btn ghost" target="_blank" rel="noopener" href="https://www.google.com/maps?q=49%20B%C3%A1t%20%C4%90%C3%A0n%2C%20Ho%C3%A0n%20Ki%E1%BA%BFm%2C%20H%C3%A0%20N%E1%BB%99i">Xem đường đi</a>
               <a class="btn primary" href="#">Đọc review</a>
-
             </div>
           </article>
 
