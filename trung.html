@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ẩm thực miền Trung — Đà Nẵng & Huế</title>
+  <link rel="icon" type="image/png" href="images/mi-quang.png?v=1" />
+  <meta name="description" content="Khám phá ẩm thực miền Trung: Đà Nẵng và Huế. Ảnh, món ăn gợi ý, bối cảnh lịch sử." />
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Noto+Serif+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Kaushan+Script&display=swap" rel="stylesheet">
+  <!-- Base site CSS -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* ====== Trang thành phố: phong cách review (giống y trang Bắc) ====== */
+    .city {
+      background: var(--surface);
+      border-radius: 22px;
+      padding: clamp(18px, 3vw, 28px);
+      margin: 0 0 40px;
+      box-shadow: 0 14px 34px rgba(0,0,0,.08);
+      border: none;
+    }
+    .city-head { text-align: center; padding: 2px 6px 14px; border: none; background: transparent; }
+    .city-title {
+      margin: 0;
+      font-family: "Noto Serif Display", serif;
+      font-weight: 800;
+      letter-spacing: .3px;
+      font-size: clamp(1.8rem, 1.2rem + 2.2vw, 2.6rem);
+      color: var(--gold);
+      text-shadow: 0 2px 10px rgba(0,0,0,.06);
+    }
+    .city-grid {
+      display: grid;
+      grid-template-columns: minmax(320px, 400px) 1fr;
+      gap: clamp(18px, 3vw, 32px);
+      align-items: start;
+    }
+    @media (max-width: 980px) { .city-grid { grid-template-columns: 1fr; } }
+
+    .city-left { display: grid; gap: 16px; }
+    .city-left > * { width: 100%; }
+
+    .city-photo {
+      overflow: hidden;
+      border-radius: 16px;
+      background: #000;
+      border: none;
+      box-shadow: var(--shadow);
+      aspect-ratio: 4/5;
+    }
+    .city-photo img {
+      width: 100%; height: 100%; display: block; object-fit: cover;
+      transform: scale(1.02);
+      transition: transform .35s ease, filter .35s ease;
+      filter: saturate(1.02) contrast(1.02);
+    }
+    .city-photo:hover img { transform: scale(1.06); filter: saturate(1.08) contrast(1.06); }
+
+    .city-dishes {
+      padding: 16px;
+      border-radius: 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+    .dish { margin: 0 0 18px; }
+    .dish:last-child { margin-bottom: 6px; }
+    .dish h4 {
+      margin: 0 0 10px;
+      font-family: "Noto Serif Display", serif;
+      font-size: 1.08rem;
+      letter-spacing: .2px;
+    }
+    .dish-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    @media (max-width: 560px) { .dish-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 380px) { .dish-grid { grid-template-columns: 1fr; } }
+
+    .eat-card {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 12px 10px;
+      text-decoration: none;
+      box-shadow: 0 6px 14px rgba(0,0,0,.06);
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      height: 100%;
+    }
+    .eat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(0,0,0,.12);
+      border-color: color-mix(in oklab, var(--primary), var(--border) 60%);
+    }
+    .eat-title {
+      font-weight: 800;
+      font-family: "Noto Serif Display", serif;
+      letter-spacing: .2px;
+      margin: 0 0 6px;
+      line-height: 1.25;
+    }
+    .eat-meta { color: var(--muted); font-size: .98rem; line-height: 1.45; }
+
+    .more { display: inline-flex; align-items: center; gap: 6px; font-size: .96rem; color: var(--primary); font-weight: 700; text-decoration: none; }
+    .more::after { content: "➜"; transform: translateY(1px); }
+
+    .city-text { padding: 0; max-width: 760px; line-height: 1.8; }
+    .city-text > p { margin: 0 0 10px; }
+    .city-text h3, .city-text h4 { font-family: "Noto Serif Display", serif; letter-spacing: .2px; margin: 14px 0 8px; }
+    .city-text h3 { font-size: clamp(1.3rem, 1rem + 1vw, 1.6rem); color: var(--text); }
+    .city-text h4 { font-size: 1.14rem; color: var(--primary); }
+
+    .city::before {
+      content: ""; display: block; height: 6px; width: 88px; margin: 0 auto 18px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--gold), #d6b375, var(--gold));
+      opacity: .9;
+    }
+  </style>
+</head>
+<body>
+  <a class="visually-hidden" href="#main">Bỏ qua nội dung</a>
+
+  <!-- Header chung của site -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <div class="site-title">ẨM THỰC MIỀN TRUNG</div>
+      <nav class="primary" aria-label="Chính">
+        <a class="nav-link" href="index.html">Trang chủ</a>
+        <a class="nav-link" href="congdong.html">Cộng đồng</a>
+        <a class="nav-link" href="contactus.html">Về chúng tôi</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="container" style="padding:28px 0">
+
+      <!-- ===== ĐÀ NẴNG ===== -->
+      <article class="city" id="da-nang">
+        <header class="city-head">
+          <h2 class="city-title">Đà Nẵng</h2>
+        </header>
+
+        <div class="city-grid">
+          <!-- Trái: Ảnh + món -->
+          <div class="city-left">
+            <div class="city-photo" aria-label="Ảnh ẩm thực Đà Nẵng">
+              <!-- Thay ảnh thật của bạn -->
+              <img src="images/categories/5.jpg" alt="Đà Nẵng — đặc sản miền Trung, mì Quảng, bún mắm, bánh tráng cuốn thịt heo">
+            </div>
+
+            <div class="city-dishes">
+              <!-- Mì Quảng -->
+              <div class="dish">
+                <h4>Mì Quảng</h4>
+                <div class="dish-grid">
+                  <a class="eat-card" href="shop/mi-quang-ba-mua.html"><div class="eat-title">Mì Quảng Bà Mua</div><div class="eat-meta">19 Trần Bình Trọng</div></a>
+                  <a class="eat-card" href="shop/mi-quang-1a.html"><div class="eat-title">Mì Quảng 1A</div><div class="eat-meta">1A Hải Phòng</div></a>
+                  <a class="eat-card" href="shop/mi-quang-thanh.html"><div class="eat-title">Mì Quảng Thanh</div><div class="eat-meta">26 Thái Phiên</div></a>
+                </div>
+                <a class="more" href="mi-quang-da-nang.html">Xem thêm</a>
+              </div>
+
+              <!-- Bún mắm nêm -->
+              <div class="dish">
+                <h4>Bún mắm nêm</h4>
+                <div class="dish-grid">
+                  <a class="eat-card" href="shop/bun-mam-nem-ba-van.html"><div class="eat-title">Bún mắm nêm Bà Vân</div><div class="eat-meta">23/14 Trần Kế Xương</div></a>
+                  <a class="eat-card" href="shop/bun-mam-nem-ba-thuyen.html"><div class="eat-title">Bún mắm nêm Bà Thuyên</div><div class="eat-meta">K77/4 Lê Độ</div></a>
+                  <a class="eat-card" href="shop/bun-mam-nem-tran-ke-xuong.html"><div class="eat-title">Bún mắm Trần Kế Xương</div><div class="eat-meta">Trần Kế Xương</div></a>
+                </div>
+                <a class="more" href="bun-mam-nem-da-nang.html">Xem thêm</a>
+              </div>
+
+              <!-- Bánh tráng cuốn thịt heo -->
+              <div class="dish">
+                <h4>Bánh tráng cuốn thịt heo</h4>
+                <div class="dish-grid">
+                  <a class="eat-card" href="shop/banh-trang-thit-heo-tran.html"><div class="eat-title">Trần – bánh tráng thịt heo</div><div class="eat-meta">4 Lê Duẩn</div></a>
+                  <a class="eat-card" href="shop/banh-trang-thit-heo-dac-san.html"><div class="eat-title">Đặc sản Trần (chi nhánh)</div><div class="eat-meta">Đà Nẵng</div></a>
+                  <a class="eat-card" href="shop/banh-trang-thit-heo-dong-da.html"><div class="eat-title">Quán Đồng Đa</div><div class="eat-meta">Đống Đa</div></a>
+                </div>
+                <a class="more" href="banh-trang-thit-heo-da-nang.html">Xem thêm</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phải: Bài viết (rút gọn theo ảnh bạn gửi) -->
+          <div class="city-text">
+            <p>Đà Nẵng nằm giữa miền Trung, hội tụ tinh hoa ẩm thực Quảng – Huế, tiếp biến văn hoá giao thương. Ẩm thực đậm đà, mộc mạc, trọng rau sống – mắm – gia vị cay nồng; chú trọng sự hài hoà rau – thịt – nước chấm.</p>
+
+            <h4>1. Đôi nét lịch sử & nguồn gốc</h4>
+            <ul>
+              <li><strong>Giao thoa xứ Quảng:</strong> Ảnh hưởng truyền thống Quảng Nam (mì Quảng, bún mắm nêm), cùng sản vật ven biển phong phú.</li>
+              <li><strong>Thương cảng – giao lưu:</strong> Tiếp nhận kỹ thuật, gia vị từ các vùng và phương Tây trong thời cận – hiện đại.</li>
+              <li><strong>Đề cao nguyên liệu tươi:</strong> Rau sống, các loại mắm, thịt heo luộc, hải sản – kết nối bằng nước chấm “linh hồn” món ăn.</li>
+            </ul>
+
+            <h4>2. Đặc trưng & thẩm mỹ</h4>
+            <ul>
+              <li><strong>Vị đậm nhưng thanh:</strong> Đậm đà gia vị, cay nồng vừa phải; cân bằng bằng rau sống, đồ chua.</li>
+              <li><strong>Trình bày giản dị:</strong> Bày biện mộc mạc, nhấn màu rau – ớt – đậu phộng rang.</li>
+            </ul>
+
+            <h4>3. Món tiêu biểu</h4>
+            <ul>
+              <li><strong>Mì Quảng:</strong> Sợi to dẹt, nước lèo sánh nhẹ, nhiều rau sống.</li>
+              <li><strong>Bánh tráng cuốn thịt heo:</strong> Thịt heo hai đầu da, bánh tráng phơi sương, mắm nêm dậy mùi.</li>
+              <li><strong>Bún mắm nêm:</strong> Bún, thịt quay/luộc, mít non, đậu phộng – mắm nêm là điểm nhấn.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===== HUẾ ===== -->
+      <article class="city" id="hue">
+        <header class="city-head">
+          <h2 class="city-title">Huế</h2>
+        </header>
+
+        <div class="city-grid">
+          <div class="city-left">
+            <div class="city-photo" aria-label="Ảnh ẩm thực Huế">
+              <!-- Thay ảnh thật của bạn -->
+              <img src="images/categories/7.jpg" alt="Huế — bún bò Huế, bánh bèo - nậm - lọc, cơm hến">
+            </div>
+
+            <div class="city-dishes">
+              <!-- Bún bò Huế -->
+              <div class="dish">
+                <h4>Bún bò Huế</h4>
+                <div class="dish-grid">
+                  <a class="eat-card" href="shop/bun-bo-hue-me-keo.html"><div class="eat-title">Bún bò Mệ Kéo</div><div class="eat-meta">20 Bà Triệu</div></a>
+                  <a class="eat-card" href="shop/bun-bo-hue-ong-tai.html"><div class="eat-title">Bún bò Ông Tài</div><div class="eat-meta">Nguyễn Du</div></a>
+                  <a class="eat-card" href="shop/bun-bo-hue-dong-ba.html"><div class="eat-title">Bún bò chợ Đông Ba</div><div class="eat-meta">Khu Đông Ba</div></a>
+                </div>
+                <a class="more" href="bun-bo-hue.html">Xem thêm</a>
+              </div>
+
+              <!-- Bánh bèo - nậm - lọc -->
+              <div class="dish">
+                <h4>Bánh bèo – nậm – lọc</h4>
+                <div class="dish-grid">
+                  <a class="eat-card" href="shop/banh-beo-nam-loc-hang-me.html"><div class="eat-title">Quán Hàng Me</div><div class="eat-meta">Ẩm thực bánh Huế</div></a>
+                  <a class="eat-card" href="shop/banh-beo-me-le.html"><div class="eat-title">Bánh bèo Mệ Lé</div><div class="eat-meta">Huế</div></a>
+                  <a class="eat-card" href="shop/banh-loc-me-da.html"><div class="eat-title">Bánh lọc Mệ Đá</div><div class="eat-meta">Kim Long</div></a>
+                </div>
+                <a class="more" href="banh-beo-nam-loc-hue.html">Xem thêm</a>
+              </div>
+
+              <!-- Cơm hến -->
+              <div class="dish">
+                <h4>Cơm hến</h4>
+                <div class="dish-grid">
+                  <a class="eat-card" href="shop/com-hen-anh-dao.html"><div class="eat-title">Cơm hến Anh Đào</div><div class="eat-meta">Hàn Mặc Tử</div></a>
+                  <a class="eat-card" href="shop/com-hen-vi-da.html"><div class="eat-title">Cơm hến Vĩ Dạ</div><div class="eat-meta">Vĩ Dạ – Huế</div></a>
+                  <a class="eat-card" href="shop/com-hen-mac-dinh-chi.html"><div class="eat-title">Cơm hến Mạc Đĩnh Chi</div><div class="eat-meta">Mạc Đĩnh Chi</div></a>
+                </div>
+                <a class="more" href="com-hen-hue.html">Xem thêm</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="city-text">
+            <p>Huế – kinh đô triều Nguyễn – hình thành phong cách ẩm thực cung đình và dân gian tinh tế. Chú trọng màu sắc, kích cỡ nhỏ nhắn, trình bày đẹp mắt; vị đậm đà nhưng thanh tao.</p>
+
+            <h4>1. Nguồn gốc & bối cảnh</h4>
+            <ul>
+              <li><strong>Di sản kinh đô:</strong> Nghệ thuật ẩm thực cung đình tinh xảo, ảnh hưởng sâu vào món dân gian.</li>
+              <li><strong>Sản vật sông Hương – phá Tam Giang:</strong> Rau, cá, tôm – nguyên liệu tươi tạo vị ngọt tự nhiên.</li>
+              <li><strong>Phong vị cay – mặn – thơm:</strong> Dùng nhiều mắm ruốc, ớt, sả, tiêu – nhưng cân bằng khéo léo.</li>
+            </ul>
+
+            <h4>2. Đặc trưng thẩm mỹ (từ ảnh tư liệu bạn gửi)</h4>
+            <ul>
+              <li><strong>Chú trọng màu sắc:</strong> Mâm cơm thường đủ 5 sắc: đỏ (ớt), vàng (nghệ), xanh (rau), trắng (cơm/bột), nâu (thịt kho).</li>
+              <li><strong>Khẩu phần nhỏ, đa dạng:</strong> Một mâm có thể đến cả chục món: gà hấp lá chanh, cá kho riềng, canh măng, nem lụi nướng, chè khoai tía…</li>
+              <li><strong>Trang trí đẹp mắt:</strong> Bánh bèo rắc tôm chấy vàng ươm, hành phi giòn; chấm nước mắm pha hài hòa.</li>
+            </ul>
+
+            <h4>3. Món tiêu biểu</h4>
+            <ul>
+              <li><strong>Bún bò Huế:</strong> Nước dùng đậm, sả – mắm ruốc, ớt sa tế; sợi to, chả cua, giò heo.</li>
+              <li><strong>Bánh bèo – nậm – lọc:</strong> Tinh tế, gọn vừa miệng, nhấn vào màu sắc & độ dẻo trong.</li>
+              <li><strong>Cơm hến:</strong> Cơm nguội trộn hến xào, tóp mỡ, đậu phộng, rau thơm – vị cay mặn quyện mắm ruốc.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="grid">
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Ăn Ngon 3 Miền</strong>
+          <p class="section-desc">Nền tảng review quán ăn khắp Việt Nam. Chia sẻ bởi cộng đồng sành ăn.</p>
+        </div>
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Liên kết</strong>
+          <p class="section-desc"><a href="#">Điều khoản</a> • <a href="#">Bảo mật</a> • <a href="contactus.html">Liên hệ</a></p>
+        </div>
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Cập nhật</strong>
+          <p class="section-desc">Theo dõi chúng tôi để nhận gợi ý quán ngon mỗi tuần.</p>
+        </div>
+      </div>
+      <p style="margin-top:12px;color:var(--muted)">© <span id="year"></span> AnNgon3Mien. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
