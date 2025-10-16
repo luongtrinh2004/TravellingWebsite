@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lẩu mắm Cần Thơ — Trần Ngọc Quế, Ninh Kiều, Cần Thơ</title>
+
+  <!-- Fonts đồng bộ -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;500&family=Noto+Serif+Display:wght@700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#faf9f7; --text:#141518; --muted:#6e7380;
+      --surface:#fff; --surface-2:#f6f6f7; --border:#e6e6e8;
+      --radius:16px; --shadow:0 12px 28px rgba(0,0,0,.08);
+      --container:min(1200px, 92vw);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--text);
+      font:500 clamp(1.06rem,.96rem + .6vw,1.22rem)/1.8 "Lora", ui-serif, Georgia, serif;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    a{color:inherit; text-decoration:none}
+    .container{width:var(--container); margin-inline:auto}
+    .visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;clip-path:inset(50%)}
+
+    /* ===== Header ===== */
+    .site-header{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--border);
+      backdrop-filter:saturate(180%) blur(10px); background:rgba(255,255,255,.86)}
+    .header-inner{padding:12px 0 6px}
+    .site-title{
+      text-align:center; margin:6px 0 8px; font-family:"Noto Serif Display", serif;
+      font-weight:800; font-size:clamp(2.2rem,1.6rem + 3vw,3.2rem);
+      background:linear-gradient(90deg,#c8a96a,#d6b375,#c8a96a);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    nav.primary{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;padding-bottom:10px}
+    .nav-link{padding:8px 12px;border-radius:10px;color:#6e7380;font:600 1rem/1 "Inter"}
+    .nav-link:hover{background:#f6f6f7;color:#141518}
+
+    /* ===== Hero ===== */
+    .hero-bleed{position:relative;left:50%;margin-left:-50vw;width:100vw;overflow:hidden;
+      border-radius:0 0 16px 16px;box-shadow:var(--shadow)}
+    .hero-bleed img{display:block;width:100%;height:auto;object-fit:contain}
+
+    /* ===== Layout ===== */
+    .wrap{width:var(--container);margin:0 auto;padding:28px 16px}
+    .row{display:grid;grid-template-columns:minmax(480px,70%) minmax(280px,30%);gap:24px;align-items:start;margin:24px 0}
+    @media (max-width:980px){.row{grid-template-columns:1fr}}
+    .card{background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 18px rgba(0,0,0,.06)}
+    .pad{padding:18px}
+
+    /* ===== Nội dung ===== */
+    .eyebrow{font:700 1rem/1 "Inter";color:#1a5cff;letter-spacing:.2px;margin:0 0 6px}
+    .place-title{font-family:"Noto Serif Display",serif;font-weight:800;margin:0 0 8px;color:#b04a2f;
+      font-size:clamp(1.8rem,1.2rem + 1.2vw,2.2rem)}
+    .meta{display:flex;flex-wrap:wrap;gap:14px;margin:4px 0 14px;color:#555;font:600 1rem/1.6 "Inter"}
+    .stars{color:#f6a623}
+    .content p{margin:0 0 10px}
+
+    /* ===== Map ===== */
+    .map-box{height:320px}
+    .map-box iframe{border:0;width:100%;height:100%;display:block;border-radius:12px}
+
+    /* ===== Gallery ===== */
+    .gallery-wrap{position:relative}
+    .gallery{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 6px;scroll-behavior:smooth}
+    .gallery::-webkit-scrollbar{height:8px}
+    .gallery::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:99px}
+    .g-item{flex:0 0 78%;max-width:78%;scroll-snap-align:start;border-radius:12px;overflow:hidden;box-shadow:0 8px 16px rgba(0,0,0,.08)}
+    .g-item img{display:block;width:100%;height:100%;object-fit:cover}
+    @media (min-width:600px){.g-item{flex-basis:48%;max-width:48%}}
+    @media (min-width:900px){.g-item{flex-basis:100%;max-width:100%}}
+
+    .g-nav{position:absolute;top:50%;transform:translateY(-50%);display:flex;gap:6px;width:100%;justify-content:space-between;pointer-events:none}
+    .g-btn{pointer-events:auto;border:none;border-radius:999px;width:36px;height:36px;background:#fff;
+      box-shadow:0 8px 16px rgba(0,0,0,.18);display:grid;place-items:center;cursor:pointer;font:700 18px/1 "Inter"}
+    .g-btn:active{transform:translateY(-50%) scale(.96)}
+
+    /* ===== Footer ===== */
+    footer{border-top:1px solid var(--border);background:#f6f6f7;padding:32px 0;color:#6e7380}
+    footer .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .section-desc{margin:6px 0 0}
+
+    /* ==== More choices ==== */
+    .more-wrap h3{margin:0 0 12px;color:#333}
+    .more-grid{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:16px;overflow:hidden;transition:max-height .35s ease;
+    }
+    .more-card{display:block}
+    .more-card figure{margin:0 0 10px;border-radius:12px;overflow:hidden}
+    .more-card img{width:100%;height:180px;object-fit:cover;display:block}
+    .more-meta{color:#6e7380;font:600 .95rem/1.4 "Inter"}
+    .more-actions{display:flex;justify-content:center;margin-top:12px}
+    .more-btn{
+      border:1px solid var(--border);background:#fff;border-radius:999px;
+      padding:8px 14px;font:700 .95rem/1 "Inter";cursor:pointer;
+      box-shadow:0 6px 14px rgba(0,0,0,.06)
+    }
+    .more-btn:active{transform:scale(.98)}
+  </style>
+</head>
+<body>
+  <a class="visually-hidden" href="#main">Bỏ qua nội dung</a>
+
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <div class="site-title">TINH HOA HƯƠNG VỊ VIỆT</div>
+      <nav class="primary" aria-label="Chính">
+        <a class="nav-link" href="../index.html">Trang chủ</a>
+        <a class="nav-link" href="../congdong.html">Cộng đồng</a>
+        <a class="nav-link" href="../contactus.html">Về chúng tôi</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO TOP -->
+  <figure class="hero-bleed">
+    <img src="../images/categories/fb lẩu mắm cần thơ.webp" alt="Lẩu mắm Cần Thơ - nồi lẩu mắm miền Tây đậm đà">
+  </figure>
+
+  <main id="main" class="wrap">
+    <section class="row">
+      <article class="card pad content">
+        <div class="eyebrow">Cần Thơ • Lẩu mắm</div>
+        <h1 class="place-title">Lẩu mắm Cần Thơ</h1>
+        <div class="meta">
+          <span><strong>Địa chỉ:</strong> 162/18 mặt tiền đường, Đ. Trần Ngọc Quế, Xuân Khánh, Ninh Kiều, Cần Thơ</span>
+          <span>• <strong>Giờ:</strong> 09:30 – 22:30</span>
+          <span class="stars">★★★★★</span>
+        </div>
+
+        <p><strong>Đặc trưng:</strong> Nước lẩu dùng nền mắm cá linh – cá sặc được nấu trong nhiều giờ cho ra vị mặn mà nhưng thanh, thơm dậy hương sả, lá giang và me. Topping phong phú: cá basa, tôm, mực, kèo nèo, bông súng, bông điên điển (theo mùa), cà tím, khổ qua… tất cả mang đúng tinh thần <em>rau đồng – hải sản tươi</em> của miền Tây.</p>
+        <p><strong>Phong cách ăn:</strong> Quán phục vụ nồi lẩu riêng cho 2–4 người hoặc nồi đại gia đình. Dọn kèm bún tươi, chén mắm ớt nguyên chất để khách tùy chỉnh vị đậm nhạt. Bạn có thể gọi thêm cá kèo kho tộ, cá lóc nướng trui, hoặc dĩa rau đồng tăng cường.</p>
+        <p><strong>Không gian & phục vụ:</strong> Không gian ấm cúng, bàn ghế gỗ chắc chắn, bếp cồn an toàn. Nhân viên nhanh nhẹn, nhiệt tình gợi ý cách nhúng rau để nồi lẩu có vị ngon nhất (đầu tiên là cà tím và cá – sau đó mới tới rau thơm và bông).</p>
+
+        <div class="eyebrow" style="margin-top:18px">Đánh giá của khách</div>
+        <p><em>Tâm Nguyễn (5★):</em> “Quán Lẩu Mắm Cần Thơ 2 thật sự xứng danh đặc sản miền Tây — nước lẩu đậm đà, hải sản và rau đồng tươi ngon, phục vụ nhiệt tình, không khí ấm cúng, ăn một lần là nhớ mãi!”</p>
+        <p><em>Quốc Tám Nguyễn (5★):</em> “Nhà hàng này chung hệ thống với Lẩu Mắm Cần Thơ đường Trần Ngọc Quế. Rất thuận lợi khi đặt ăn cho đoàn lúc đón/tiễn sân bay Trà Nóc. Khẩu vị ổn, hợp cả 3 miền.”</p>
+        <p><em>Võ Huỳnh Châu Trân (5★):</em> “Đồ ăn ngon, vừa miệng với mình, phục vụ dễ thươnggg, xuất sắcc‼️🥰”</p>
+        <p><em>Hue Vu (5★):</em> “Món ăn ngon, chủ và nhân viên nhiệt tình, niềm nở.”</p>
+      </article>
+
+      <aside class="card pad map-box" aria-label="Bản đồ">
+        <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=162%2F18%20Tr%E1%BA%A7n%20Ng%E1%BB%8Dc%20Qu%E1%BA%BF%2C%20Xu%C3%A2n%20Kh%C3%A1nh%2C%20Ninh%20Ki%E1%BB%81u%2C%20C%E1%BA%A7n%20Th%C6%A1&output=embed">
+        </iframe>
+      </aside>
+    </section>
+  </main>
+
+  <!-- HERO SECOND -->
+  <figure class="hero-bleed">
+    <img src="../images/categories/fb lẩu mắm cần thơ4.webp" alt="Mâm rau đồng và hải sản ăn kèm lẩu mắm">
+  </figure>
+
+  <!-- STORY & GALLERY -->
+  <section class="wrap">
+    <div class="row">
+      <article class="card pad content">
+        <div class="eyebrow">Câu chuyện món</div>
+        <h2 class="place-title" style="font-size:clamp(1.4rem,1rem + 1vw,1.9rem); color:#333">
+          Hương vị phù sa trong một nồi lẩu
+        </h2>
+        <p>Lẩu mắm là món ăn “tổng hòa” đất trời miền Tây: vị mặn mòi của mắm cá đồng, vị chua thanh của me – trái giác, sự tươi mát từ hàng chục loại rau mùa. Quán giữ cách nấu truyền thống: lọc mắm kỹ để nước trong, nêm vừa để khách dễ ăn, nhưng vẫn đủ dày vị cho người sành mắm. Khi nồi lẩu sôi lăn tăn, cho cá và cà tím trước để thấm, rồi mới nhúng đến bông súng, bắp chuối, kèo nèo… để giữ độ giòn.</p>
+        <p><strong>Mẹo gọi món:</strong> Đi 2–3 người chọn nồi nhỏ + thêm dĩa rau đặc sản theo mùa; đi gia đình nên gọi nồi lớn thêm tôm/mực để cân vị. Nếu thích vị mắm mạnh, xin thêm chén mắm nguyên; thích nhẹ, vắt thêm tắc.</p>
+      </article>
+
+      <aside class="card pad gallery-wrap">
+        <div class="gallery" id="gallery">
+          <figure class="g-item"><img loading="lazy" src="../images/categories/fb lẩu mắm cần thơ2.webp" alt="Quầy bếp và nồi lẩu mắm đang sôi"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/fb lẩu mắm cần thơ3.webp" alt="Bún tươi, cá đồng, tôm mực ăn kèm"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/fb lẩu mắm cần thơ5.webp" alt="Rau đồng Cần Thơ: bông súng, kèo nèo, bắp chuối"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/fb lẩu mắm cần thơ6.webp" alt="Đĩa hải sản tươi cho nồi lẩu"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/fb lẩu mắm cần thơ7.webp" alt="Không gian ấm cúng, phù hợp gia đình"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/fb lẩu mắm cần thơ8.webp" alt="Nồi lẩu mắm đậm đà chuẩn vị miền Tây"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/fb lẩu mắm cần thơ9.webp" alt="Bàn ăn đầy đủ topping lẩu mắm Cần Thơ"></figure>
+        </div>
+        <div class="g-nav">
+          <button class="g-btn" type="button" aria-label="Ảnh trước" data-dir="-1">←</button>
+          <button class="g-btn" type="button" aria-label="Ảnh tiếp theo" data-dir="1">→</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- LỰA CHỌN KHÁC -->
+  <section class="wrap more-wrap" data-more>
+    <h3 class="place-title" style="font-size:clamp(1.4rem,1rem + 1vw,1.9rem)">Lựa chọn khác</h3>
+
+    <div class="more-grid" data-grid>
+      <a class="card pad more-card" href="com-tam-moc.html">
+        <figure><img src="../images/categories/IMG_3416.PNG" alt="Cơm Tấm Mộc"></figure>
+        <div style="font:700 1.05rem/1.3 'Inter'">Cơm Tấm Mộc</div>
+        <div class="more-meta">Phú Nhuận, TP.HCM</div>
+      </a>
+
+      <a class="card pad more-card" href="com-tam-sa-bi-chuong.html">
+        <figure><img src="../images/categories/IMG_3418.PNG" alt="Cơm Tấm Sà Bì Chưởng"></figure>
+        <div style="font:700 1.05rem/1.3 'Inter'">Cơm Tấm Sà Bì Chưởng</div>
+        <div class="more-meta">Quận 1, TP.HCM</div>
+      </a>
+    </div>
+
+    <div class="more-actions"><button class="more-btn" data-toggle>Xem thêm</button></div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="grid">
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Ăn Ngon 3 Miền</strong>
+          <p class="section-desc">Nền tảng review quán ăn khắp Việt Nam. Chia sẻ bởi cộng đồng sành ăn.</p>
+        </div>
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Liên kết</strong>
+          <p class="section-desc"><a href="#">Điều khoản</a> • <a href="#">Bảo mật</a> • <a href="../contactus.html">Liên hệ</a></p>
+        </div>
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Cập nhật</strong>
+          <p class="section-desc">Theo dõi chúng tôi để nhận gợi ý quán ngon mỗi tuần.</p>
+        </div>
+      </div>
+      <p style="margin-top:12px;color:#6e7380">© <span id="year"></span> AnNgon3Mien. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module" defer src="../js/gallery.js"></script>
+  <script>
+    // năm hiện tại
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // điều hướng gallery
+    const wrap = document.getElementById('gallery');
+    if(wrap){
+      document.querySelectorAll('.g-btn').forEach(b=>{
+        b.addEventListener('click',()=>{
+          wrap.scrollBy({ left:(b.dataset.dir==='1'?1:-1)*wrap.clientWidth*.9, behavior:'smooth' });
+        });
+      });
+    }
+
+    // toggle "Xem thêm"
+    const grid=document.querySelector('[data-grid]');const btn=document.querySelector('[data-toggle]');
+    if(grid&&btn){
+      const collapsed=grid.scrollHeight/2;grid.style.maxHeight=collapsed+'px';
+      btn.addEventListener('click',()=>{
+        const c=grid.style.maxHeight!=='none';
+        grid.style.maxHeight=c?'none':(collapsed+'px');
+        btn.textContent=c?'Thu gọn':'Xem thêm';
+      });
+    }
+  </script>
+</body>
+</html>
+
