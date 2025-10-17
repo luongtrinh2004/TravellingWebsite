@@ -58,6 +58,7 @@ const q    = document.getElementById('q');
 const btn  = document.getElementById('send');
 
 const history = []; // [{role, parts:[{text}]}]
+let convoState = { chosenDish: null }; // { chosenDish: 'buncha' | 'pho' | 'chaca' }
 const CLIENT_CONTEXT = `Ngữ cảnh người dùng: ở Hà Nội, muốn gợi ý quán theo món/khu/giờ/ngân sách. Trả lời ngắn, mỗi quán có địa chỉ, giờ, giá, điểm nổi bật.`;
 
 function addBubble(html, who='bot'){
@@ -139,7 +140,7 @@ const CHA_CA_PLACES = [
 
 function dishChooserUI(){
   const html = `
-    Hà Nội ăn gì cho “đúng điệu”? Mình đề xuất <span class="badge">3 món trứ danh</span>:
+    Hà Nội ăn gì cho đúng điệu? Mình đề xuất <span class="badge">3 món trứ danh</span>:
     <div class="mini-grid" style="margin-top:10px">
       ${dishes.map(d=>`
         <div class="mini">
@@ -157,9 +158,15 @@ function dishChooserUI(){
   el.querySelectorAll('[data-choose]').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const key = btn.getAttribute('data-choose');
+      convoState.chosenDish = key;
+      // show a confirmation and then show places (or defer to server for pho)
+      addBubble(`Bạn đã chọn: ${key==='buncha'?'Bún chả':key==='chaca'?'Chả cá':'Phở'}`, 'bot');
       if(key==='buncha') showPlaces('buncha');
       else if(key==='chaca') showPlaces('chaca');
-      else ask('Mình muốn ăn phở'); // để server tư vấn kỹ hơn
+      else {
+        // For phở, ask for a bit more context before calling the server
+        addBubble('Bạn muốn ăn Phở ở khu vực nào, vào thời gian nào và ngân sách khoảng bao nhiêu?', 'bot');
+      }
     });
   });
 }
@@ -224,15 +231,23 @@ async function ask(msg){
     return;
   }
   if (looksLikeBunCha(userText)) {
+    // If user explicitly mentions bun chả, treat as chosen-dish flow
+    convoState.chosenDish = 'buncha';
     showPlaces('buncha');
     return;
   }
   if (looksLikeChaCa(userText)) {
+    convoState.chosenDish = 'chaca';
     showPlaces('chaca');
     return;
   }
   if (looksLikePho(userText)) {
-    // Không có file phở -> để server tư vấn
+    convoState.chosenDish = 'pho';
+    // If the user only said 'phở' we'll ask a follow-up before calling server
+    if (/^\s*(phở|pho)\s*$/i.test(userText)){
+      addBubble('Bạn muốn ăn Phở ở khu vực nào (ví dụ: Hoàn Kiếm, Ba Đình)?', 'bot');
+      return;
+    }
   }
 
   const typingEl = addBubble('<span class="typing">Đang gõ</span>', 'bot');
@@ -270,10 +285,14 @@ Trả lời ngắn gọn, thân thiện, có bullet hoặc mini-card.`
       replyText = await r.text();
     }
 
-    typingEl.innerHTML = esc(replyText).replace(/\n/g,'<br>');
+  // Sanitize model output: remove ** markers, strip model tags, and replace missing-data message
+  let clean = replyText.replace(/\*\*/g, '');
+  clean = clean.replace(/<span class="small">Model:[^<]*<\/span>/gi, '');
+  clean = clean.replace(/Mình chưa có dữ liệu phù hợp\.?/gi, 'Mình sẵn sàng hỗ trợ!');
+  typingEl.innerHTML = esc(clean).replace(/\n/g,'<br>');
 
     history.push({ role:'user',  parts:[{ text: userText }] });
-    history.push({ role:'model', parts:[{ text: replyText.replace(/<[^>]+>/g,'') }] });
+  history.push({ role:'model', parts:[{ text: replyText.replace(/<[^>]+>/g,'') }] });
 
   } catch(e){
     const last = chat.querySelector('.typing');
