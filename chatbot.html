@@ -27,8 +27,6 @@ button:active{transform:scale(.98)}
 .typing::after{content:"";display:inline-block;width:4px;height:4px;margin-left:6px;border-radius:50%;background:#888;box-shadow:8px 0 0 #888,16px 0 0 #888;animation:blink 1s infinite}
 @keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
 .small{font-size:13px;color:#6e7380}
-
-/* mini cards in message */
 .mini-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:8px}
 .mini{background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px}
 .mini h4{margin:0 0 6px;font-size:15px}
@@ -57,10 +55,10 @@ const chat = document.getElementById('chat');
 const q    = document.getElementById('q');
 const btn  = document.getElementById('send');
 
-const history = []; // [{role, parts:[{text}]}]
-let convoState = { chosenDish: null }; // { chosenDish: 'buncha' | 'pho' | 'chaca' }
+const history = [];
 const CLIENT_CONTEXT = `Ngữ cảnh người dùng: ở Hà Nội, muốn gợi ý quán theo món/khu/giờ/ngân sách. Trả lời ngắn, mỗi quán có địa chỉ, giờ, giá, điểm nổi bật.`;
 
+// ====== helpers ======
 function addBubble(html, who='bot'){
   const row = document.createElement('div');
   row.className = 'row ' + (who === 'user' ? 'user' : 'bot');
@@ -70,14 +68,9 @@ function addBubble(html, who='bot'){
   return row.querySelector('.bubble');
 }
 const esc = s => s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const toKV = (obj)=> Object.fromEntries(Object.entries(obj).filter(([,v])=>v!=null&&v!==''))
+const noAccents = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 
-/* ====== RULE ENGINE ======
- * 1) Nếu người dùng hỏi tổng quát “ăn đồ Hà Nội/ăn gì ở Hà Nội” => gợi ý 3 món: Bún chả, Phở, Chả cá.
- * 2) Nếu chọn/nhắc Bún chả => gợi ý 3 quán (link sang file .html đã có).
- * 3) Nếu chọn/nhắc Chả cá  => gợi ý 3 quán (link sang file .html đã có).
- * 4) Phở: chỉ gợi ý món (chưa có file), để server lo phần chi tiết nếu cần.
- */
+// ====== data ======
 const dishes = [
   { key:'buncha',  label:'Bún chả' },
   { key:'pho',     label:'Phở' },
@@ -85,59 +78,18 @@ const dishes = [
 ];
 
 const BUN_CHA_PLACES = [
-  {
-    name: 'Bún chả Hương Liên (Obama)',
-    area: 'Hai Bà Trưng',
-    price: '60–90k',
-    hours: '10:00–21:00 (tham khảo)',
-    why: 'Nước chấm đậm đà, nem cua bể giòn rụm',
-    href: 'bun-cha-obama.html'
-  },
-  {
-    name: 'Bún chả 74 Hàng Quạt',
-    area: 'Phố cổ Hoàn Kiếm',
-    price: '40–70k',
-    hours: '10:00–15:00 (tham khảo)',
-    why: 'Thịt nướng thơm lửa than, rau sống cực tươi',
-    href: 'bun-cha-hang-quat.html'
-  },
-  {
-    name: 'Bún thịt nướng Bà Hằng Béo',
-    area: 'Ô Chợ Dừa (Đống Đa)',
-    price: '45–70k',
-    hours: '11:00–20:30 (tham khảo)',
-    why: 'Đĩa thịt nướng đầy đặn, vị ngọt hài hoà',
-    href: 'bun-cha-hang-ec.html'
-  }
+  { name:'Bún chả Hương Liên (Obama)', area:'Hai Bà Trưng', price:'60–90k', hours:'10:00–21:00 (tham khảo)', why:'Nước chấm đậm đà, nem cua bể giòn rụm', href:'bun-cha-obama.html' },
+  { name:'Bún chả 74 Hàng Quạt',       area:'Phố cổ Hoàn Kiếm', price:'40–70k', hours:'10:00–15:00 (tham khảo)', why:'Thịt nướng thơm lửa than, rau sống tươi', href:'bun-cha-hang-quat.html' },
+  { name:'Bún thịt nướng Bà Hằng Béo', area:'Ô Chợ Dừa (Đống Đa)', price:'45–70k', hours:'11:00–20:30 (tham khảo)', why:'Thịt nướng đầy đặn, vị hài hoà', href:'bun-cha-hang-ec.html' }
 ];
 
 const CHA_CA_PLACES = [
-  {
-    name: 'Chả cá Thăng Long',
-    area: 'Cửa Đông, Hoàn Kiếm',
-    price: '120–180k/phần',
-    hours: '10:30–21:30 (tham khảo)',
-    why: 'Cá dày thịt, thì là thơm nức, chảo nóng xèo xèo',
-    href: 'cha-ca-thang-long.html'
-  },
-  {
-    name: 'Chả Cá Hàng Sơn',
-    area: 'Tràng Tiền, Hoàn Kiếm',
-    price: '120–170k/phần',
-    hours: '11:00–21:00 (tham khảo)',
-    why: 'Không gian gọn gàng, phục vụ nhanh',
-    href: 'cha-ca-hang-son.html'
-  },
-  {
-    name: 'Chả Cá Phan',
-    area: 'Nguyễn Du, Hai Bà Trưng',
-    price: '100–160k/phần',
-    hours: '11:00–21:00 (tham khảo)',
-    why: 'Cá chắc, mắm tôm pha khéo, bún nóng mềm',
-    href: 'cha-ca-phan.html'
-  }
+  { name:'Chả cá Thăng Long', area:'Cửa Đông, Hoàn Kiếm', price:'120–180k/phần', hours:'10:30–21:30 (tham khảo)', why:'Cá dày thịt, chảo nóng xèo xèo', href:'cha-ca-thang-long.html' },
+  { name:'Chả Cá Hàng Sơn',   area:'Tràng Tiền, Hoàn Kiếm', price:'120–170k/phần', hours:'11:00–21:00 (tham khảo)', why:'Không gian gọn gàng, phục vụ nhanh', href:'cha-ca-hang-son.html' },
+  { name:'Chả Cá Phan',       area:'Nguyễn Du, Hai Bà Trưng', price:'100–160k/phần', hours:'11:00–21:00 (tham khảo)', why:'Mắm tôm pha khéo, bún nóng mềm', href:'cha-ca-phan.html' }
 ];
 
+// ====== UI builders ======
 function dishChooserUI(){
   const html = `
     Hà Nội ăn gì cho đúng điệu? Mình đề xuất <span class="badge">3 món trứ danh</span>:
@@ -145,28 +97,19 @@ function dishChooserUI(){
       ${dishes.map(d=>`
         <div class="mini">
           <h4>${d.label}</h4>
-          <p>${d.key==='buncha'?'Thịt nướng thơm, nước chấm cân bằng.':
-               d.key==='pho'?'Nước dùng trong, ngọt xương, bánh phở mềm.':
-               'Cá chiên chảo nóng, thì là thơm lừng.'}</p>
+          <p>${d.key==='buncha'?'Thịt nướng thơm, nước chấm cân bằng.': d.key==='pho'?'Nước dùng trong, ngọt xương.':'Cá chiên chảo nóng, thì là thơm lừng.'}</p>
           <div class="actions">
             <button class="btn" data-choose="${d.key}">Chọn món này</button>
           </div>
-        </div>
-      `).join('')}
+        </div>`).join('')}
     </div>`;
   const el = addBubble(html, 'bot');
   el.querySelectorAll('[data-choose]').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const key = btn.getAttribute('data-choose');
-      convoState.chosenDish = key;
-      // show a confirmation and then show places (or defer to server for pho)
-      addBubble(`Bạn đã chọn: ${key==='buncha'?'Bún chả':key==='chaca'?'Chả cá':'Phở'}`, 'bot');
       if(key==='buncha') showPlaces('buncha');
       else if(key==='chaca') showPlaces('chaca');
-      else {
-        // For phở, ask for a bit more context before calling the server
-        addBubble('Bạn muốn ăn Phở ở khu vực nào, vào thời gian nào và ngân sách khoảng bao nhiêu?', 'bot');
-      }
+      else addBubble('Bạn muốn ăn Phở ở khu nào và tầm giá bao nhiêu?', 'bot');
     });
   });
 }
@@ -175,7 +118,7 @@ function placeCards(title, places){
   return `
     <div><strong>${title}</strong></div>
     <div class="mini-grid">
-      ${places.map(p => `
+      ${places.map(p=>`
         <div class="mini">
           <h4>${p.name}</h4>
           <p>📍 ${p.area}<br>🕒 ${p.hours}<br>💸 ${p.price}</p>
@@ -184,75 +127,62 @@ function placeCards(title, places){
             <a class="btn" href="${p.href}" target="_blank" rel="noopener">Xem chi tiết</a>
             <button class="btn secondary" data-open="${p.href}">Chỉ đường</button>
           </div>
-        </div>
-      `).join('')}
+        </div>`).join('')}
     </div>
-    <p class="small">💡 Tip: Đi sớm để đỡ xếp hàng, nhớ gọi thêm rau/đồ uống cho tròn vị.</p>
-  `;
+    <p class="small">💡 Tip: đi sớm để đỡ xếp hàng.</p>`;
 }
 
 function showPlaces(type){
-  const isBunCha = type==='buncha';
-  const html = isBunCha
+  const html = type==='buncha'
     ? placeCards('3 quán bún chả ngon nên thử', BUN_CHA_PLACES)
     : placeCards('3 quán chả cá nổi tiếng', CHA_CA_PLACES);
   const el = addBubble(html, 'bot');
   el.querySelectorAll('[data-open]').forEach(b=>{
-    b.addEventListener('click', ()=>{
-      const href = b.getAttribute('data-open');
-      window.open(href, '_blank', 'noopener');
-    });
+    b.addEventListener('click', ()=> window.open(b.getAttribute('data-open'),'_blank','noopener'));
   });
 }
 
-function looksLikeGeneralHaNoiFood(text){
-  const s = text.toLowerCase();
-  return /(ăn|món|đồ)\s*(hà nội)|ăn gì ở hà nội|gợi ý món hà nội|đồ hà nội/i.test(s);
+// ====== intent detection (không dấu + có dấu) ======
+function isGreeting(s){
+  const t = noAccents(s);
+  return /(hi|hello|xin chao|chao|chao ban|ho tro|help|ho tro di)/.test(t);
 }
-function looksLikeBunCha(text){
-  return /(bún\s*chả|bun cha|buncha)/i.test(text);
+function askGeneralHanoiFood(s){
+  const t = noAccents(s);
+  // có "ha noi" + (an|mon|goi y|mon ngon|chua biet an gi)
+  const hasHN = t.includes('ha noi') || t.includes('o ha noi');
+  const wantEat = t.includes('an gi') || t.includes('mon gi') || t.includes('goi y') ||
+                  t.includes('mon ngon') || t.includes('chua biet an gi') ||
+                  (t.includes('muon') && t.includes('an')) || t.includes('an gi o ha noi');
+  return hasHN && wantEat;
 }
-function looksLikeChaCa(text){
-  return /(chả\s*cá|cha ca|chaca)/i.test(text);
+function askBunCha(s){
+  return /bun cha|bún\s*chả/i.test(s) || noAccents(s).includes('buncha');
 }
-function looksLikePho(text){
-  return /\b(phở|pho)\b/i.test(text);
+function askChaCa(s){
+  return /cha ca|chả\s*cá/i.test(s) || noAccents(s).includes('chaca');
+}
+function askPho(s){
+  const t = ' ' + noAccents(s) + ' ';
+  return t.includes(' pho ');
 }
 
+// ====== main ======
 async function ask(msg){
   const userText = msg.trim();
   if(!userText) return;
 
   addBubble(esc(userText).replace(/\n/g,'<br>'), 'user');
 
-  // ✅ RULE SHORT-CIRCUIT: không gọi server nếu khớp rule
-  if (looksLikeGeneralHaNoiFood(userText)) {
-    dishChooserUI();
-    return;
-  }
-  if (looksLikeBunCha(userText)) {
-    // If user explicitly mentions bun chả, treat as chosen-dish flow
-    convoState.chosenDish = 'buncha';
-    showPlaces('buncha');
-    return;
-  }
-  if (looksLikeChaCa(userText)) {
-    convoState.chosenDish = 'chaca';
-    showPlaces('chaca');
-    return;
-  }
-  if (looksLikePho(userText)) {
-    convoState.chosenDish = 'pho';
-    // If the user only said 'phở' we'll ask a follow-up before calling server
-    if (/^\s*(phở|pho)\s*$/i.test(userText)){
-      addBubble('Bạn muốn ăn Phở ở khu vực nào (ví dụ: Hoàn Kiếm, Ba Đình)?', 'bot');
-      return;
-    }
-  }
+  // --- local rules (không gọi server) ---
+  if (isGreeting(userText) || askGeneralHanoiFood(userText)) { dishChooserUI(); return; }
+  if (askBunCha(userText)) { showPlaces('buncha'); return; }
+  if (askChaCa(userText))  { showPlaces('chaca');  return; }
+  if (askPho(userText))    { addBubble('Bạn muốn ăn Phở ở khu nào và tầm giá bao nhiêu?', 'bot'); return; }
 
+  // --- fallback gọi server ---
   const typingEl = addBubble('<span class="typing">Đang gõ</span>', 'bot');
   btn.disabled = true; q.disabled = true;
-
   try{
     if (!history.some(h => h.role==='user' && h.parts?.[0]?.text?.startsWith('Ngữ cảnh người dùng:'))) {
       history.push({ role:'user', parts:[{ text: CLIENT_CONTEXT }] });
@@ -265,44 +195,39 @@ async function ask(msg){
       body: JSON.stringify({
         message: userText,
         history,
-        temperature: 0.7,
-        // 👇 “khóa đạo đức” để model cũng bám logic nếu rule không bắt được
+        temperature: 0.6,
         system: `Bạn là chatbot tư vấn quán ăn Hà Nội.
-Khi người dùng hỏi món Hà Nội -> ưu tiên gợi ý 3 món: Bún chả, Phở, Chả cá.
-Nếu người dùng chọn/nhắc "Bún chả" -> ưu tiên gợi ý đúng 3 quán: Hương Liên (Lê Văn Hưu), 74 Hàng Quạt, Bà Hằng Béo (Ô Chợ Dừa) và viết mô tả ngắn, giờ, giá, điểm nổi bật, kèm link tới file HTML tương ứng: bun-cha-obama.html, bun-cha-hang-quat.html, bun-cha-hang-ec.html.
-Nếu người dùng chọn/nhắc "Chả cá" -> ưu tiên gợi ý đúng 3 quán: Chả cá Thăng Long (Đường Thành), Chả Cá Hàng Sơn (Tông Đản), Chả Cá Phan (Nguyễn Bỉnh Khiêm) kèm mô tả, giờ, giá, điểm nổi bật, link tới: cha-ca-thang-long.html, cha-ca-hang-son.html, cha-ca-phan.html.
-Trả lời ngắn gọn, thân thiện, có bullet hoặc mini-card.`
+- Nếu người dùng hỏi ăn gì ở Hà Nội: gợi ý 3 món — Bún chả, Phở, Chả cá.
+- Nếu người dùng chọn/nhắc "Bún chả": gợi ý đúng 3 quán: Hương Liên (bun-cha-obama.html), 74 Hàng Quạt (bun-cha-hang-quat.html), Bà Hằng Béo (bun-cha-hang-ec.html).
+- Nếu người dùng chọn/nhắc "Chả cá": gợi ý đúng 3 quán: Chả cá Thăng Long (cha-ca-thang-long.html), Chả Cá Hàng Sơn (cha-ca-hang-son.html), Chả Cá Phan (cha-ca-phan.html).
+- Trả lời ngắn gọn, có địa chỉ/khu, giờ tham khảo, tầm giá và điểm nổi bật, kèm link file HTML ở trên.`
       })
     });
 
-    let replyText = 'Xin lỗi, mình chưa có câu trả lời.';
+    let reply = 'Xin lỗi, mình chưa có câu trả lời.';
     const ct = r.headers.get('content-type') || '';
     if (ct.includes('application/json')) {
-      const data = await r.json().catch(() => ({}));
-      replyText = data.reply || data.error?.message || data.text || replyText;
-      if (data.model) replyText += `<br><span class="small">Model: ${data.model}</span>`;
-    } else {
-      replyText = await r.text();
-    }
+      const data = await r.json().catch(()=>({}));
+      reply = data.reply || data.error?.message || data.text || reply;
+    } else reply = await r.text();
 
-  // Sanitize model output: remove ** markers, strip model tags, and replace missing-data message
-  let clean = replyText.replace(/\*\*/g, '');
-  clean = clean.replace(/<span class="small">Model:[^<]*<\/span>/gi, '');
-  clean = clean.replace(/Mình chưa có dữ liệu phù hợp\.?/gi, 'Mình sẵn sàng hỗ trợ!');
-  typingEl.innerHTML = esc(clean).replace(/\n/g,'<br>');
-
+    // làm sạch một số ký hiệu
+    reply = reply.replace(/\*\*/g,'');
+    typingEl.innerHTML = esc(reply).replace(/\n/g,'<br>');
     history.push({ role:'user',  parts:[{ text: userText }] });
-  history.push({ role:'model', parts:[{ text: replyText.replace(/<[^>]+>/g,'') }] });
+    history.push({ role:'model', parts:[{ text: reply.replace(/<[^>]+>/g,'') }] });
 
   } catch(e){
-    const last = chat.querySelector('.typing');
-    if (last) last.parentElement.innerHTML = 'Có lỗi kết nối server. Vui lòng thử lại.';
-  } finally { btn.disabled = false; q.disabled = false; q.focus(); }
+    typingEl.parentElement.innerHTML = 'Có lỗi kết nối server. Vui lòng thử lại.';
+  } finally {
+    btn.disabled = false; q.disabled = false; q.focus();
+  }
 }
 
 btn.addEventListener('click', ()=>{ if(q.value.trim()){ ask(q.value); q.value=''; }});
 q.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); btn.click(); }});
 
+// lời chào đầu
 addBubble('Xin chào! Bạn muốn ăn món gì, ở khu vực nào và khung giờ nào? \
 Ví dụ: <span class="small">“Phở ở Hà Nội, gần Hồ Gươm, 7h sáng, ~80k/bát”.</span>');
 </script>
