@@ -7,7 +7,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{ --bg:#faf9f7; --text:#141518; --muted:#6e7380; --border:#e6e6e8; --surface:#fff; }
-*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:500 16px/1.6 'Inter',system-ui}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:500 16px/1.6 'Inter',system-ui}
 .container{max-width:880px;margin:0 auto;padding:24px 16px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 18px rgba(0,0,0,.06)}
 .header{padding:16px;text-align:center;font-weight:700;font-size:20px}
@@ -22,6 +23,9 @@ input[type="text"]{flex:1;padding:12px 14px;border:1px solid var(--border);borde
 button{padding:12px 16px;border:0;border-radius:10px;font-weight:700;background:#2eb872;color:#fff;cursor:pointer}
 button:active{transform:scale(.98)}
 .hint{color:var(--muted);font-size:14px;margin:4px 0 0}
+.typing{display:inline-block;min-width:28px}
+.typing::after{content:""; display:inline-block; width:4px; height:4px; margin-left:6px; border-radius:50%; background:#888; box-shadow:8px 0 0 #888,16px 0 0 #888; animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
 </style>
 </head>
 <body>
@@ -41,39 +45,64 @@ button:active{transform:scale(.98)}
 const chat = document.getElementById('chat');
 const q    = document.getElementById('q');
 const btn  = document.getElementById('send');
+
+/** Lưu history theo định dạng Gemini:
+ * [{ role:'user'|'model', parts:[{text:'...'}] }, ...]
+ */
 const history = [];
 
-function addBubble(text, who='bot'){
+function addBubble(html, who='bot'){
   const row = document.createElement('div');
   row.className = 'row ' + (who === 'user' ? 'user' : 'bot');
-  row.innerHTML = `<div class="bubble">${text.replace(/\n/g,'<br>')}</div>`;
+  row.innerHTML = `<div class="bubble">${html}</div>`;
   chat.appendChild(row);
   chat.scrollTop = chat.scrollHeight;
+  return row.querySelector('.bubble'); // return bubble element
 }
 
+function escapeHTML(s){ return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
 async function ask(msg){
-  addBubble(msg, 'user');
-  btn.disabled = true;
+  const userText = msg.trim();
+  if(!userText) return;
+
+  // hiển thị user
+  addBubble(escapeHTML(userText).replace(/\n/g,'<br>'), 'user');
+
+  // hiển thị đang gõ...
+  const typingEl = addBubble('<span class="typing">Đang gõ</span>', 'bot');
+
+  btn.disabled = true; q.disabled = true;
+
   try{
-    const r = await fetch('/api/chat', {
+    const r = await fetch('/.netlify/functions/chat', { // ✅ đúng path Netlify
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ message: msg, history })
+      body: JSON.stringify({
+        message: userText,
+        history // gửi nguyên history Gemini
+      })
     });
+
     const data = await r.json();
-    const text = data.text || 'Xin lỗi, mình chưa có câu trả lời.';
-    addBubble(text, 'bot');
-    history.push({ role:'user', text: msg });
-    history.push({ role:'model', text });
+    const text = (data && (data.reply || data.text)) ? data.reply || data.text : 'Xin lỗi, mình chưa có câu trả lời.';
+
+    // cập nhật bot bubble
+    typingEl.innerHTML = escapeHTML(text).replace(/\n/g,'<br>');
+
+    // lưu lịch sử cho lượt sau (định dạng Gemini)
+    history.push({ role:'user',  parts:[{ text: userText }] });
+    history.push({ role:'model', parts:[{ text }] });
+
   } catch(e){
-    addBubble('Có lỗi kết nối server. Vui lòng thử lại.', 'bot');
+    typingEl.textContent = 'Có lỗi kết nối server. Vui lòng thử lại.';
   } finally {
-    btn.disabled = false;
+    btn.disabled = false; q.disabled = false; q.focus();
   }
 }
 
-btn.addEventListener('click', ()=>{ if(q.value.trim()){ ask(q.value.trim()); q.value=''; q.focus(); }});
-q.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && q.value.trim()){ btn.click(); }});
+btn.addEventListener('click', ()=>{ if(q.value.trim()){ ask(q.value); q.value=''; }});
+q.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); btn.click(); }});
 
 // Lời chào ban đầu
 addBubble('Xin chào! Bạn muốn ăn món gì, ở khu vực nào và vào khung giờ nào? Ví dụ: "Muốn ăn phở ở Hà Nội".');
