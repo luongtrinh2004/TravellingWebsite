@@ -75,23 +75,33 @@ async function ask(msg){
     }
 
     const r = await fetch('/.netlify/functions/chat', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ message: userText, history, temperature: 0.7 })
-    });
+  method:'POST',
+  headers:{'Content-Type':'application/json'},
+  body: JSON.stringify({ message: userText, history, temperature: 0.7 })
+});
 
-    let replyText = 'Xin lỗi, mình chưa có câu trả lời.';
-    const ct = r.headers.get('content-type') || '';
-    if (ct.includes('application/json')) {
-      const data = await r.json().catch(() => ({}));
-      replyText = data.reply || data.error?.message || data.text || replyText;
-    } else {
-      replyText = await r.text();
-    }
-    typingEl.innerHTML = esc(replyText).replace(/\n/g,'<br>');
+let replyText = 'Xin lỗi, mình chưa có câu trả lời.';
+const ct = r.headers.get('content-type') || '';
+if (ct.includes('application/json')) {
+  const data = await r.json().catch(() => ({}));
 
-    history.push({ role:'user',  parts:[{ text: userText }] });
-    history.push({ role:'model', parts:[{ text: replyText }] });
+  // 🌟 lấy câu trả lời + (tuỳ chọn) model server trả về
+  replyText = data.reply || data.error?.message || data.text || replyText;
+
+  // 👉 nếu muốn hiện model đang dùng (do function trả kèm { model })
+  if (data.model) {
+    replyText += `<br><span class="small">Model: ${data.model}</span>`;
+  }
+} else {
+  // Server trả text (lỗi Google) -> hiển thị luôn để debug
+  replyText = await r.text();
+}
+
+typingEl.innerHTML = esc(replyText).replace(/\n/g,'<br>');
+
+history.push({ role:'user',  parts:[{ text: userText }] });
+history.push({ role:'model', parts:[{ text: replyText.replace(/<[^>]+>/g,'') }] });
+
 
   } catch(e){
     typingEl.textContent = 'Có lỗi kết nối server. Vui lòng thử lại.';
