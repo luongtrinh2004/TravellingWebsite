@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bún Thịt Nướng Bà Hằng Béo — 60 P. Ô Chợ Dừa, Chợ Dừa, Đống Đa, Hà Nội</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;500&family=Noto+Serif+Display:wght@700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#faf9f7; --text:#141518; --muted:#6e7380;
+      --surface:#fff; --surface-2:#f6f6f7; --border:#e6e6e8;
+      --radius:16px; --shadow:0 12px 28px rgba(0,0,0,.08);
+      --container:min(1200px, 92vw);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--text);
+      font:500 clamp(1.06rem,.96rem + .6vw,1.22rem)/1.8 "Lora", ui-serif, Georgia, serif;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    a{color:inherit; text-decoration:none}
+    .container{width:var(--container); margin-inline:auto}
+    .visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;clip-path:inset(50%)}
+
+    /* Header */
+    .site-header{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--border);
+      backdrop-filter:saturate(180%) blur(10px); background:rgba(255,255,255,.86)}
+    .header-inner{padding:12px 0 6px}
+    .site-title{
+      text-align:center; margin:6px 0 8px; font-family:"Noto Serif Display", serif;
+      font-weight:800; font-size:clamp(2.2rem,1.6rem + 3vw,3.2rem); letter-spacing:.3px;
+      background:linear-gradient(90deg,#c8a96a,#d6b375,#c8a96a);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    nav.primary{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;padding-bottom:10px}
+    .nav-link{padding:8px 12px;border-radius:10px;color:#6e7380;font:600 1rem/1 "Inter"}
+    .nav-link:hover{background:#f6f6f7;color:#141518}
+
+    /* Hero */
+    .hero-bleed{position:relative;left:50%;margin-left:-50vw;width:100vw;overflow:hidden;
+      border-radius:0 0 var(--radius) var(--radius);box-shadow:var(--shadow)}
+    .hero-bleed img{display:block;width:100%;height:auto;object-fit:cover}
+
+    /* Layout */
+    .wrap{width:var(--container);margin:0 auto;padding:28px 16px}
+    .row{display:grid;grid-template-columns:minmax(480px,70%) minmax(280px,30%);gap:24px;align-items:start;margin:24px 0}
+    @media (max-width:980px){.row{grid-template-columns:1fr}}
+    .card{background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 18px rgba(0,0,0,.06)}
+    .pad{padding:18px}
+
+    /* Content */
+    .eyebrow{font:700 1rem/1 "Inter";color:#1a5cff;letter-spacing:.2px;margin:0 0 6px}
+    .place-title{font-family:"Noto Serif Display",serif;font-weight:800;margin:0 0 8px;color:#b04a2f;
+      font-size:clamp(1.8rem,1.2rem + 1.2vw,2.2rem)}
+    .meta{display:flex;flex-wrap:wrap;gap:14px;margin:4px 0 14px;color:#555;font:600 1rem/1.6 "Inter"}
+    .stars{color:#f6a623}
+    .content p{margin:0 0 10px}
+
+    /* Map */
+    .map-box{height:320px}
+    .map-box iframe{border:0;width:100%;height:100%;display:block;border-radius:12px}
+
+    /* Gallery */
+    .gallery-wrap{position:relative}
+    .gallery{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 6px;scroll-behavior:smooth}
+    .gallery::-webkit-scrollbar{height:8px}
+    .gallery::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:99px}
+    .g-item{flex:0 0 78%;max-width:78%;scroll-snap-align:start;border-radius:12px;overflow:hidden;box-shadow:0 8px 16px rgba(0,0,0,.08)}
+    .g-item img{display:block;width:100%;height:100%;object-fit:cover}
+    @media (min-width:600px){.g-item{flex-basis:48%;max-width:48%}}
+    @media (min-width:900px){.g-item{flex-basis:100%;max-width:100%}}
+    .g-nav{position:absolute;top:50%;transform:translateY(-50%);display:flex;gap:6px;width:100%;justify-content:space-between;pointer-events:none}
+    .g-btn{pointer-events:auto;border:none;border-radius:999px;width:36px;height:36px;background:#fff;
+      box-shadow:0 8px 16px rgba(0,0,0,.18);display:grid;place-items:center;cursor:pointer;font:700 18px/1 "Inter"}
+    .g-btn:active{transform:translateY(-50%) scale(.96)}
+
+    /* Footer & more */
+    footer{border-top:1px solid var(--border);background:#f6f6f7;padding:32px 0;color:#6e7380}
+    footer .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .section-desc{margin:6px 0 0}
+    .more-wrap h3{margin:0 0 12px;color:#333}
+    .more-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;overflow:hidden;transition:max-height .35s ease}
+    .more-card{display:block}
+    .more-card figure{margin:0 0 10px;border-radius:12px;overflow:hidden}
+    .more-card img{width:100%;height:180px;object-fit:cover;display:block}
+    .more-meta{color:#6e7380;font:600 .95rem/1.4 "Inter"}
+    .more-actions{display:flex;justify-content:center;margin-top:12px}
+    .more-btn{border:1px solid var(--border);background:#fff;border-radius:999px;padding:8px 14px;font:700 .95rem/1 "Inter";cursor:pointer;box-shadow:0 6px 14px rgba(0,0,0,.06)}
+    .more-btn:active{transform:scale(.98)}
+  </style>
+</head>
+<body>
+  <a class="visually-hidden" href="#main">Bỏ qua nội dung</a>
+
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <div class="site-title">TINH HOA HƯƠNG VỊ VIỆT</div>
+      <nav class="primary" aria-label="Chính">
+        <a class="nav-link" href="../index.html">Trang chủ</a>
+        <a class="nav-link" href="../congdong.html">Cộng đồng</a>
+        <a class="nav-link" href="../contactus.html">Về chúng tôi</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO TOP (ảnh dùng đúng tên file bạn cung cấp) -->
+  <figure class="hero-bleed">
+    <img src="../images/categories/bún chả Hằng éc.webp" alt="Bún Thịt Nướng Bà Hằng Béo — suất bún thịt nướng đầy đặn">
+  </figure>
+
+  <main id="main" class="wrap">
+    <section class="row">
+      <article class="card pad content">
+        <div class="eyebrow">Hà Nội • Bún thịt nướng</div>
+        <h1 class="place-title">Bún Thịt Nướng Bà Hằng Béo</h1>
+        <div class="meta">
+          <span><strong>Địa chỉ:</strong> 60 P. Ô Chợ Dừa, Chợ Dừa, Đống Đa, Hà Nội</span>
+          <span>• <strong>Giờ:</strong> 10:00 – 17:00</span>
+          <span>• <strong>Giá:</strong> 40.000 – 50.000đ/suất</span>
+          <span class="stars">★★★★★</span>
+        </div>
+
+        <p><strong>Viet Huong Nguyen (5★):</strong> Giá niêm yết 50k/phần. Thịt nướng thơm, vị ngọt hơn bún chả truyền thống. Nước mắm với mình hơi nhạt nếu ăn cùng bún. Phục vụ lịch sự, nhiệt tình.</p>
+        <p><strong>Hung Nguyen Hoc (5★):</strong> Ngon, sạch sẽ. Thịt tẩm ướp vừa, nướng không cháy, mềm và ít mỡ. Nước mắm cân bằng, ăn cùng bún rối dễ chịu. Quán làm rất chỉn chu, nên trải nghiệm.</p>
+        <p><strong>Duc Thai (4★):</strong> Bán buổi trưa khá đông. Suất 40k nhiều thịt, ướp đậm vị; nước chấm dễ ăn; đu đủ, cà rốt cắt nhỏ nên giòn vừa. Nem rán ngon nhưng 15k/chiếc hơi cao. Phục vụ nhanh nhẹn.</p>
+      </article>
+
+      <aside class="card pad map-box" aria-label="Bản đồ">
+        <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=60%20%C3%94%20Ch%E1%BB%A3%20D%E1%BB%ABa,%20%C4%90%E1%BB%91ng%20%C4%90a,%20H%C3%A0%20N%E1%BB%99i&output=embed">
+        </iframe>
+      </aside>
+    </section>
+  </main>
+
+  <!-- HERO SECOND -->
+  <figure class="hero-bleed">
+    <img src="../images/categories/bún chả Hằng éc 1.webp" alt="Suất bún thịt nướng với rau sống và đồ chua">
+  </figure>
+
+  <!-- STORY & GALLERY -->
+  <section class="wrap">
+    <div class="row">
+      <article class="card pad content">
+        <div class="eyebrow">Câu chuyện quán</div>
+        <h2 class="place-title" style="font-size:clamp(1.4rem,1rem + 1vw,1.9rem); color:#333">
+          Thịt nướng than thơm lừng, nước mắm cân bằng vị ngọt
+        </h2>
+        <p>Khác bún chả truyền thống, “bún thịt nướng” của Bà Hằng Béo thiên vị ngọt dịu, dễ ăn với cả khách không quen mắm mặn. Thịt nạc vai ướp vừa, nướng chín cạnh cho mùi thơm rất bắt mũi. Đồ chua cắt nhỏ, rau sống rửa sạch và để ráo kỹ.</p>
+        <p><strong>Best-seller:</strong> Suất bún thịt nướng + nem rán nóng. <strong>Mẹo nhỏ:</strong> Quán đông tầm 11:30–13:00; nên đi sớm hoặc đặt mang về để khỏi chờ.</p>
+      </article>
+
+      <aside class="card pad gallery-wrap">
+        <div class="gallery" id="gallery">
+          <figure class="g-item"><img loading="lazy" src="../images/categories/bún chả Hằng éc 2.webp" alt="Thịt nướng than cháy cạnh thơm bùi"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/bún chả Hằng éc 3.webp" alt="Bún – rau – đồ chua đầy đặn"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/bún chả Hằng éc 4.webp" alt="Nem rán vàng giòn"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/bún chả Hằng éc 5.webp" alt="Bát nước mắm pha vị ngọt dịu"></figure>
+        </div>
+        <div class="g-nav">
+          <button class="g-btn" type="button" aria-label="Ảnh trước" data-dir="-1">←</button>
+          <button class="g-btn" type="button" aria-label="Ảnh tiếp theo" data-dir="1">→</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- LỰA CHỌN KHÁC -->
+  <section class="wrap more-wrap" data-more>
+    <h3 class="place-title" style="font-size:clamp(1.4rem,1rem + 1vw,1.9rem)">Lựa chọn khác</h3>
+
+    <div class="more-grid" data-grid>
+      <a class="card pad more-card" href="bun-cha-hang-quat.html">
+        <figure><img src="../images/categories/bún%20chả%20Hằng%20ếc%201.webp" alt="Bún chả 74 Hàng Quạt (thumbnail)"></figure>
+        <div style="font:700 1.05rem/1.3 'Inter'">Bún chả 74 Hàng Quạt</div>
+        <div class="more-meta">74 P. Hàng Quạt, Hoàn Kiếm</div>
+      </a>
+
+      <a class="card pad more-card" href="bun-cha-obama.html">
+        <figure><img src="../images/categories/bún%20chả%20Hằng%20ếc%203.webp" alt="Bún chả Obama (thumbnail)"></figure>
+        <div style="font:700 1.05rem/1.3 'Inter'">Bún chả Obama</div>
+        <div class="more-meta">24 Lê Văn Hưu, Hai Bà Trưng</div>
+      </a>
+    </div>
+
+    <div class="more-actions"><button class="more-btn" data-toggle>Xem thêm</button></div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="grid">
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Ăn Ngon 3 Miền</strong>
+          <p class="section-desc">Nền tảng review quán ăn khắp Việt Nam. Chia sẻ bởi cộng đồng sành ăn.</p>
+        </div>
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Liên kết</strong>
+          <p class="section-desc"><a href="#">Điều khoản</a> • <a href="#">Bảo mật</a> • <a href="../contactus.html">Liên hệ</a></p>
+        </div>
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Cập nhật</strong>
+          <p class="section-desc">Theo dõi chúng tôi để nhận gợi ý quán ngon mỗi tuần.</p>
+        </div>
+      </div>
+      <p style="margin-top:12px;color:#6e7380">© <span id="year"></span> AnNgon3Mien. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module" defer src="../js/gallery.js"></script>
+  <script>
+    // năm hiện tại
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Toggle “Xem thêm”
+    const moreWrap = document.querySelector('[data-more]');
+    const grid = moreWrap?.querySelector('[data-grid]');
+    const btn = moreWrap?.querySelector('[data-toggle]');
+    if(grid && btn){
+      const collapsedMax = grid.scrollHeight / 2;
+      grid.style.maxHeight = collapsedMax + 'px';
+      btn.addEventListener('click', () => {
+        const isCollapsed = grid.style.maxHeight !== 'none';
+        grid.style.maxHeight = isCollapsed ? 'none' : (collapsedMax + 'px');
+        btn.textContent = isCollapsed ? 'Thu gọn' : 'Xem thêm';
+      });
+    }
+  </script>
+</body>
+</html>

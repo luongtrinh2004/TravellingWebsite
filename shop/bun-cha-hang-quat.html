@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bún chả 74 Hàng Quạt — 74 P. Hàng Quạt, Phố cổ Hà Nội, Hoàn Kiếm, Hà Nội</title>
+
+  <!-- Fonts đồng bộ -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;500&family=Noto+Serif+Display:wght@700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#faf9f7; --text:#141518; --muted:#6e7380;
+      --surface:#fff; --surface-2:#f6f6f7; --border:#e6e6e8;
+      --primary:#2eb872; --primary-600:#249c60; --gold:#c8a96a;
+      --radius:16px; --shadow:0 12px 28px rgba(0,0,0,.08);
+      --container:min(1200px, 92vw);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--text);
+      font:500 clamp(1.06rem,.96rem + .6vw,1.22rem)/1.8 "Lora", ui-serif, Georgia, serif;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    a{color:inherit; text-decoration:none}
+    .container{width:var(--container); margin-inline:auto}
+    .visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;clip-path:inset(50%)}
+
+    /* ===== Header ===== */
+    .site-header{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--border);
+      backdrop-filter:saturate(180%) blur(10px); background:rgba(255,255,255,.86)}
+    .header-inner{padding:12px 0 6px}
+    .site-title{
+      text-align:center; margin:6px 0 8px; font-family:"Noto Serif Display", serif;
+      font-weight:800; font-size:clamp(2.2rem,1.6rem + 3vw,3.2rem); letter-spacing:.3px;
+      background:linear-gradient(90deg,var(--gold),#d6b375,var(--gold));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    nav.primary{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;padding-bottom:10px}
+    .nav-link{padding:8px 12px;border-radius:10px;color:var(--muted);font:600 1rem/1 "Inter",system-ui}
+    .nav-link:hover{background:var(--surface-2);color:var(--text)}
+
+    /* ===== Hero ===== */
+    .hero-bleed{position:relative;left:50%;margin-left:-50vw;width:100vw;overflow:hidden;
+      border-radius:0 0 var(--radius) var(--radius);box-shadow:var(--shadow)}
+    .hero-bleed img{display:block;width:100%;height:auto;object-fit:contain}
+
+    /* ===== Layout ===== */
+    .wrap{width:var(--container);margin:0 auto;padding:28px 16px}
+    .row{display:grid;grid-template-columns:minmax(480px,70%) minmax(280px,30%);gap:24px;align-items:start;margin:24px 0}
+    @media (max-width:980px){.row{grid-template-columns:1fr}}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 18px rgba(0,0,0,.06)}
+    .pad{padding:18px}
+
+    /* ===== Nội dung ===== */
+    .eyebrow{font:700 1rem/1 "Inter",system-ui;color:#1a5cff;letter-spacing:.2px;margin:0 0 6px}
+    .place-title{font-family:"Noto Serif Display",serif;font-weight:800;margin:0 0 8px;color:#b04a2f;
+      font-size:clamp(1.8rem,1.2rem + 1.2vw,2.2rem)}
+    .meta{display:flex;flex-wrap:wrap;gap:14px;margin:4px 0 14px;color:#555;font:600 1rem/1.6 "Inter",system-ui}
+    .stars{color:#f6a623}
+    .content p{margin:0 0 10px}
+
+    /* ===== Map ===== */
+    .map-box{height:320px}
+    .map-box iframe{border:0;width:100%;height:100%;display:block;border-radius:12px}
+
+    /* ===== Gallery ===== */
+    .gallery-wrap{position:relative}
+    .gallery{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 6px;scroll-behavior:smooth}
+    .gallery::-webkit-scrollbar{height:8px}
+    .gallery::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:99px}
+    .g-item{flex:0 0 78%;max-width:78%;scroll-snap-align:start;border-radius:12px;overflow:hidden;box-shadow:0 8px 16px rgba(0,0,0,.08)}
+    .g-item img{display:block;width:100%;height:100%;object-fit:cover}
+    @media (min-width:600px){.g-item{flex-basis:48%;max-width:48%}}
+    @media (min-width:900px){.g-item{flex-basis:100%;max-width:100%}}
+
+    .g-nav{position:absolute;top:50%;transform:translateY(-50%);display:flex;gap:6px;width:100%;justify-content:space-between;pointer-events:none}
+    .g-btn{pointer-events:auto;border:none;border-radius:999px;width:36px;height:36px;background:#fff;
+      box-shadow:0 8px 16px rgba(0,0,0,.18);display:grid;place-items:center;cursor:pointer;font:700 18px/1 "Inter"}
+    .g-btn:active{transform:translateY(-50%) scale(.96)}
+
+    /* ===== Footer ===== */
+    footer{border-top:1px solid var(--border);background:var(--surface-2);padding:32px 0;color:var(--muted)}
+    footer .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .section-desc{margin:6px 0 0}
+
+    /* ==== More choices ==== */
+    .more-wrap h3{margin:0 0 12px;color:#333}
+    .more-grid{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:16px;overflow:hidden;transition:max-height .35s ease;
+    }
+    .more-card{display:block}
+    .more-card figure{margin:0 0 10px;border-radius:12px;overflow:hidden}
+    .more-card img{width:100%;height:180px;object-fit:cover;display:block}
+    .more-meta{color:var(--muted);font:600 .95rem/1.4 "Inter",system-ui}
+    .more-actions{display:flex;justify-content:center;margin-top:12px}
+    .more-btn{
+      border:1px solid var(--border);background:#fff;border-radius:999px;
+      padding:8px 14px;font:700 .95rem/1 "Inter";cursor:pointer;
+      box-shadow:0 6px 14px rgba(0,0,0,.06)
+    }
+    .more-btn:active{transform:scale(.98)}
+  </style>
+</head>
+<body>
+  <a class="visually-hidden" href="#main">Bỏ qua nội dung</a>
+
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <div class="site-title">TINH HOA HƯƠNG VỊ VIỆT</div>
+      <nav class="primary" aria-label="Chính">
+        <a class="nav-link" href="../index.html">Trang chủ</a>
+        <a class="nav-link" href="../congdong.html">Cộng đồng</a>
+        <a class="nav-link" href="../contactus.html">Về chúng tôi</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO TOP: dùng đúng tên file trong thư mục bạn cung cấp -->
+  <figure class="hero-bleed">
+    <img src="../images/categories/bún%20chả%20hàng%20quạt.webp" alt="Bún chả 74 Hàng Quạt — suất bún chả đầy đặn">
+  </figure>
+
+  <main id="main" class="wrap">
+    <section class="row">
+      <article class="card pad content">
+        <div class="eyebrow">Hà Nội • Bún chả</div>
+        <h1 class="place-title">Bún chả 74 Hàng Quạt</h1>
+        <div class="meta">
+          <span><strong>Địa chỉ:</strong> 74 P. Hàng Quạt, Phố cổ Hà Nội, Hoàn Kiếm, Hà Nội</span>
+          <span>• <strong>Giờ:</strong> 10:00 – 14:00</span>
+          <span>• <strong>Giá:</strong> 40.000 – 50.000đ/suất</span>
+          <span class="stars">★★★★★</span>
+        </div>
+
+        <p><strong>Minh Man Huynh (5★):</strong> Ngon tuyệt vời. Dù mình không thích ăn bún chả lắm mà vẫn “ghiền”. Thịt nướng thơm 100 điểm, nêm nếm đậm đà. Quán cho nhiều rau – nhiều bún, khá đông nhưng chịu khó đợi là có bàn.</p>
+        <p><strong>Bao Minh Anh Ta (5★):</strong> Đồ ăn ngon, giá hợp lí. Một phần bún chả ăn no căng; nem rán và nước sấu cũng rất ổn.</p>
+        <p><strong>Khoa Nguyen (5★):</strong> Hà Nội có nhiều bún chả, riêng tôi thấy 74 Hàng Quạt là ngon nhất. Nằm sâu trong ngõ hẹp; nước chấm, nem rán và bún chả bán riêng. Mọi người vui vẻ, đồ ăn rất “rất Hà Nội”.</p>
+        <p><strong>Anh Bui (5★):</strong> Quán yêu thích mỗi lần ra HN. Mọi thứ vừa vặn: thịt ngon, mắm ngon, nem rán ổn. Từ ngoài ngõ đi vào sẽ ngang chỗ các cô chị chiên nem – nướng thịt; quán nhỏ nhưng thoáng mát. Ai mê bún chả nên thử.</p>
+      </article>
+
+      <aside class="card pad map-box" aria-label="Bản đồ">
+        <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=74%20H%C3%A0ng%20Qu%E1%BA%A1t,%20Ho%C3%A0n%20Ki%E1%BA%BFm,%20H%C3%A0%20N%E1%BB%99i&output=embed">
+        </iframe>
+      </aside>
+    </section>
+  </main>
+
+  <!-- HERO SECOND -->
+  <figure class="hero-bleed">
+    <img src="../images/categories/bún%20chả%20hàng%20quạt%201.webp" alt="Bún chả 74 Hàng Quạt — thịt nướng và bún">
+  </figure>
+
+  <!-- STORY & GALLERY -->
+  <section class="wrap">
+    <div class="row">
+      <article class="card pad content">
+        <div class="eyebrow">Câu chuyện quán</div>
+        <h2 class="place-title" style="font-size:clamp(1.4rem,1rem + 1vw,1.9rem); color:#333">
+          Quán nhỏ trong ngõ, mùi thịt nướng “đánh thức” phố cổ
+        </h2>
+        <p>74 Hàng Quạt bán theo phong cách bún – chả – nước chấm riêng. Thịt được ướp đậm, nướng than tới cháy cạnh nên thơm bùi; chả viên mềm mà chắc. Nước chấm pha vừa miệng, ăn kèm đu đủ ngâm, rau sống đầy ắp.</p>
+        <p><strong>Best-seller:</strong> Suất bún chả đầy đủ + nem rán. <strong>Mẹo nhỏ:</strong> Quán mở tầm trưa và rất đông, nên tới sớm hoặc đi 2–3 người để dễ xếp chỗ.</p>
+      </article>
+
+      <aside class="card pad gallery-wrap">
+        <div class="gallery" id="gallery">
+          <figure class="g-item"><img loading="lazy" src="../images/categories/bún%20chả%20hàng%20quạt%202.webp" alt="Góc nướng thịt thơm lừng"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/bún%20chả%20hàng%20quạt%203.webp" alt="Suất bún chả đầy đặn, nhiều rau"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/bún%20chả%20hàng%20quạt%204.webp" alt="Nem rán nóng giòn"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/bún%20chả%20hàng%20quạt%205.webp" alt="Nước chấm pha vừa miệng"></figure>
+        </div>
+        <div class="g-nav">
+          <button class="g-btn" type="button" aria-label="Ảnh trước" data-dir="-1">←</button>
+          <button class="g-btn" type="button" aria-label="Ảnh tiếp theo" data-dir="1">→</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- LỰA CHỌN KHÁC -->
+  <section class="wrap more-wrap" data-more>
+    <h3 class="place-title" style="font-size:clamp(1.4rem,1rem + 1vw,1.9rem)">Lựa chọn khác</h3>
+
+    <div class="more-grid" data-grid>
+      <!-- Bún chả Hàng Ếc -->
+      <a class="card pad more-card" href="bun-cha-hang-ec.html" data-slug="bun-cha-hang-ec.html">
+        <figure><img src="../images/categories/bún%20chả%20hàng%20quạt%206.webp" alt="Bún chả Hàng Ếc (thumbnail)"></figure>
+        <div style="font:700 1.05rem/1.3 'Inter',system-ui">Bún chả Hàng Ếc</div>
+        <div class="more-meta">Hàng Ếc, Hoàn Kiếm</div>
+      </a>
+
+      <!-- Bún chả Obama (Hương Liên) -->
+      <a class="card pad more-card" href="bun-cha-obama.html" data-slug="bun-cha-obama.html">
+        <figure><img src="../images/categories/bún%20chả%20hàng%20quạt%207.webp" alt="Bún chả Obama (thumbnail)"></figure>
+        <div style="font:700 1.05rem/1.3 'Inter',system-ui">Bún chả Obama</div>
+        <div class="more-meta">24 Lê Văn Hưu, Hai Bà Trưng</div>
+      </a>
+    </div>
+
+    <div class="more-actions"><button class="more-btn" data-toggle>Xem thêm</button></div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="grid">
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Ăn Ngon 3 Miền</strong>
+          <p class="section-desc">Nền tảng review quán ăn khắp Việt Nam. Chia sẻ bởi cộng đồng sành ăn.</p>
+        </div>
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Liên kết</strong>
+          <p class="section-desc"><a href="#">Điều khoản</a> • <a href="#">Bảo mật</a> • <a href="../contactus.html">Liên hệ</a></p>
+        </div>
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Cập nhật</strong>
+          <p class="section-desc">Theo dõi chúng tôi để nhận gợi ý quán ngon mỗi tuần.</p>
+        </div>
+      </div>
+      <p style="margin-top:12px;color:var(--muted)">© <span id="year"></span> AnNgon3Mien. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module" defer src="../js/gallery.js"></script>
+  <script>
+    // năm hiện tại
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // "Xem thêm" cho mục Lựa chọn khác
+    const moreWrap = document.querySelector('[data-more]');
+    const grid = moreWrap?.querySelector('[data-grid]');
+    const btn = moreWrap?.querySelector('[data-toggle]');
+    if(grid && btn){
+      const collapsedMax = grid.scrollHeight / 2;
+      grid.style.maxHeight = collapsedMax + 'px';
+      btn.addEventListener('click', () => {
+        const isCollapsed = grid.style.maxHeight !== 'none';
+        grid.style.maxHeight = isCollapsed ? 'none' : (collapsedMax + 'px');
+        btn.textContent = isCollapsed ? 'Thu gọn' : 'Xem thêm';
+      });
+    }
+  </script>
+</body>
+</html>
