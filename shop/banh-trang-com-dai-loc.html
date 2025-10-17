@@ -5,15 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Bánh tráng thịt heo Quán Cốm Đại Lộc — Đà Nẵng</title>
 
-  <!-- Fonts đồng bộ -->
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;500&family=Noto+Serif+Display:wght@700;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
       --bg:#faf9f7; --text:#141518; --muted:#6e7380;
       --surface:#fff; --surface-2:#f6f6f7; --border:#e6e6e8;
-      --primary:#2eb872; --primary-600:#249c60; --gold:#c8a96a;
-      --radius:16px; --shadow:0 12px 28px rgba(0,0,0,.08);
+      --gold:#c8a96a; --radius:16px; --shadow:0 12px 28px rgba(0,0,0,.08);
       --container:min(1200px, 92vw);
     }
     *{box-sizing:border-box}
@@ -27,7 +26,7 @@
     .container{width:var(--container); margin-inline:auto}
     .visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;clip-path:inset(50%)}
 
-    /* ===== Header ===== */
+    /* Header */
     .site-header{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--border);
       backdrop-filter:saturate(180%) blur(10px); background:rgba(255,255,255,.86)}
     .header-inner{padding:12px 0 6px}
@@ -41,31 +40,31 @@
     .nav-link{padding:8px 12px;border-radius:10px;color:var(--muted);font:600 1rem/1 "Inter",system-ui}
     .nav-link:hover{background:var(--surface-2);color:var(--text)}
 
-    /* ===== Hero ===== */
+    /* Hero */
     .hero-bleed{position:relative;left:50%;margin-left:-50vw;width:100vw;overflow:hidden;
-      border-radius:0 0 var(--radius) var(--radius);box-shadow:var(--shadow)}
+      border-radius:0 0 16px 16px;box-shadow:var(--shadow)}
     .hero-bleed img{display:block;width:100%;height:auto;object-fit:contain}
 
-    /* ===== Layout ===== */
+    /* Layout */
     .wrap{width:var(--container);margin:0 auto;padding:28px 16px}
     .row{display:grid;grid-template-columns:minmax(480px,70%) minmax(280px,30%);gap:24px;align-items:start;margin:24px 0}
     @media (max-width:980px){.row{grid-template-columns:1fr}}
     .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 18px rgba(0,0,0,.06)}
     .pad{padding:18px}
 
-    /* ===== Nội dung ===== */
-    .eyebrow{font:700 1rem/1 "Inter",system-ui;color:#1a5cff;letter-spacing:.2px;margin:0 0 6px}
+    /* Content */
+    .eyebrow{font:700 1rem/1 "Inter",system-ui;color:#1a5cff;margin:0 0 6px}
     .place-title{font-family:"Noto Serif Display",serif;font-weight:800;margin:0 0 8px;color:#b04a2f;
       font-size:clamp(1.8rem,1.2rem + 1.2vw,2.2rem)}
     .meta{display:flex;flex-wrap:wrap;gap:14px;margin:4px 0 14px;color:#555;font:600 1rem/1.6 "Inter",system-ui}
     .stars{color:#f6a623}
     .content p{margin:0 0 10px}
 
-    /* ===== Map ===== */
+    /* Map */
     .map-box{height:320px}
     .map-box iframe{border:0;width:100%;height:100%;display:block;border-radius:12px}
 
-    /* ===== Gallery ===== */
+    /* Gallery */
     .gallery-wrap{position:relative}
     .gallery{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 6px;scroll-behavior:smooth}
     .gallery::-webkit-scrollbar{height:8px}
@@ -80,27 +79,20 @@
       box-shadow:0 8px 16px rgba(0,0,0,.18);display:grid;place-items:center;cursor:pointer;font:700 18px/1 "Inter"}
     .g-btn:active{transform:translateY(-50%) scale(.96)}
 
-    /* ===== Footer ===== */
+    /* Footer */
     footer{border-top:1px solid var(--border);background:var(--surface-2);padding:32px 0;color:var(--muted)}
     footer .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
     .section-desc{margin:6px 0 0}
 
-    /* ==== More choices ==== */
+    /* More */
     .more-wrap h3{margin:0 0 12px;color:#333}
-    .more-grid{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:16px;overflow:hidden;transition:max-height .35s ease;
-    }
+    .more-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;overflow:hidden;transition:max-height .35s ease;}
     .more-card{display:block}
     .more-card figure{margin:0 0 10px;border-radius:12px;overflow:hidden}
     .more-card img{width:100%;height:180px;object-fit:cover;display:block}
     .more-meta{color:var(--muted);font:600 .95rem/1.4 "Inter",system-ui}
     .more-actions{display:flex;justify-content:center;margin-top:12px}
-    .more-btn{
-      border:1px solid var(--border);background:#fff;border-radius:999px;
-      padding:8px 14px;font:700 .95rem/1 "Inter";cursor:pointer;
-      box-shadow:0 6px 14px rgba(0,0,0,.06)
-    }
+    .more-btn{border:1px solid var(--border);background:#fff;border-radius:999px;padding:8px 14px;font:700 .95rem/1 "Inter";cursor:pointer;box-shadow:0 6px 14px rgba(0,0,0,.06)}
     .more-btn:active{transform:scale(.98)}
   </style>
 </head>
@@ -118,7 +110,7 @@
     </div>
   </header>
 
-  <!-- HERO TOP (ảnh đúng tên như bạn gửi) -->
+  <!-- HERO TOP -->
   <figure class="hero-bleed">
     <img src="../images/categories/Bánh tráng thịt heo Quán Cốm Đại Lộc 1.webp" alt="Bánh tráng thịt heo Quán Cốm Đại Lộc — phần đầy đặn">
   </figure>
@@ -129,21 +121,23 @@
         <div class="eyebrow">Đà Nẵng • Bánh tráng thịt heo</div>
         <h1 class="place-title">Bánh tráng thịt heo Quán Cốm Đại Lộc</h1>
         <div class="meta">
-          <span><strong>Địa chỉ:</strong> Gợi ý khu vực: Cầu Giấy / Thanh Xuân (HN)</span>
-          <span>• <strong>Giờ:</strong> 10:00 – 21:00 (tham khảo)</span>
-          <span>• <strong>Giá:</strong> 60.000 – 95.000đ/phần</span>
+          <span><strong>Địa chỉ:</strong> 103 Trưng Nữ Vương, Phước Ninh, Hải Châu, Đà Nẵng</span>
+          <span>• <strong>Giờ:</strong> 09:00 – 22:00</span>
+          <span>• <strong>Không gian:</strong> Có máy lạnh, sạch sẽ, gọn gàng</span>
           <span class="stars">★★★★★</span>
         </div>
 
-        <p><strong>Điểm nhấn:</strong> Thịt heo luộc <em>hai đầu da</em> thái lát mỏng, bánh tráng dẻo — lót bánh ướt, cuốn cùng rau vườn, dưa leo, chuối xanh, chấm mắm nêm nhà làm đậm đà.</p>
-        <p><strong>Hương vị:</strong> Thanh – béo – mặn ngọt cân bằng, ăn hoài không ngấy. Mắm nêm thơm, cay nhẹ, xin thêm tỏi ớt/chanh tuỳ vị.</p>
-        <p><strong>Phục vụ:</strong> Nhanh, đồ ra nóng; gọi thêm rau/bánh tráng rất linh hoạt. Có giao hàng qua app.</p>
-        <p><strong>Mẹo nhỏ:</strong> Nhúng bánh tráng cho mềm, lót bánh ướt, xếp thịt + rau + chuối xanh, cuộn chắc tay rồi chấm ngập mắm nêm — “đúng điệu” miền Trung.</p>
+        <p><strong>Gia Từ (4★):</strong> Menu không quá nhiều nhưng giá & định lượng hợp lý; <em>bánh tráng đập</em> rất ngon. Quán mát mẻ, nhân viên lịch sự.</p>
+        <p><strong>Thảo Đặng (5★):</strong> Du khách ghé ăn “ưng bụng”: rau sạch, món ra nhanh, nhân viên đông và nhiệt tình, phòng máy lạnh mát. Giá bằng các nơi khác, không phụ thu; chủ quán dễ thương — còn tặng kẹo bạc hà. Xứng đáng được biết đến nhiều hơn!</p>
+        <p><strong>Trang Huỳnh (5★):</strong> Thịt heo da giòn chấm mắm nêm <em>siêu cuốn</em>; mắm vừa miệng không mặn, ăn kèm rau tươi, xoài, dưa leo, chuối chát… Giá bình dân, 10 điểm.</p>
+
+        <p><strong>Điểm nhấn:</strong> Thịt heo luộc hai đầu da, lót bánh ướt trong — cuốn cùng rau vườn & mắm nêm đậm đà “đúng bài” Quảng. Có thêm <em>bánh tráng đập</em>, <em>ram cuốn cải</em>.</p>
+        <p><strong>Mẹo nhỏ:</strong> Nhúng mềm bánh tráng, lót bánh ướt → xếp thịt + rau + chuối xanh → cuộn chặt & chấm ngập mắm nêm. Thích đậm vị có thể xin thêm tỏi ớt/chanh.</p>
       </article>
 
       <aside class="card pad map-box" aria-label="Bản đồ">
         <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-          src="https://www.google.com/maps?q=Qu%C3%A1n%20C%E1%BB%91m%20%C4%90%E1%BA%A1i%20L%E1%BB%99c%20b%C3%A1nh%20tr%C3%A1ng%20th%E1%BB%8Bt%20heo%20H%C3%A0%20N%E1%BB%99i&output=embed">
+          src="https://www.google.com/maps?q=103%20Tr%C6%B0ng%20N%E1%BB%AF%20V%C6%B0%C6%A1ng%2C%20Ph%C6%B0%E1%BB%9Bc%20Ninh%2C%20H%E1%BA%A3i%20Ch%C3%A2u%2C%20%C4%90%C3%A0%20N%E1%BA%B5ng&output=embed">
         </iframe>
       </aside>
     </section>
@@ -160,20 +154,20 @@
       <article class="card pad content">
         <div class="eyebrow">Câu chuyện quán</div>
         <h2 class="place-title" style="font-size:clamp(1.4rem,1rem + 1vw,1.9rem); color:#333">
-          Chuẩn vị miền Trung giữa lòng Hà Nội
+          Chuẩn vị miền Trung giữa lòng Đà Nẵng
         </h2>
-        <p>Xuất phát từ Đại Lộc (Quảng Nam) – vùng đất nổi tiếng với bánh tráng dẻo và mắm nêm thơm nồng, quán mang trọn cách cuốn “đúng bài”: thịt hai đầu da, bánh ướt lót trong, rau vườn sạch. Ai mới thử lần đầu sẽ ấn tượng bởi sự hài hòa của vị mặn – ngọt – chua cay.</p>
-        <p><strong>Best-seller:</strong> Phần đặc biệt nhiều thịt; thêm nem lụi chấm mắm nêm. <strong>Đồ kèm:</strong> Sâm dứa, nước mơ, trà đá mát lạnh.</p>
+        <p>Xuất phát từ Đại Lộc (Quảng Nam) — vùng nổi tiếng bánh tráng dẻo & mắm nêm thơm, quán giữ cách cuốn “đúng điệu”: thịt hai đầu da, lót bánh ướt, rau sạch đa dạng. Vị mặn–ngọt–chua cay cân bằng, ăn lâu vẫn không ngấy.</p>
+        <p><strong>Best-seller:</strong> Phần đặc biệt nhiều thịt; gọi kèm <em>ram cuốn cải</em> hoặc <em>bánh tráng đập</em> cho trọn vị.</p>
       </article>
 
       <aside class="card pad gallery-wrap">
         <div class="gallery" id="gallery">
-          <figure class="g-item"><img loading="lazy" src="../images/categories/Bánh tráng thịt heo Quán Cốm Đại Lộc 3.webp" alt="Thịt heo hai đầu da cắt lát"></figure>
-          <figure class="g-item"><img loading="lazy" src="../images/categories/Bánh tráng thịt heo Quán Cốm Đại Lộc 4.webp" alt="Bánh tráng, bánh ướt — cuốn đúng điệu"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/Bánh tráng thịt heo Quán Cốm Đại Lộc 3.webp" alt="Thịt heo hai đầu da thái lát"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/Bánh tráng thịt heo Quán Cốm Đại Lộc 4.webp" alt="Bánh tráng & bánh ướt để lót trong"></figure>
           <figure class="g-item"><img loading="lazy" src="../images/categories/Bánh tráng thịt heo Quán Cốm Đại Lộc 5.webp" alt="Rau sống đa dạng, tươi giòn"></figure>
           <figure class="g-item"><img loading="lazy" src="../images/categories/Bánh tráng thịt heo Quán Cốm Đại Lộc 6.webp" alt="Cuốn bánh tráng thịt heo hấp dẫn"></figure>
           <figure class="g-item"><img loading="lazy" src="../images/categories/Bánh tráng thịt heo Quán Cốm Đại Lộc 7.webp" alt="Phần đầy đặn — no nê"></figure>
-          <figure class="g-item"><img loading="lazy" src="../images/categories/Bánh tráng thịt heo Quán Cốm Đại Lộc 8.webp" alt="Không gian quán ấm cúng"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/Bánh tráng thịt heo Quán Cốm Đại Lộc 8.webp" alt="Không gian quán có máy lạnh, sạch sẽ"></figure>
           <figure class="g-item"><img loading="lazy" src="../images/categories/Bánh tráng thịt heo Quán Cốm Đại Lộc 9.webp" alt="Bàn ăn tại quán"></figure>
         </div>
         <div class="g-nav">
@@ -187,23 +181,18 @@
   <!-- LỰA CHỌN KHÁC -->
   <section class="wrap more-wrap" data-more>
     <h3 class="place-title" style="font-size:clamp(1.4rem,1rem + 1vw,1.9rem)">Lựa chọn khác</h3>
-
     <div class="more-grid" data-grid>
-      <!-- Bánh tráng thịt heo Trần -->
-      <a class="card pad more-card" href="banh-trang-thit-heo-tran.html" data-slug="banh-trang-thit-heo-tran.html">
-        <figure><img src="../images/categories/Bánh%20tráng%20thịt%20heo%20Trần.webp" alt="Bánh tráng thịt heo Trần"></figure>
-        <div style="font:700 1.05rem/1.3 'Inter',system-ui">Bánh tráng thịt heo Trần</div>
-        <div class="more-meta">Chuỗi nổi tiếng Đà Nẵng</div>
+      <a class="card pad more-card" href="banh-trang-cuon-thit-heo-ba-huong.html">
+        <figure><img src="../images/categories/fb bánh tráng heo bà hướng1.webp" alt="Bánh tráng cuốn thịt heo Bà Hường"></figure>
+        <div style="font:700 1.05rem/1.3 'Inter',system-ui">Bánh tráng thịt heo Bà Hường</div>
+        <div class="more-meta">Hải Châu • Mắm nêm “đỉnh”</div>
       </a>
-
-      <!-- Bún mắm nêm -->
-      <a class="card pad more-card" href="bun-mam-nem-da-nang.html" data-slug="bun-mam-nem-da-nang.html">
-        <figure><img src="../images/categories/Bún%20mắm%20nêm.webp" alt="Bún mắm nêm Đà Nẵng"></figure>
-        <div style="font:700 1.05rem/1.3 'Inter',system-ui">Bún mắm nêm ĐN</div>
-        <div class="more-meta">Đặc trưng mắm nêm miền Trung</div>
+      <a class="card pad more-card" href="cao-lau-khong-gian-xanh.html">
+        <figure><img src="../images/categories/clkgx1.webp" alt="Cao lầu Không Gian Xanh"></figure>
+        <div style="font:700 1.05rem/1.3 'Inter',system-ui">Cao lầu Không Gian Xanh</div>
+        <div class="more-meta">Hội An • Không gian xanh</div>
       </a>
     </div>
-
     <div class="more-actions"><button class="more-btn" data-toggle>Xem thêm</button></div>
   </section>
 
@@ -227,13 +216,11 @@
     </div>
   </footer>
 
-  <!-- nếu bạn có file ../js/gallery.js thì import, không có cũng không sao -->
-  <script type="module" defer src="../js/gallery.js"></script>
   <script>
     // năm hiện tại
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // điều khiển gallery bằng 2 nút ← →
+    // Gallery arrows
     const scroller = document.getElementById('gallery');
     document.querySelectorAll('.g-btn').forEach(btn=>{
       btn.addEventListener('click', ()=>{
@@ -242,7 +229,7 @@
       });
     });
 
-    // "Xem thêm" cho mục Lựa chọn khác
+    // Toggle "Xem thêm"
     const moreWrap = document.querySelector('[data-more]');
     const grid = moreWrap?.querySelector('[data-grid]');
     const toggle = moreWrap?.querySelector('[data-toggle]');
