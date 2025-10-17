@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mì quảng Cô Sáu — Đà Nẵng</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;500&family=Noto+Serif+Display:wght@700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#faf9f7; --text:#141518; --muted:#6e7380;
+      --surface:#fff; --surface-2:#f6f6f7; --border:#e6e6e8;
+      --gold:#c8a96a; --radius:16px; --shadow:0 12px 28px rgba(0,0,0,.08);
+      --container:min(1200px, 92vw);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--text);
+      font:500 clamp(1.06rem,.96rem + .6vw,1.22rem)/1.8 "Lora", ui-serif, Georgia, serif;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    a{color:inherit; text-decoration:none}
+    .container{width:var(--container); margin-inline:auto}
+    .visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;clip-path:inset(50%)}
+
+    /* Header */
+    .site-header{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--border);
+      backdrop-filter:saturate(180%) blur(10px); background:rgba(255,255,255,.86)}
+    .header-inner{padding:12px 0 6px}
+    .site-title{
+      text-align:center; margin:6px 0 8px; font-family:"Noto Serif Display", serif;
+      font-weight:800; font-size:clamp(2.2rem,1.6rem + 3vw,3.2rem); letter-spacing:.3px;
+      background:linear-gradient(90deg,var(--gold),#d6b375,var(--gold));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    nav.primary{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;padding-bottom:10px}
+    .nav-link{padding:8px 12px;border-radius:10px;color:var(--muted);font:600 1rem/1 "Inter",system-ui}
+    .nav-link:hover{background:var(--surface-2);color:var(--text)}
+
+    /* Hero */
+    .hero-bleed{position:relative;left:50%;margin-left:-50vw;width:100vw;overflow:hidden;
+      border-radius:0 0 var(--radius) var(--radius);box-shadow:var(--shadow)}
+    .hero-bleed img{display:block;width:100%;height:auto;object-fit:contain}
+
+    /* Layout */
+    .wrap{width:var(--container);margin:0 auto;padding:28px 16px}
+    .row{display:grid;grid-template-columns:minmax(480px,70%) minmax(280px,30%);gap:24px;align-items:start;margin:24px 0}
+    @media (max-width:980px){.row{grid-template-columns:1fr}}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 18px rgba(0,0,0,.06)}
+    .pad{padding:18px}
+
+    /* Content */
+    .eyebrow{font:700 1rem/1 "Inter",system-ui;color:#1a5cff;letter-spacing:.2px;margin:0 0 6px}
+    .place-title{font-family:"Noto Serif Display",serif;font-weight:800;margin:0 0 8px;color:#b04a2f;
+      font-size:clamp(1.8rem,1.2rem + 1.2vw,2.2rem)}
+    .meta{display:flex;flex-wrap:wrap;gap:14px;margin:4px 0 14px;color:#555;font:600 1rem/1.6 "Inter",system-ui}
+    .stars{color:#f6a623}
+    .content p{margin:0 0 10px}
+
+    /* Map */
+    .map-box{height:320px}
+    .map-box iframe{border:0;width:100%;height:100%;display:block;border-radius:12px}
+
+    /* Gallery */
+    .gallery-wrap{position:relative}
+    .gallery{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 6px;scroll-behavior:smooth}
+    .gallery::-webkit-scrollbar{height:8px}
+    .gallery::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:99px}
+    .g-item{flex:0 0 78%;max-width:78%;scroll-snap-align:start;border-radius:12px;overflow:hidden;box-shadow:0 8px 16px rgba(0,0,0,.08)}
+    .g-item img{display:block;width:100%;height:100%;object-fit:cover}
+    @media (min-width:600px){.g-item{flex-basis:48%;max-width:48%}}
+    @media (min-width:900px){.g-item{flex-basis:100%;max-width:100%}}
+
+    .g-nav{position:absolute;top:50%;transform:translateY(-50%);display:flex;gap:6px;width:100%;justify-content:space-between;pointer-events:none}
+    .g-btn{pointer-events:auto;border:none;border-radius:999px;width:36px;height:36px;background:#fff;
+      box-shadow:0 8px 16px rgba(0,0,0,.18);display:grid;place-items:center;cursor:pointer;font:700 18px/1 "Inter"}
+    .g-btn:active{transform:translateY(-50%) scale(.96)}
+
+    /* Footer */
+    footer{border-top:1px solid var(--border);background:var(--surface-2);padding:32px 0;color:var(--muted)}
+    footer .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .section-desc{margin:6px 0 0}
+
+    /* More */
+    .more-wrap h3{margin:0 0 12px;color:#333}
+    .more-grid{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:16px;overflow:hidden;transition:max-height .35s ease;
+    }
+    .more-card{display:block}
+    .more-card figure{margin:0 0 10px;border-radius:12px;overflow:hidden}
+    .more-card img{width:100%;height:180px;object-fit:cover;display:block}
+    .more-meta{color:var(--muted);font:600 .95rem/1.4 "Inter",system-ui}
+    .more-actions{display:flex;justify-content:center;margin-top:12px}
+    .more-btn{
+      border:1px solid var(--border);background:#fff;border-radius:999px;
+      padding:8px 14px;font:700 .95rem/1 "Inter";cursor:pointer;
+      box-shadow:0 6px 14px rgba(0,0,0,.06)
+    }
+    .more-btn:active{transform:scale(.98)}
+  </style>
+</head>
+<body>
+  <a class="visually-hidden" href="#main">Bỏ qua nội dung</a>
+
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <div class="site-title">TINH HOA HƯƠNG VỊ VIỆT</div>
+      <nav class="primary" aria-label="Chính">
+        <a class="nav-link" href="../index.html">Trang chủ</a>
+        <a class="nav-link" href="../congdong.html">Cộng đồng</a>
+        <a class="nav-link" href="../contactus.html">Về chúng tôi</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO TOP -->
+  <figure class="hero-bleed">
+    <img src="../images/categories/mqcs1.webp" alt="Mì quảng Cô Sáu — tô thập cẩm đầy đủ topping">
+  </figure>
+
+  <main id="main" class="wrap">
+    <section class="row">
+      <article class="card pad content">
+        <div class="eyebrow">Đà Nẵng • Mì quảng</div>
+        <h1 class="place-title">Mì quảng Cô Sáu</h1>
+        <div class="meta">
+          <span><strong>Địa chỉ:</strong> 397 Đ. Trần Hưng Đạo, An Hải Trung, Sơn Trà, Đà Nẵng</span>
+          <span>• <strong>Giờ:</strong> 06:00 – 23:00</span>
+          <span>• <strong>Ghi chú:</strong> Có món thập cẩm đặc biệt; view sông Hàn</span>
+          <span class="stars">★★★★★</span>
+        </div>
+
+        <p><strong>Nga Nguyễn (5★):</strong> Không gian rộng thoáng, sạch sẽ. Mì quảng đậm vị, khuyên thử <em>thập cẩm đặc biệt</em>. Chủ & nhân viên dễ thương, niềm nở.</p>
+        <p><strong>Lil Trịnh (4★):</strong> Topping tươi, nêm nếm ổn nhưng tổng thể hơi nhạt — có thể do chiều khẩu vị khách quốc tế. Phục vụ nhanh, chuyên nghiệp; tô thập cẩm 69k. Quán được <em>Michelin Guide</em> đề xuất.</p>
+        <p><strong>Duy Lan (5★):</strong> Món “gây thương nhớ” là <em>mì quảng cá lóc</em> — vị đậm, view ngay sông Hàn, gửi xe miễn phí, nhân viên lễ phép.</p>
+
+        <p><strong>Điểm nhấn:</strong> Nước “nhớt” mì sánh vừa; bánh tráng mè giòn; topping đa dạng (tôm, thịt, trứng, cá lóc…). Vị nhẹ có thể thêm mắm/ớt sate cho bắt vị.</p>
+        <p><strong>Mẹo nhỏ:</strong> Đi buổi sáng thoáng nhất; xin thêm rau húng quế – bắp chuối nếu thích đúng kiểu miền Trung. Bàn gần cửa cho view sông đẹp.</p>
+      </article>
+
+      <aside class="card pad map-box" aria-label="Bản đồ">
+        <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=397%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%2C%20An%20H%E1%BA%A3i%20Trung%2C%20S%C6%A1n%20Tr%C3%A0%2C%20%C4%90%C3%A0%20N%E1%BA%B5ng&output=embed">
+        </iframe>
+      </aside>
+    </section>
+  </main>
+
+  <!-- HERO SECOND -->
+  <figure class="hero-bleed">
+    <img src="../images/categories/mqcs2.webp" alt="Quầy bếp & nồi nước mì quảng — Cô Sáu">
+  </figure>
+
+  <!-- STORY & GALLERY -->
+  <section class="wrap">
+    <div class="row">
+      <article class="card pad content">
+        <div class="eyebrow">Câu chuyện quán</div>
+        <h2 class="place-title" style="font-size:clamp(1.4rem,1rem + 1vw,1.9rem); color:#333">
+          Tô mì đậm đà hồn miền Trung — nhìn thẳng sông Hàn
+        </h2>
+        <p>Mì quảng Cô Sáu giữ cách nấu truyền thống nhưng topping rất phong phú. Khách có thể chọn cá lóc/tôm thịt hoặc thập cẩm; bánh tráng mè ăn kèm giòn rụm, tăng độ “vui miệng”.</p>
+      </article>
+
+      <aside class="card pad gallery-wrap">
+        <div class="gallery" id="gallery">
+          <figure class="g-item"><img loading="lazy" src="../images/categories/mqcs3.webp" alt="Mì quảng cá lóc — sợi mì vàng mềm"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/mqcs4.webp" alt="Topping thập cẩm đầy đặn"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/mqcs5.webp" alt="Bánh tráng mè giòn — ăn kèm chuẩn vị"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/mqcs6.webp" alt="Không gian rộng, sạch sẽ, nhìn ra sông Hàn"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/mqcs7.webp" alt="Quầy chế biến gọn gàng, lên món nhanh"></figure>
+          <figure class="g-item"><img loading="lazy" src="../images/categories/mqcs.webp"  alt="Biển hiệu Mì quảng Cô Sáu"></figure>
+        </div>
+        <div class="g-nav">
+          <button class="g-btn" type="button" aria-label="Ảnh trước" data-dir="-1">←</button>
+          <button class="g-btn" type="button" aria-label="Ảnh tiếp theo" data-dir="1">→</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- LỰA CHỌN KHÁC -->
+  <section class="wrap more-wrap" data-more>
+    <h3 class="place-title" style="font-size:clamp(1.4rem,1rem + 1vw,1.9rem)">Lựa chọn khác</h3>
+
+    <div class="more-grid" data-grid>
+      <a class="card pad more-card" href="banh-trang-cuon-thit-heo-ba-huong.html">
+        <figure><img src="../images/categories/fb bánh tráng heo bà hướng1.webp" alt="Bánh tráng cuốn thịt heo Bà Hường"></figure>
+        <div style="font:700 1.05rem/1.3 'Inter',system-ui">Bánh tráng cuốn thịt heo Bà Hường</div>
+        <div class="more-meta">Đặc sản Đà Nẵng</div>
+      </a>
+
+      <a class="card pad more-card" href="banh-trang-cuon-thit-heo-quan-com-dai-loc.html">
+        <figure><img src="../images/categories/Bánh tráng thịt heo Quán Cốm Đại Lộc 1.webp" alt="Quán Cốm Đại Lộc"></figure>
+        <div style="font:700 1.05rem/1.3 'Inter',system-ui">Quán Cốm Đại Lộc</div>
+        <div class="more-meta">Rau sống & mắm nêm “chất”</div>
+      </a>
+    </div>
+
+    <div class="more-actions"><button class="more-btn" data-toggle>Xem thêm</button></div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="grid">
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Ăn Ngon 3 Miền</strong>
+          <p class="section-desc">Nền tảng review quán ăn khắp Việt Nam. Chia sẻ bởi cộng đồng sành ăn.</p>
+        </div>
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Liên kết</strong>
+          <p class="section-desc"><a href="#">Điều khoản</a> • <a href="#">Bảo mật</a> • <a href="../contactus.html">Liên hệ</a></p>
+        </div>
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Cập nhật</strong>
+          <p class="section-desc">Theo dõi chúng tôi để nhận gợi ý quán ngon mỗi tuần.</p>
+        </div>
+      </div>
+      <p style="margin-top:12px;color:var(--muted)">© <span id="year"></span> AnNgon3Mien. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // năm hiện tại
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Gallery ← →
+    const scroller = document.getElementById('gallery');
+    document.querySelectorAll('.g-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const dir = Number(btn.dataset.dir||1);
+        scroller.scrollBy({left: dir * (scroller.clientWidth * 0.9), behavior:'smooth'});
+      });
+    });
+
+    // Toggle "Xem thêm"
+    const moreWrap = document.querySelector('[data-more]');
+    const grid = moreWrap?.querySelector('[data-grid]');
+    const toggle = moreWrap?.querySelector('[data-toggle]');
+    if(grid && toggle){
+      const collapsedMax = grid.scrollHeight / 2;
+      grid.style.maxHeight = collapsedMax + 'px';
+      toggle.addEventListener('click', () => {
+        const isCollapsed = grid.style.maxHeight !== 'none';
+        grid.style.maxHeight = isCollapsed ? 'none' : (collapsedMax + 'px');
+        toggle.textContent = isCollapsed ? 'Thu gọn' : 'Xem thêm';
+      });
+    }
+  </script>
+</body>
+</html>
