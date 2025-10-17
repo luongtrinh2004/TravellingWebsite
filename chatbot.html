@@ -24,8 +24,9 @@ button{padding:12px 16px;border:0;border-radius:10px;font-weight:700;background:
 button:active{transform:scale(.98)}
 .hint{color:var(--muted);font-size:14px;margin:4px 0 0}
 .typing{display:inline-block;min-width:28px}
-.typing::after{content:""; display:inline-block; width:4px; height:4px; margin-left:6px; border-radius:50%; background:#888; box-shadow:8px 0 0 #888,16px 0 0 #888; animation:blink 1s infinite}
+.typing::after{content:"";display:inline-block;width:4px;height:4px;margin-left:6px;border-radius:50%;background:#888;box-shadow:8px 0 0 #888,16px 0 0 #888;animation:blink 1s infinite}
 @keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
+.small{font-size:13px;color:#6e7380}
 </style>
 </head>
 <body>
@@ -34,11 +35,11 @@ button:active{transform:scale(.98)}
     <div class="header">🤖 Chatbot tư vấn quán ăn (Gemini)</div>
     <div id="chat" class="chat"></div>
     <div class="input">
-      <input id="q" type="text" placeholder="Bạn muốn ăn gì? Ví dụ: 'Mình muốn ăn phở ở Hà Nội'"/>
+      <input id="q" type="text" placeholder="Bạn muốn ăn gì? Ví dụ: 'Phở ở Hà Nội, gần Hồ Gươm, 7h sáng, ~80k/bát'"/>
       <button id="send">Gửi</button>
     </div>
   </div>
-  <p class="hint">Gợi ý: “Mình muốn ăn phở ở Hà Nội, gần hồ Gươm, khoảng 7h sáng, tầm 80k/1 bát.”</p>
+  <p class="hint">Gợi ý: “Mình muốn ăn bún chả ở quận Hoàn Kiếm, tối nay, ngân sách 60–80k.”</p>
 </div>
 
 <script>
@@ -51,13 +52,17 @@ const btn  = document.getElementById('send');
  */
 const history = [];
 
+// Có thể gắn "ngữ cảnh" mặc định cho bot (frontend prompt)
+const CLIENT_CONTEXT = `Ngữ cảnh người dùng: đang ở Hà Nội, muốn được gợi ý quán ăn
+theo: món/khu vực/khung giờ/ngân sách. Trả lời ngắn gọn, mỗi quán một dòng tiêu đề + 2–3 gạch đầu dòng chi tiết.`;
+
 function addBubble(html, who='bot'){
   const row = document.createElement('div');
   row.className = 'row ' + (who === 'user' ? 'user' : 'bot');
   row.innerHTML = `<div class="bubble">${html}</div>`;
   chat.appendChild(row);
   chat.scrollTop = chat.scrollHeight;
-  return row.querySelector('.bubble'); // return bubble element
+  return row.querySelector('.bubble');
 }
 
 function escapeHTML(s){ return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -66,33 +71,46 @@ async function ask(msg){
   const userText = msg.trim();
   if(!userText) return;
 
-  // hiển thị user
+  // Hiển thị câu người dùng
   addBubble(escapeHTML(userText).replace(/\n/g,'<br>'), 'user');
 
-  // hiển thị đang gõ...
+  // Bubble đang gõ
   const typingEl = addBubble('<span class="typing">Đang gõ</span>', 'bot');
 
   btn.disabled = true; q.disabled = true;
 
   try{
-    const r = await fetch('/.netlify/functions/chat', { // ✅ đúng path Netlify
+    // Đưa "client context" vào history 1 lần
+    if (!history.some(h => h.role === 'user' && h.parts?.[0]?.text?.startsWith('Ngữ cảnh người dùng:'))) {
+      history.push({ role:'user', parts:[{ text: CLIENT_CONTEXT }] });
+      history.push({ role:'model', parts:[{ text: 'Đã nhận ngữ cảnh.' }] });
+    }
+
+    const r = await fetch('/.netlify/functions/chat', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
         message: userText,
-        history // gửi nguyên history Gemini
+        history,              // giữ nguyên format Gemini
+        temperature: 0.7
       })
     });
 
-    const data = await r.json();
-    const text = (data && (data.reply || data.text)) ? data.reply || data.text : 'Xin lỗi, mình chưa có câu trả lời.';
+    // Server có thể trả lỗi text/plain → cố gắng parse, nếu fail thì lấy raw text
+    let replyText = 'Xin lỗi, mình chưa có câu trả lời.';
+    const ct = r.headers.get('content-type') || '';
+    if (ct.includes('application/json')) {
+      const data = await r.json();
+      replyText = (data.reply || data.text || replyText);
+    } else {
+      replyText = await r.text();
+    }
 
-    // cập nhật bot bubble
-    typingEl.innerHTML = escapeHTML(text).replace(/\n/g,'<br>');
+    typingEl.innerHTML = escapeHTML(replyText).replace(/\n/g,'<br>');
 
-    // lưu lịch sử cho lượt sau (định dạng Gemini)
+    // Lưu history cho lần chat sau
     history.push({ role:'user',  parts:[{ text: userText }] });
-    history.push({ role:'model', parts:[{ text }] });
+    history.push({ role:'model', parts:[{ text: replyText }] });
 
   } catch(e){
     typingEl.textContent = 'Có lỗi kết nối server. Vui lòng thử lại.';
@@ -105,7 +123,8 @@ btn.addEventListener('click', ()=>{ if(q.value.trim()){ ask(q.value); q.value=''
 q.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); btn.click(); }});
 
 // Lời chào ban đầu
-addBubble('Xin chào! Bạn muốn ăn món gì, ở khu vực nào và vào khung giờ nào? Ví dụ: "Muốn ăn phở ở Hà Nội".');
+addBubble('Xin chào! Bạn muốn ăn món gì, ở khu vực nào và khung giờ nào? \
+Ví dụ: <span class="small">“Phở ở Hà Nội, gần Hồ Gươm, 7h sáng, ~80k/bát”.</span>');
 </script>
 </body>
 </html>

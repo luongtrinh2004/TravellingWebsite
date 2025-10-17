@@ -1,0 +1,22 @@
+[build]
+  # Thư mục public của site (đổi nếu bạn dùng /public hay /dist)
+  publish = "."
+  # Nếu dùng framework có build command thì thêm: command = "npm run build"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Cho phép gọi /api/chat thay vì /.netlify/functions/chat
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Một số header cơ bản
+[[headers]]
+  for = "/*"
+  [headers.values]
+  X-Frame-Options = "DENY"
+  X-Content-Type-Options = "nosniff"
+  Referrer-Policy = "strict-origin-when-cross-origin"
