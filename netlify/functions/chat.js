@@ -14,12 +14,23 @@ Nguyên tắc trả lời:
 - Khi người dùng muốn món khác/khu khác: nhớ ngữ cảnh trước nhưng cập nhật theo yêu cầu mới.
 `;
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*", // cùng domain thì không bắt buộc, nhưng để an tâm
+  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Cache-Control": "no-store",
+};
+
 export async function handler(event) {
-  // Chỉ chấp nhận POST
+  // Trả lời preflight
+  if (event.httpMethod === "OPTIONS") {
+    return { statusCode: 200, headers: corsHeaders, body: "ok" };
+  }
+
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
-      headers: { "Content-Type": "text/plain" },
+      headers: corsHeaders,
       body: "Method Not Allowed",
     };
   }
@@ -27,7 +38,11 @@ export async function handler(event) {
   try {
     const API_KEY = process.env.GEMINI_API_KEY;
     if (!API_KEY) {
-      return { statusCode: 500, body: "Missing GEMINI_API_KEY" };
+      return {
+        statusCode: 500,
+        headers: corsHeaders,
+        body: "Missing GEMINI_API_KEY",
+      };
     }
 
     const {
@@ -36,11 +51,10 @@ export async function handler(event) {
       temperature = 0.7,
     } = JSON.parse(event.body || "{}");
     if (!message || typeof message !== "string") {
-      return { statusCode: 400, body: "Missing message" };
+      return { statusCode: 400, headers: corsHeaders, body: "Missing message" };
     }
 
     // Chuẩn hoá history từ client về format Gemini
-    // Chấp nhận cả dạng {role, parts:[{text}]} lẫn {role, text}
     const mappedHistory = (Array.isArray(history) ? history : [])
       .map((h) => ({
         role: h.role === "model" ? "model" : "user",
@@ -48,13 +62,8 @@ export async function handler(event) {
       }))
       .filter((h) => h.parts[0].text);
 
-    // Payload gọi Gemini REST
     const body = {
-      // System prompt – API v1beta hỗ trợ trường systemInstruction
-      systemInstruction: {
-        role: "user",
-        parts: [{ text: SYSTEM_PROMPT }],
-      },
+      systemInstruction: { role: "user", parts: [{ text: SYSTEM_PROMPT }] },
       contents: [
         ...mappedHistory,
         { role: "user", parts: [{ text: message }] },
@@ -77,7 +86,7 @@ export async function handler(event) {
 
     if (!resp.ok) {
       const text = await resp.text();
-      return { statusCode: resp.status, body: text };
+      return { statusCode: resp.status, headers: corsHeaders, body: text };
     }
 
     const data = await resp.json();
@@ -89,13 +98,14 @@ export async function handler(event) {
 
     return {
       statusCode: 200,
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": "no-store",
-      },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
       body: JSON.stringify({ reply }),
     };
   } catch (err) {
-    return { statusCode: 500, body: String(err?.message || err) };
+    return {
+      statusCode: 500,
+      headers: corsHeaders,
+      body: String(err?.message || err),
+    };
   }
 }

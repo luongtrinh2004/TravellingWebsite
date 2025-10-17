@@ -39,7 +39,7 @@ button:active{transform:scale(.98)}
       <button id="send">Gửi</button>
     </div>
   </div>
-  <p class="hint">Gợi ý: “Mình muốn ăn bún chả ở quận Hoàn Kiếm, tối nay, ngân sách 60–80k.”</p>
+  <p class="hint">Gợi ý: “Mình muốn ăn bún chả ở Hoàn Kiếm, tối nay, ngân sách 60–80k.”</p>
 </div>
 
 <script>
@@ -47,14 +47,8 @@ const chat = document.getElementById('chat');
 const q    = document.getElementById('q');
 const btn  = document.getElementById('send');
 
-/** Lưu history theo định dạng Gemini:
- * [{ role:'user'|'model', parts:[{text:'...'}] }, ...]
- */
-const history = [];
-
-// Có thể gắn "ngữ cảnh" mặc định cho bot (frontend prompt)
-const CLIENT_CONTEXT = `Ngữ cảnh người dùng: đang ở Hà Nội, muốn được gợi ý quán ăn
-theo: món/khu vực/khung giờ/ngân sách. Trả lời ngắn gọn, mỗi quán một dòng tiêu đề + 2–3 gạch đầu dòng chi tiết.`;
+const history = []; // [{role, parts:[{text}]}]
+const CLIENT_CONTEXT = `Ngữ cảnh người dùng: ở Hà Nội, muốn gợi ý quán theo món/khu/giờ/ngân sách. Trả lời ngắn, mỗi quán có địa chỉ, giờ, giá, điểm nổi bật.`;
 
 function addBubble(html, who='bot'){
   const row = document.createElement('div');
@@ -64,24 +58,18 @@ function addBubble(html, who='bot'){
   chat.scrollTop = chat.scrollHeight;
   return row.querySelector('.bubble');
 }
-
-function escapeHTML(s){ return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+const esc = s => s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 async function ask(msg){
   const userText = msg.trim();
   if(!userText) return;
 
-  // Hiển thị câu người dùng
-  addBubble(escapeHTML(userText).replace(/\n/g,'<br>'), 'user');
-
-  // Bubble đang gõ
+  addBubble(esc(userText).replace(/\n/g,'<br>'), 'user');
   const typingEl = addBubble('<span class="typing">Đang gõ</span>', 'bot');
-
   btn.disabled = true; q.disabled = true;
 
   try{
-    // Đưa "client context" vào history 1 lần
-    if (!history.some(h => h.role === 'user' && h.parts?.[0]?.text?.startsWith('Ngữ cảnh người dùng:'))) {
+    if (!history.some(h => h.role==='user' && h.parts?.[0]?.text?.startsWith('Ngữ cảnh người dùng:'))) {
       history.push({ role:'user', parts:[{ text: CLIENT_CONTEXT }] });
       history.push({ role:'model', parts:[{ text: 'Đã nhận ngữ cảnh.' }] });
     }
@@ -89,40 +77,30 @@ async function ask(msg){
     const r = await fetch('/.netlify/functions/chat', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        message: userText,
-        history,              // giữ nguyên format Gemini
-        temperature: 0.7
-      })
+      body: JSON.stringify({ message: userText, history, temperature: 0.7 })
     });
 
-    // Server có thể trả lỗi text/plain → cố gắng parse, nếu fail thì lấy raw text
     let replyText = 'Xin lỗi, mình chưa có câu trả lời.';
     const ct = r.headers.get('content-type') || '';
     if (ct.includes('application/json')) {
       const data = await r.json();
-      replyText = (data.reply || data.text || replyText);
+      replyText = data.reply || data.text || replyText;
     } else {
       replyText = await r.text();
     }
+    typingEl.innerHTML = esc(replyText).replace(/\n/g,'<br>');
 
-    typingEl.innerHTML = escapeHTML(replyText).replace(/\n/g,'<br>');
-
-    // Lưu history cho lần chat sau
     history.push({ role:'user',  parts:[{ text: userText }] });
     history.push({ role:'model', parts:[{ text: replyText }] });
 
   } catch(e){
     typingEl.textContent = 'Có lỗi kết nối server. Vui lòng thử lại.';
-  } finally {
-    btn.disabled = false; q.disabled = false; q.focus();
-  }
+  } finally { btn.disabled = false; q.disabled = false; q.focus(); }
 }
 
 btn.addEventListener('click', ()=>{ if(q.value.trim()){ ask(q.value); q.value=''; }});
 q.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); btn.click(); }});
 
-// Lời chào ban đầu
 addBubble('Xin chào! Bạn muốn ăn món gì, ở khu vực nào và khung giờ nào? \
 Ví dụ: <span class="small">“Phở ở Hà Nội, gần Hồ Gươm, 7h sáng, ~80k/bát”.</span>');
 </script>
