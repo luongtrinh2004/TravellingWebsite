@@ -1,32 +1,28 @@
 // netlify/functions/chat.js
-// Serverless function gọi Gemini. Đọc biến môi trường GEMINI_API_KEY từ Netlify.
+// Serverless function gọi Gemini. Dùng API v1 + model alias ổn định.
 
-const MODEL = process.env.GEMINI_MODEL || "gemini-1.5-flash";
+const MODEL = process.env.GEMINI_MODEL || "gemini-1.5-flash-latest"; // ✅ alias mới
+const API_VERSION = "v1"; // ✅ dùng v1 thay vì v1beta
 
 const SYSTEM_PROMPT = `
 Bạn là trợ lý ẩm thực Việt Nam (ưu tiên Hà Nội) cho website review "Tinh Hoa Hương Vị Việt".
 Nguyên tắc trả lời:
-- Luôn gợi ý 3–5 lựa chọn phù hợp nhất. Mỗi lựa chọn: Tên quán • Địa chỉ ngắn gọn • Giờ mở cửa • Giá tham khảo • Điểm nổi bật (1 câu) • Mẹo nhỏ (nếu có).
-- Rất súc tích, không văn vẻ, không liệt kê dài dòng.
-- Nếu người dùng đưa ràng buộc (khu vực, giờ, ngân sách, món): tôn trọng tối đa; nếu thiếu, hỏi lại *một* câu làm rõ.
-- Không bịa số điện thoại/giá/giờ nếu không chắc; nói "khoảng" hoặc "tham khảo".
-- Luôn dùng tiếng Việt, giọng thân thiện.
-- Khi người dùng muốn món khác/khu khác: nhớ ngữ cảnh trước nhưng cập nhật theo yêu cầu mới.
+- Gợi ý 3–5 lựa chọn phù hợp. Mỗi lựa chọn: Tên quán • Địa chỉ ngắn gọn • Giờ mở cửa • Giá tham khảo • Điểm nổi bật (1 câu) • Mẹo nhỏ (nếu có).
+- Ngắn gọn, không văn vẻ. Tôn trọng ràng buộc (khu vực/giờ/ngân sách/món).
+- Không bịa số liệu; dùng "khoảng/tham khảo" khi cần. Luôn dùng tiếng Việt, thân thiện.
 `;
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*", // cùng domain thì không bắt buộc, nhưng để an tâm
+  "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "Content-Type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Cache-Control": "no-store",
 };
 
 export async function handler(event) {
-  // Trả lời preflight
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 200, headers: corsHeaders, body: "ok" };
   }
-
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -37,13 +33,12 @@ export async function handler(event) {
 
   try {
     const API_KEY = process.env.GEMINI_API_KEY;
-    if (!API_KEY) {
+    if (!API_KEY)
       return {
         statusCode: 500,
         headers: corsHeaders,
         body: "Missing GEMINI_API_KEY",
       };
-    }
 
     const {
       message,
@@ -54,7 +49,7 @@ export async function handler(event) {
       return { statusCode: 400, headers: corsHeaders, body: "Missing message" };
     }
 
-    // Chuẩn hoá history từ client về format Gemini
+    // Chuẩn hoá history cho Gemini
     const mappedHistory = (Array.isArray(history) ? history : [])
       .map((h) => ({
         role: h.role === "model" ? "model" : "user",
@@ -62,7 +57,7 @@ export async function handler(event) {
       }))
       .filter((h) => h.parts[0].text);
 
-    const body = {
+    const payload = {
       systemInstruction: { role: "user", parts: [{ text: SYSTEM_PROMPT }] },
       contents: [
         ...mappedHistory,
@@ -76,17 +71,32 @@ export async function handler(event) {
       },
     };
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
-
-    const resp = await fetch(url, {
+    // ✅ API v1
+    let url = `https://generativelanguage.googleapis.com/${API_VERSION}/models/${MODEL}:generateContent?key=${API_KEY}`;
+    let resp = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
+      body: JSON.stringify(payload),
     });
+
+    // Fallback: nếu model không support cho version này, thử alias khác/phien bản cũ
+    if (!resp.ok && resp.status === 404) {
+      const fallbackModel = "gemini-1.5-flash"; // thử tên cũ (một số key cũ vẫn map được)
+      url = `https://generativelanguage.googleapis.com/${API_VERSION}/models/${fallbackModel}:generateContent?key=${API_KEY}`;
+      resp = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    }
 
     if (!resp.ok) {
       const text = await resp.text();
-      return { statusCode: resp.status, headers: corsHeaders, body: text };
+      return {
+        statusCode: resp.status,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        body: text,
+      };
     }
 
     const data = await resp.json();
