@@ -83,8 +83,8 @@ async function ask(msg){
     let replyText = 'Xin lỗi, mình chưa có câu trả lời.';
     const ct = r.headers.get('content-type') || '';
     if (ct.includes('application/json')) {
-      const data = await r.json();
-      replyText = data.reply || data.text || replyText;
+      const data = await r.json().catch(() => ({}));
+      replyText = data.reply || data.error?.message || data.text || replyText;
     } else {
       replyText = await r.text();
     }
