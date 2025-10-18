@@ -78,7 +78,18 @@
     .g-nav{position:absolute;top:50%;transform:translateY(-50%);display:flex;gap:6px;width:100%;justify-content:space-between;pointer-events:none}
     .g-btn{pointer-events:auto;border:none;border-radius:999px;width:36px;height:36px;background:#fff;
       box-shadow:0 8px 16px rgba(0,0,0,.18);display:grid;place-items:center;cursor:pointer;font:700 18px/1 "Inter"}
-    .g-btn:active{transform:translateY(-50%) scale(.96)}
+    .g-btn:active{transform:scale(.96)}
+
+    /* ===== More choices ===== */
+    .more-wrap{padding-top:8px}
+    .more-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:10px}
+    .more-card{display:block}
+    .more-card figure{margin:0 0 10px;overflow:hidden;border-radius:12px;box-shadow:0 8px 16px rgba(0,0,0,.08)}
+    .more-card img{display:block;width:100%;height:180px;object-fit:cover}
+    .more-meta{color:var(--muted);font:600 .98rem/1.5 "Inter",system-ui;margin-top:2px}
+    .more-actions{display:flex;justify-content:center;margin-top:12px}
+    .more-btn{border:1px solid var(--border);background:var(--surface);padding:10px 16px;border-radius:999px;font:700 .98rem/1 "Inter";cursor:pointer}
+    .more-btn:hover{background:var(--surface-2)}
 
     /* ===== Footer ===== */
     footer{border-top:1px solid var(--border);background:var(--surface-2);padding:32px 0;color:var(--muted)}
@@ -102,7 +113,7 @@
 
   <!-- HERO TOP -->
   <figure class="hero-bleed">
-    <img src="../images/categories/mỳ%20quảng%20bà%20lữ.webp" alt="Mì Quảng Bà Lữ — tô mì quảng đầy đặn">
+    <img loading="lazy" src="../images/categories/mỳ%20quảng%20bà%20lữ.webp" alt="Mì Quảng Bà Lữ — tô mì quảng đầy đặn">
   </figure>
 
   <main id="main" class="wrap">
@@ -110,11 +121,11 @@
       <article class="card pad content">
         <div class="eyebrow">Đà Nẵng • Mì Quảng</div>
         <h1 class="place-title">Mì Quảng Bà Lữ</h1>
-        <div class="meta">
+        <div class="meta" aria-label="Thông tin quán">
           <span><strong>Địa chỉ:</strong> 24 Trần Cao Vân, Q. Hải Châu, Đà Nẵng</span>
           <span>• <strong>Giờ:</strong> 06:00 – 21:00</span>
           <span>• <strong>Giá:</strong> 30.000 – 55.000đ/tô</span>
-          <span class="stars">★★★★★</span>
+          <span class="stars" aria-label="Đánh giá 5 trên 5">★★★★★</span>
         </div>
 
         <p><strong>Hà Vy (5★):</strong> Nước lèo sánh, dậy mùi tôm thịt; sợi mì mềm mà vẫn có độ dai. Rau sống tươi, bánh tráng mè giòn rụm. Ăn “đã cái nư”.</p>
@@ -134,7 +145,7 @@
 
   <!-- HERO SECOND -->
   <figure class="hero-bleed">
-    <img src="../images/categories/mỳ%20quảng%20bà%20lữ2.webp" alt="Tô mì quảng gà tôm kèm bánh tráng mè">
+    <img loading="lazy" src="../images/categories/mỳ%20quảng%20bà%20lữ2.webp" alt="Tô mì quảng gà tôm kèm bánh tráng mè">
   </figure>
 
   <!-- STORY & GALLERY -->
@@ -150,7 +161,7 @@
         <p><strong>Best-seller:</strong> Mì Quảng gà tôm, Mì ếch, Mì sườn. <strong>Mẹo nhỏ:</strong> Gọi thêm chén mắm nêm dứa bằm để “nâng level” đậm đà.</p>
       </article>
 
-      <aside class="card pad gallery-wrap">
+      <aside class="card pad gallery-wrap" aria-label="Thư viện ảnh">
         <div class="gallery" id="gallery">
           <figure class="g-item"><img loading="lazy" src="../images/categories/mỳ%20quảng%20bà%20lữ1.webp" alt="Không gian quán Mì Quảng Bà Lữ"></figure>
           <figure class="g-item"><img loading="lazy" src="../images/categories/mỳ%20quảng%20bà%20lữ3.webp" alt="Sợi mì to bản, vàng óng"></figure>
@@ -163,6 +174,33 @@
         </div>
       </aside>
     </div>
+  </section>
+
+  <!-- LỰA CHỌN KHÁC -->
+  <section class="wrap more-wrap" data-more>
+    <h3 class="place-title" style="font-size:clamp(1.4rem,1rem + 1vw,1.9rem)">Lựa chọn khác</h3>
+
+    <div class="more-grid" data-grid>
+      <!-- Mì Quảng Bệt -->
+      <a class="card pad more-card" href="mi-quang-bet.html" data-slug="mi-quang-bet.html">
+        <figure>
+          <img loading="lazy" src="../images/categories/fb%20mỳ%20quảng%20bệt1.webp" alt="Mì Quảng Bệt — quán mì quảng Đà Nẵng">
+        </figure>
+        <div style="font:700 1.05rem/1.3 'Inter',system-ui">Mì Quảng Bệt</div>
+        <div class="more-meta">62 Nguyễn Xí, Liên Chiểu, Đà Nẵng</div>
+      </a>
+
+      <!-- Mì Quảng Cô Sáu -->
+      <a class="card pad more-card" href="mi-quang-co-sau.html" data-slug="mi-quang-co-sau.html">
+        <figure>
+          <img loading="lazy" src="../images/categories/mqcs1.webp" alt="Mì Quảng Cô Sáu — nhìn ra sông Hàn">
+        </figure>
+        <div style="font:700 1.05rem/1.3 'Inter',system-ui">Mì Quảng Cô Sáu</div>
+        <div class="more-meta">397 Trần Hưng Đạo, Sơn Trà, Đà Nẵng</div>
+      </a>
+    </div>
+
+    <div class="more-actions"><button class="more-btn" type="button" data-toggle>Xem thêm</button></div>
   </section>
 
   <footer>
@@ -187,7 +225,8 @@
 
   <script type="module" defer src="../js/gallery.js"></script>
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+    // Cập nhật năm
+    (function(){var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();})();
   </script>
 </body>
 </html>
