@@ -67,9 +67,13 @@ function addBubble(html, who='bot'){
 const esc = s => s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const rmAcc = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 
+// =============== state (slot filling) ===============
+let STATE = { city:null, dish:null, area:null, budget:null, dow:null, minuteOfDay:null };
+const resetState = () => STATE = { city:null, dish:null, area:null, budget:null, dow:null, minuteOfDay:null };
+
 // ==================== data ====================
 // Schema: city, dish, name, area, address, price_min, price_max, hours (0..6 => [ [HH:MM, HH:MM], ... ]), why, href, tags
-// Dữ liệu trích từ file chatbot.pdf do bạn cung cấp.
+// Dữ liệu từ file của bạn.
 const PLACES = [
   // ===== HÀ NỘI =====
   {city:'Hà Nội', dish:'pho', name:'Phở 10 Lý Quốc Sư', area:'Hàng Trống, Hoàn Kiếm', address:'10 P. Lý Quốc Sư, Hàng Trống, Hoàn Kiếm, Hà Nội', hours:{0:[['06:00','22:00']],1:[['06:00','22:00']],2:[['06:00','22:00']],3:[['06:00','22:00']],4:[['06:00','22:00']],5:[['06:00','22:00']],6:[['06:00','22:00']]}, price_min:70000, price_max:100000, why:'Nước dùng trong, vị bò chuẩn phố cổ', href:'#', tags:['phở bò','phố cổ']},
@@ -240,7 +244,7 @@ function parseArea(text){
   return null;
 }
 
-// ==================== matching ====================
+// ==================== matching & format ====================
 function isOpenAt(place, dow, minuteOfDay){
   if(minuteOfDay==null) return true;
   const segs = place.hours?.[dow] || place.hours?.[0] || [];
@@ -273,14 +277,14 @@ function formatHours(h){
   if(!segs.length) return 'Giờ tham khảo';
   return segs.map(([f,t])=>`${f}–${t}`).join(', ');
 }
-function searchPlaces(queryText, defaultCity='Hà Nội'){
+function searchPlaces(queryText, defaultCity){
   const dish = parseDish(queryText);
   const area = parseArea(queryText);
   const budget = parseBudgetVND(queryText);
-  const city = parseCity(queryText) || defaultCity;
+  const city = parseCity(queryText) || defaultCity || null;
   const {dow, minuteOfDay} = parseTime(queryText);
 
-  const cand = PLACES.filter(p => p.city===city && (!dish || p.dish===dish))
+  const cand = PLACES.filter(p => (!city || p.city===city) && (!dish || p.dish===dish))
     .map(p=>{
       let sc = 0;
       if(dish && p.dish===dish) sc += 3;
@@ -297,13 +301,14 @@ function searchPlaces(queryText, defaultCity='Hà Nội'){
   return {city, dish, area, budget, when:{dow,minuteOfDay}, results:cand};
 }
 
-// ==================== main ====================
-function buildTitle(dish, city){
-  const dishText = DISH_LABELS[dish] || 'Món ngon';
-  return `${dishText} ở ${city}: gợi ý hợp gu`;
+// ==================== conversation logic (listen-first) ====================
+function isGreeting(s){
+  const t = rmAcc(s);
+  return /(hi|hello|xin chao|chao|chao ban)/.test(t);
 }
-function renderResults(res){
-  if(!res.results.length){ addBubble('Chưa tìm thấy quán hợp tiêu chí. Bạn thử nêu rõ món/khu/giờ/ngân sách hơn nhé!', 'bot'); return; }
+function respondWithResults(res){
+  const dishText = DISH_LABELS[res.dish] || 'Món ngon';
+  const cityText = res.city || 'thành phố bạn đang ở';
   const places = res.results.map(p=>({
     name:p.name,
     area:p.area || p.city,
@@ -313,68 +318,58 @@ function renderResults(res){
     why:p.why || '',
     href:p.href || '#'
   }));
-  const title = buildTitle(res.dish, res.city);
-  addBubble(placeCards(title, places), 'bot');
+  addBubble(placeCards(`${dishText} ở ${cityText}: gợi ý hợp gu`, places),'bot');
+  resetState();
 }
-
-const history = [];
-const SYSTEM_PROMPT = `Bạn là chatbot tư vấn quán ăn đa thành phố (Hà Nội, Hải Phòng, Đà Nẵng, Huế, Cần Thơ, Hồ Chí Minh).
-- Trả lời cực ngắn gọn. Mỗi quán: khu/địa chỉ, giờ tham khảo, khoảng giá, điểm nổi bật, kèm link nếu có.
-- Nếu người dùng chỉ nêu thành phố/món chung chung: đề xuất 3 món “signature” của thành phố đó.
-- Nếu người dùng nêu món cụ thể: gợi ý đúng 3 quán tiêu biểu theo dataset nội bộ.
-- Tôn trọng ngân sách/giờ/khu khi có, ưu tiên quán còn mở, giá nằm trong khoảng.
-- Không bịa địa chỉ/giờ/giá ngoài dataset. Nếu thiếu thì ghi “Tham khảo tại quán”.`;
-
-const CLIENT_CONTEXT = `Ngữ cảnh người dùng: có thể ở bất kỳ thành phố trong danh sách; muốn gợi ý theo món/khu/giờ/ngân sách. Trả lời ngắn, mỗi quán có địa chỉ, giờ, giá, điểm nổi bật.`;
 
 async function ask(msg){
   const userText = msg.trim();
   if(!userText) return;
   addBubble(esc(userText).replace(/\n/g,'<br>'), 'user');
 
-  // local first
-  const local = searchPlaces(userText, 'Hà Nội');
-  if(local.results.length){ renderResults(local); return; }
+  // 1) Greeting -> giới thiệu ngắn + hỏi
+  if(isGreeting(userText)){
+    addBubble('Chào bạn 👋 Mình là chatbot gợi ý quán ăn theo <b>món/khu/giờ/ngân sách</b> tại HN, HP, ĐN, Huế, CT, HCM. Bạn đang ở <b>thành phố/khu nào</b> và muốn ăn <b>món gì</b>?');
+    return;
+  }
 
-  // fallback server (nếu bạn có back-end)
-  const typingEl = addBubble('<span class="typing">Đang gõ</span>', 'bot');
-  btn.disabled = true; q.disabled = true;
-  try{
-    if (!history.some(h => h.role==='user' && h.parts?.[0]?.text?.startsWith('Ngữ cảnh người dùng:'))) {
-      history.push({ role:'user', parts:[{ text: CLIENT_CONTEXT }] });
-      history.push({ role:'model', parts:[{ text: 'Đã nhận ngữ cảnh.' }] });
-    }
-    const r = await fetch('/.netlify/functions/chat', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        message: userText,
-        history,
-        temperature: 0.6,
-        system: SYSTEM_PROMPT
-      })
-    });
-    let reply = 'Xin lỗi, mình chưa có câu trả lời.';
-    const ct = r.headers.get('content-type') || '';
-    if (ct.includes('application/json')) {
-      const data = await r.json().catch(()=>({}));
-      reply = data.reply || data.error?.message || data.text || reply;
-    } else reply = await r.text();
-    typingEl.innerHTML = esc(reply).replace(/\n/g,'<br>');
-    history.push({ role:'user',  parts:[{ text: userText }] });
-    history.push({ role:'model', parts:[{ text: reply.replace(/<[^>]+>/g,'') }] });
-  } catch(e){
-    typingEl.parentElement.innerHTML = 'Có lỗi kết nối server. Vui lòng thử lại.';
-  } finally {
-    btn.disabled = false; q.disabled = false; q.focus();
+  // 2) Cập nhật STATE từ câu người dùng
+  const parsed = searchPlaces(userText, STATE.city);
+  if(!STATE.city && parsed.city) STATE.city = parsed.city;
+  if(!STATE.dish && parsed.dish) STATE.dish = parsed.dish;
+  if(!STATE.area && parsed.area) STATE.area = parsed.area;
+  if(!STATE.budget && parsed.budget) STATE.budget = parsed.budget;
+  if(parsed.when){ STATE.dow = parsed.when.dow; STATE.minuteOfDay = parsed.when.minuteOfDay; }
+
+  // 3) Nếu đủ city + dish -> tư vấn
+  if(STATE.city && STATE.dish){
+    const res = searchPlaces(userText, STATE.city);
+    if(res.results.length){ respondWithResults(res); return; }
+    addBubble('Chưa thấy quán khớp tiêu chí. Bạn thử nới ngân sách hoặc chọn khu khác nhé.');
+    return;
+  }
+
+  // 4) Hỏi phần còn thiếu
+  if(!STATE.city && !STATE.dish){
+    addBubble('Bạn đang ở <b>thành phố nào</b> (HN/HP/ĐN/Huế/CT/HCM) và muốn ăn <b>món gì</b>?');
+    return;
+  }
+  if(!STATE.city){
+    const dishText = DISH_LABELS[STATE.dish] || 'món';
+    addBubble(`Bạn muốn ăn ${dishText} ở <b>thành phố nào</b> (HN/HP/ĐN/Huế/CT/HCM)?`);
+    return;
+  }
+  if(!STATE.dish){
+    addBubble(`Bạn đang ở <b>${STATE.city}</b>. Bạn muốn ăn <b>món gì</b>? (vd: Phở, Bún chả, Mì Quảng, Cơm tấm…)`);
+    return;
   }
 }
 
+// =============== events ===============
 btn.addEventListener('click', ()=>{ if(q.value.trim()){ ask(q.value); q.value=''; }});
 q.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); btn.click(); }});
 
-// chào đầu
-addBubble('Xin chào! Bạn muốn ăn <em>món gì</em>, ở <em>thành phố/khu nào</em> và <em>khung giờ</em> nào? <br><span class="small">Ví dụ: “Bún cá cay ở Hải Phòng, trưa nay, ~35k/bát”.</span>');
+// ❌ KHÔNG auto chào/giới thiệu. Bot sẽ lắng nghe trước.
 </script>
 </body>
 </html>
