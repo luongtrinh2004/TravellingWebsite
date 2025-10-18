@@ -30,6 +30,9 @@ button:active{transform:scale(.98)}
 .mini p{margin:0;color:#6e7380;font-size:13px}
 .btn{display:inline-block;background:#1a5cff;color:#fff;border-radius:999px;padding:8px 10px;font-weight:700;font-size:13px;border:0;cursor:pointer;margin-top:8px}
 .btn.secondary{background:#e9edf5;color:#1a2a5c}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{border:1px solid var(--border);background:#fff;border-radius:999px;padding:6px 10px;cursor:pointer;font-weight:600}
+.chip:hover{background:#f3f4f6}
 </style>
 </head>
 <body>
@@ -58,23 +61,20 @@ function addBubble(html, who='bot'){
   chat.appendChild(row); chat.scrollTop = chat.scrollHeight;
   return row.querySelector('.bubble');
 }
-const esc = s => s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const esc   = s => s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const rmAcc = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 
 // ===== say-once (chống lặp) =====
 let LAST_PROMPT = null;
-function sayOnce(type, html){
-  if (LAST_PROMPT === type) return;
-  LAST_PROMPT = type;
-  addBubble(html,'bot');
-}
+function sayOnce(type, html){ if (LAST_PROMPT === type) return; LAST_PROMPT = type; addBubble(html,'bot'); }
 function clearPromptFlag(){ LAST_PROMPT = null; }
 
 // ===== state =====
 let STATE = { city:null, dish:null, area:null, budget:null, dow:null, minuteOfDay:null, askDishPending:false };
-const resetState = () => { STATE = { city:null, dish:null, area:null, budget:null, dow:null, minuteOfDay:null, askDishPending:false }; clearPromptFlag(); };
+let LAST_RESULTS = [];   // nhớ 3 quán vừa hiển thị để hiểu “mình chọn quán X”
+const resetState = () => { STATE = { city:null, dish:null, area:null, budget:null, dow:null, minuteOfDay:null, askDishPending:false }; clearPromptFlag(); LAST_RESULTS = []; };
 
-// ===== dataset (từ PDF đã rút gọn minh hoạ) =====
+// ===== dataset (minh hoạ) =====
 const PLACES = [
   // HÀ NỘI
   {city:'Hà Nội', dish:'pho', name:'Phở 10 Lý Quốc Sư', area:'Hàng Trống, Hoàn Kiếm', address:'10 P. Lý Quốc Sư, Hoàn Kiếm, Hà Nội', hours:{0:[['06:00','22:00']]}, price_min:70000, price_max:100000, why:'Nước dùng trong, vị bò chuẩn phố cổ', href:'#'},
@@ -86,16 +86,14 @@ const PLACES = [
   {city:'Hà Nội', dish:'chaca', name:'Chả Cá Hàng Sơn', area:'Tràng Tiền, Hoàn Kiếm', address:'24 P. Tông Đản, Hà Nội', hours:{0:[['10:30','14:00'],['17:30','22:00']]}, price_min:465000, price_max:2095000, why:'Combo 1–5 đa dạng', href:'#'},
   {city:'Hà Nội', dish:'chaca', name:'Chả Cá Phan', area:'Nguyễn Du, Hai Bà Trưng', address:'14 Nguyễn Bỉnh Khiêm, Hà Nội', hours:{0:[['11:00','21:30']]}, price_min:100000, price_max:200000, why:'Mắm tôm pha khéo', href:'#'},
   {city:'Hà Nội', dish:'chaca', name:'Chả cá Thăng Long', area:'Cửa Đông, Hoàn Kiếm', address:'6B Đường Thành, Hà Nội', hours:{0:[['09:00','23:00']]}, price_min:176000, price_max:176000, why:'Cá dày thịt, chảo nóng', href:'#'},
-
   // HẢI PHÒNG
   {city:'Hải Phòng', dish:'nemcuabe', name:'Nem Cua Bể Thuận Yến', area:'Ngô Quyền', address:'179 Cầu Đất, Hải Phòng', hours:{0:[['10:00','21:00']]}, price_min:35000, price_max:85000, why:'Nem giòn, set hợp lý', href:'#'},
   {city:'Hải Phòng', dish:'nemcuabe', name:'Bún chả Nem Cua Tuyết Loan', area:'Ngô Quyền', address:'124 Lạch Tray, Hải Phòng', hours:{0:[['10:00','21:00']]}, price_min:30000, price_max:60000, why:'Nem cua bể + bún chả', href:'#'},
   {city:'Hải Phòng', dish:'nemcuabe', name:'Nem Cua Bể Quán Nga', area:'Ngô Quyền', address:'195 Trần Phú, Hải Phòng', hours:{0:[['10:00','21:00']]}, price_min:40000, price_max:80000, why:'Nem nóng cuốn tại chỗ', href:'#'},
-  {city:'Hải Phòng', dish:'nemchua', name:'Nem chua An Thọ', area:'An Lão', address:'An Thọ (ship toàn quốc)', hours:{0:[['08:00','21:00']]}, price_min:0, price_max:0, why:'Đặt theo set 10–50 cái', href:'#'},
-  {city:'Hải Phòng', dish:'nemchua', name:'Nem Chua Bà Cụ', area:'—', address:'Hải Phòng', hours:{0:[['08:00','20:00']]}, price_min:10000, price_max:20000, why:'Dân dã, dễ tìm', href:'#'},
+  {city:'Hải Phòng', dish:'nemchua',  name:'Nem chua An Thọ', area:'An Lão', address:'An Thọ (ship toàn quốc)', hours:{0:[['08:00','21:00']]}, price_min:0, price_max:0, why:'Đặt theo set 10–50 cái', href:'#'},
+  {city:'Hải Phòng', dish:'nemchua',  name:'Nem Chua Bà Cụ', area:'—', address:'Hải Phòng', hours:{0:[['08:00','20:00']]}, price_min:10000, price_max:20000, why:'Dân dã, dễ tìm', href:'#'},
   {city:'Hải Phòng', dish:'buncacay', name:'Bún cá cay 153 Lê Lai', area:'Lê Lai', address:'153 Lê Lai, Hải Phòng', hours:{0:[['06:00','12:30']]}, price_min:20000, price_max:30000, why:'Cá rô giòn/mềm', href:'#'},
   {city:'Hải Phòng', dish:'buncacay', name:'Bún cá cay Cậu Đoành', area:'Nhiều cơ sở', address:'HP (tham khảo fanpage)', hours:{0:[['06:30','13:30'],['17:30','21:00']]}, price_min:35000, price_max:35000, why:'Thập cẩm phong phú', href:'#'},
-
   // ĐÀ NẴNG
   {city:'Đà Nẵng', dish:'miquang', name:'Mì Quảng Bệt', area:'—', address:'Đà Nẵng', hours:{0:[['06:00','21:00']]}, price_min:40000, price_max:80000, why:'Topping đủ vị', href:'#'},
   {city:'Đà Nẵng', dish:'miquang', name:'Mì Quảng Bà Lữ', area:'Hải Châu', address:'24 Trần Cao Vân, Đà Nẵng', hours:{0:[['06:00','21:00']]}, price_min:30000, price_max:55000, why:'Truyền thống', href:'#'},
@@ -103,27 +101,22 @@ const PLACES = [
   {city:'Đà Nẵng', dish:'banhtrangthitheo', name:'Bánh tráng thịt heo Bà Thu', area:'Ngũ Hành Sơn', address:'103 Đỗ Bá, Đà Nẵng', hours:{0:[['10:00','21:00']]}, price_min:0, price_max:0, why:'Mắm nêm đậm', href:'#'},
   {city:'Đà Nẵng', dish:'caolau', name:'Cao lầu Phố Hội', area:'Hải Châu', address:'63 Phan Đăng Lưu, Đà Nẵng', hours:{0:[['06:00','21:00']]}, price_min:0, price_max:0, why:'Chuẩn vị Hội An', href:'#'},
   {city:'Đà Nẵng', dish:'caolau', name:'Cao lầu Phước', area:'Sơn Trà', address:'18/3 Nguyễn Duy Hiệu, Đà Nẵng', hours:{0:[['06:00','11:00']]}, price_min:0, price_max:0, why:'Bán buổi sáng', href:'#'},
-
   // HUẾ
   {city:'Huế', dish:'bunbo', name:'Bún Bò Bà Nga', area:'Phú Cát', address:'5 Nguyễn Du, Huế', hours:{0:[['06:00','20:30']]}, price_min:25000, price_max:45000, why:'Đậm vị Huế', href:'#'},
   {city:'Huế', dish:'bunbo', name:'Bún bò Huế Mỹ Tâm', area:'Vĩnh Ninh', address:'3 Trần Cao Vân, Huế', hours:{0:[['07:00','22:00']]}, price_min:30000, price_max:80000, why:'Topping đa dạng', href:'#'},
   {city:'Huế', dish:'che', name:'Chè Cầm', area:'Vỹ Dạ', address:'10 Nguyễn Sinh Cung, Huế', hours:{0:[['16:00','19:30']]}, price_min:15000, price_max:30000, why:'Chè cung đình', href:'#'},
   {city:'Huế', dish:'comhen', name:'Cơm hến Hoa Đông', area:'—', address:'64 Kiệt 7 Ưng Bình, Huế', hours:{0:[['06:00','20:00']]}, price_min:20000, price_max:20000, why:'Đặc biệt, rẻ', href:'#'},
-
   // CẦN THƠ
   {city:'Cần Thơ', dish:'laumam', name:'Lẩu mắm Cần Thơ', area:'Ninh Kiều', address:'162/18 Trần Ngọc Quế, Cần Thơ', hours:{0:[['09:30','22:30']]}, price_min:0, price_max:0, why:'Rau đồng quê', href:'#'},
   {city:'Cần Thơ', dish:'calocnuongtrui', name:'Đồng Xanh', area:'Ninh Kiều', address:'211 Nguyễn Văn Linh, Cần Thơ', hours:{0:[['08:00','03:00']]}, price_min:39000, price_max:39000, why:'Mở khuya', href:'#'},
   {city:'Cần Thơ', dish:'vitnauchao', name:'Vịt Nấu Chao Cẩm Tú', area:'Ninh Kiều', address:'1 Lý Tự Trọng, Cần Thơ', hours:{0:[['09:00','22:00']]}, price_min:150000, price_max:200000, why:'Đậm vị, hợp lý', href:'#'},
-
   // HỒ CHÍ MINH
   {city:'Hồ Chí Minh', dish:'comtam', name:'Cơm tấm Ba Ghiền', area:'Phú Nhuận', address:'84 Đặng Văn Ngữ, TP.HCM', hours:{0:[['06:00','22:00']]}, price_min:40000, price_max:70000, why:'Sườn dày, cơm mềm', href:'#'},
   {city:'Hồ Chí Minh', dish:'banhmi', name:'Bánh mì Huynh Hoa', area:'Quận 1', address:'26 Lê Thị Riêng, TP.HCM', hours:{0:[['13:00','23:00']]}, price_min:73000, price_max:73000, why:'Pate & chả đầy', href:'#'},
   {city:'Hồ Chí Minh', dish:'phalau', name:'Phá lấu bò Cây Trâm', area:'Gò Vấp', address:'208 Cây Trâm, TP.HCM', hours:{0:[['15:00','21:00']]}, price_min:30000, price_max:60000, why:'Có mì/bánh mì phá lấu', href:'#'}
 ];
 
-// Labels
-const DISH_LABELS = {
-  pho:'Phở', buncha:'Bún chả', chaca:'Chả cá',
+const DISH_LABELS = { pho:'Phở', buncha:'Bún chả', chaca:'Chả cá',
   nemcuabe:'Nem cua bể', nemchua:'Nem chua', buncacay:'Bún cá cay',
   miquang:'Mì Quảng', banhtrangthitheo:'Bánh tráng thịt heo', caolau:'Cao lầu',
   bunbo:'Bún bò Huế', che:'Chè', comhen:'Cơm hến',
@@ -161,14 +154,13 @@ function parseTime(text){
 }
 function parseCity(text){
   let t = rmAcc(text);
-  // vá lỗi chính tả phổ biến
-  t = t.replace(/\bha loi\b/g,'ha noi');
-  if(/ha noi|hanoi|hn/.test(t)) return 'Hà Nội';
-  if(/hai phong|haiphong|hp/.test(t)) return 'Hải Phòng';
-  if(/da nang|danang|dn/.test(t)) return 'Đà Nẵng';
-  if(/hue/.test(t)) return 'Huế';
-  if(/can tho|cantho|ct/.test(t)) return 'Cần Thơ';
-  if(/ho chi minh|tphcm|hcm|sai gon|saigon/.test(t)) return 'Hồ Chí Minh';
+  t = t.replace(/\bha loi\b/g,'ha noi'); // vá lỗi
+  if(/ha noi|hanoi|hn\b/.test(t)) return 'Hà Nội';
+  if(/hai phong|haiphong|\bhp\b/.test(t)) return 'Hải Phòng';
+  if(/da nang|danang|\bdn\b/.test(t)) return 'Đà Nẵng';
+  if(/\bhue\b/.test(t)) return 'Huế';
+  if(/can tho|cantho|\bct\b/.test(t)) return 'Cần Thơ';
+  if(/ho chi minh|tphcm|\bhcm\b|sai gon|saigon/.test(t)) return 'Hồ Chí Minh';
   return null;
 }
 function parseDish(text){
@@ -193,22 +185,16 @@ function parseDish(text){
   if(t.includes('vit nau chao')) return 'vitnauchao';
   return null;
 }
-function parseArea(text){
-  const known=['hoan kiem','pho co','dong da','hai ba trung','ba dinh','tay ho','hai chau','son tra','vinh ninh','phu cat','ninh kieu','go vap','quan 1','quan 3','quan 10','phu nhuan'];
-  const t=rmAcc(text); for(const k of known){ if(t.includes(k)) return k; } return null;
-}
-
-// hiểu “chưa/có”
 function saidNoDish(text){
   const t = rmAcc(text).trim();
   return /\b(chua|chua co|chua biet|chua nghi|chua quyet|khong|ko|k|khong biet|khong ro)\b/.test(t);
 }
 function saidYes(text){
   const t = rmAcc(text).trim();
-  return /\b(roi|co|oke?|okela|da|da roi|chap nhan|co roi)\b/.test(t);
+  return /\b(roi|co|oke?|okela|da|da roi|chap nhan|co roi|di|ok)\b/.test(t);
 }
 
-// ===== ranking / match =====
+// ===== matching =====
 function isOpenAt(place,dow,minuteOfDay){
   if(minuteOfDay==null) return true;
   const segs = place.hours?.[dow] || place.hours?.[0] || [];
@@ -256,6 +242,20 @@ function placeCards(title, places){
     </div>
     <p class="small">💡 Tip: Gõ “món + thành phố + thời gian + ngân sách”. Ví dụ: “bún chả Hoàn Kiếm trưa nay 40–50k”.</p>`;
 }
+function cityChips(title='Bạn muốn xem thành phố khác?'){
+  const cities=['Hà Nội','Hải Phòng','Đà Nẵng','Huế','Cần Thơ','Hồ Chí Minh'];
+  const el = addBubble(`
+    <div><strong>${title}</strong></div>
+    <div class="chips">
+      ${cities.map(c=>`<span class="chip" data-city="${c}">${c}</span>`).join('')}
+    </div>`);
+  el.querySelectorAll('.chip').forEach(ch=>{
+    ch.addEventListener('click', ()=>{
+      STATE.city = ch.getAttribute('data-city'); STATE.dish=null; STATE.askDishPending=true; clearPromptFlag();
+      sayOnce('askDish', `Bạn đang ở <b>${STATE.city}</b>. Bạn <b>đã dự định ăn món gì chưa</b>? (Có: gõ tên món • Chưa: gõ "chưa biết" để mình gợi ý)`);
+    });
+  });
+}
 function dishSuggestCards(city){
   const dishes=CITY_SIGNATURES[city]||[];
   const picks=dishes.map(d=>({dish:d,sample:searchPlaces(city,d)[0]})).filter(x=>x.sample);
@@ -280,11 +280,32 @@ function dishSuggestCards(city){
   });
   LAST_PROMPT='suggestions';
 }
+function offerNextActions(){
+  addBubble('Nếu bạn đã chọn quán rồi, chúc bạn <b>ăn ngon miệng</b> 😋. Muốn khám phá ở thành phố khác không?');
+  cityChips('Khám phá thành phố khác');
+}
 function showResultsForCityDish(city,dish,extras=''){
   const res=searchPlaces(city,dish,extras);
   if(!res.length){ addBubble('Chưa thấy quán khớp. Bạn thử món khác hoặc nới ngân sách nhé.'); return; }
+  LAST_RESULTS = res;
   addBubble(placeCards(`${DISH_LABELS[dish]} ở ${city}: gợi ý hợp gu`,res));
-  resetState();
+  offerNextActions();
+  // Không reset toàn bộ để có thể hiểu “chọn quán X” ngay sau đó
+}
+
+// ===== hiểu người dùng “chọn quán này/ok/đi” =====
+function tryDetectChosenPlace(text){
+  const t = rmAcc(text);
+  if(!LAST_RESULTS.length) return null;
+  // tên khớp mờ + có từ khoá xác nhận
+  const positive = /(ok|oke?|chot|chot nhe|di|qua do|chac vay|chuan|chot quan|chon|toi chon|minh chon|co ve ok|on)/.test(t);
+  for(const p of LAST_RESULTS){
+    const name = rmAcc(p.name);
+    if(positive || t.includes(name) || name.split(' ').some(w=>w.length>2 && t.includes(w))){
+      return p;
+    }
+  }
+  return null;
 }
 
 // ===== conversation =====
@@ -294,6 +315,15 @@ function ask(msg){
   const userText = msg.trim();
   if(!userText) return;
   addBubble(esc(userText),'user');
+
+  // Nếu người dùng vừa chốt quán
+  const chosen = tryDetectChosenPlace(userText);
+  if(chosen){
+    addBubble(`Tuyệt! <b>${chosen.name}</b> là lựa chọn ổn đó. Chúc bạn <b>ăn ngon miệng</b> 😋.`, 'bot');
+    cityChips('Bạn muốn mình gợi ý ở thành phố khác không?');
+    resetState(); // làm sạch để cuộc trò chuyện mới mượt hơn
+    return;
+  }
 
   if(isGreeting(userText)){
     sayOnce('intro','Chào bạn 👋 Mình là chatbot gợi ý quán ăn theo <b>món/khu/giờ/ngân sách</b> tại HN, HP, ĐN, Huế, CT, HCM. Bạn đang ở <b>thành phố/khu nào</b> và <b>đã dự định ăn món gì chưa</b>?');
@@ -311,12 +341,11 @@ function ask(msg){
     if(dish){ showResultsForCityDish(STATE.city, STATE.dish, userText); return; }
     if(saidNoDish(userText)){ STATE.askDishPending=false; dishSuggestCards(STATE.city); return; }
     if(saidYes(userText)){ sayOnce('askWhich', 'Bạn định ăn <b>món nào</b>? (vd: bún chả, phở, mì quảng...)'); return; }
-    // nếu mơ hồ → nhắc nhẹ 1 lần
     sayOnce('clarify','Bạn đã có món dự định chưa? Có thì gõ tên món; chưa thì gõ "chưa biết" để mình gợi ý.');
     return;
   }
 
-  // Khi người dùng đã nói city nhưng chưa nói món: hỏi 1 lần rồi chờ
+  // City nhưng chưa dish
   if(STATE.city && !STATE.dish){
     STATE.askDishPending = true;
     sayOnce('askDish', `Bạn đang ở <b>${STATE.city}</b>. Bạn <b>đã dự định ăn món gì chưa</b>? (Có: gõ tên món • Chưa: gõ "chưa biết" để mình gợi ý)`);
@@ -345,7 +374,7 @@ function ask(msg){
 btn.addEventListener('click', ()=>{ if(q.value.trim()){ ask(q.value); q.value=''; }});
 q.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); btn.click(); }});
 
-// Không auto chào — bot lắng nghe trước.
+// Bot không auto chào — lắng nghe trước.
 </script>
 </body>
 </html>
