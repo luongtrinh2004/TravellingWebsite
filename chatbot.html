@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--text);font:500 16px/1.6 'Inter',s
 input[type="text"]{flex:1;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font:500 16px/1 'Inter'}
 button{padding:12px 16px;border:0;border-radius:10px;font-weight:700;background:#2eb872;color:#fff;cursor:pointer}
 button:active{transform:scale(.98)}
-.hint{color:var(--muted);font-size:14px;margin:4px 0 0}
+.hint{color:#6e7380;font-size:14px;margin:4px 0 0}
 .small{font-size:13px;color:#6e7380}
 .mini-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:8px}
 .mini{background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px}
@@ -62,8 +62,8 @@ const esc = s => s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':
 const rmAcc = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 
 // ===== state (slot-filling) =====
-let STATE = { city:null, dish:null, area:null, budget:null, dow:null, minuteOfDay:null };
-const resetState = () => STATE = { city:null, dish:null, area:null, budget:null, dow:null, minuteOfDay:null };
+let STATE = { city:null, dish:null, area:null, budget:null, dow:null, minuteOfDay:null, askDishPending:false };
+const resetState = () => STATE = { city:null, dish:null, area:null, budget:null, dow:null, minuteOfDay:null, askDishPending:false };
 
 // ===== dataset (rút từ file PDF, giữ nguyên các thành phố/món trọng tâm) =====
 const PLACES = [
@@ -277,7 +277,7 @@ function dishSuggestCards(city){
   el.querySelectorAll('[data-choose]').forEach(b=>{
     b.addEventListener('click', ()=>{
       const d = b.getAttribute('data-choose');
-      STATE.dish = d;
+      STATE.dish = d; STATE.askDishPending=false;
       showResultsForCityDish(STATE.city, d);
     });
   });
@@ -290,7 +290,7 @@ function showResultsForCityDish(city, dish, extras=''){
   resetState();
 }
 
-// ===== conversation (listen-first) =====
+// ===== conversation (listen-first + hỏi "đã dự định chưa?") =====
 function isGreeting(s){ return /(hi|hello|xin chao|chao|chao ban)/i.test(rmAcc(s)); }
 
 function ask(msg){
@@ -298,9 +298,9 @@ function ask(msg){
   if(!userText) return;
   addBubble(esc(userText),'user');
 
-  // greeting -> giới thiệu ngắn + hỏi
+  // greeting -> giới thiệu ngắn + hỏi tổng quát
   if(isGreeting(userText)){
-    addBubble('Chào bạn 👋 Mình là chatbot gợi ý quán ăn theo <b>món/khu/giờ/ngân sách</b> tại HN, HP, ĐN, Huế, CT, HCM. Bạn đang ở <b>thành phố/khu nào</b> và muốn ăn <b>món gì</b>?');
+    addBubble('Chào bạn 👋 Mình là chatbot gợi ý quán ăn theo <b>món/khu/giờ/ngân sách</b> tại HN, HP, ĐN, Huế, CT, HCM. Bạn đang ở <b>thành phố/khu nào</b> và <b>đã dự định ăn món gì chưa</b>?');
     return;
   }
 
@@ -308,11 +308,27 @@ function ask(msg){
   const detectedCity = parseCity(userText);
   const detectedDish = parseDish(userText);
   if(detectedCity) STATE.city = detectedCity;
-  if(detectedDish) STATE.dish = detectedDish;
+  if(detectedDish) { STATE.dish = detectedDish; STATE.askDishPending=false; }
 
-  // nếu user nói "chưa biết" món -> gợi ý món signature theo city (nếu đã có city)
-  if(STATE.city && (isUnknownDish(userText) || !STATE.dish)){
-    dishSuggestCards(STATE.city);
+  // Nếu đang chờ trả lời câu "đã dự định món gì chưa?"
+  if(STATE.askDishPending){
+    if(detectedDish){
+      showResultsForCityDish(STATE.city, STATE.dish, userText);
+      return;
+    }
+    if(isUnknownDish(userText)){
+      STATE.askDishPending = false;
+      dishSuggestCards(STATE.city);
+      return;
+    }
+    addBubble('Bạn đã có món dự định chưa? Nếu <b>có</b> hãy gõ tên món (vd: bún chả). Nếu <b>chưa</b>, gõ "chưa biết" để mình gợi ý món đặc trưng.', 'bot');
+    return;
+  }
+
+  // nếu có city nhưng chưa dish -> HỎI trước: đã dự định món gì chưa?
+  if(STATE.city && !STATE.dish){
+    STATE.askDishPending = true;
+    addBubble(`Bạn đang ở <b>${STATE.city}</b>. Bạn <b>đã dự định ăn món gì chưa</b>? (Có: gõ tên món • Chưa: gõ "chưa biết" để mình gợi ý)`);
     return;
   }
 
@@ -324,17 +340,13 @@ function ask(msg){
 
   // thiếu cả hai -> hỏi gọn
   if(!STATE.city && !STATE.dish){
-    addBubble('Bạn đang ở <b>thành phố nào</b> (HN/HP/ĐN/Huế/CT/HCM) và muốn ăn <b>món gì</b>?');
+    addBubble('Bạn đang ở <b>thành phố nào</b> (HN/HP/ĐN/Huế/CT/HCM) và <b>đã dự định ăn món gì chưa</b>?');
     return;
   }
-  // có city nhưng chưa dish (và không nói "chưa biết") -> vẫn gợi ý signature để khỏi lặp hỏi
-  if(STATE.city && !STATE.dish){
-    dishSuggestCards(STATE.city);
-    return;
-  }
+
   // có dish nhưng chưa city
   if(!STATE.city && STATE.dish){
-    addBubble(`Bạn muốn ăn <b>${DISH_LABELS[STATE.dish]||STATE.dish}</b>, vậy bạn đang ở <b>thành phố nào</b> (HN/HP/ĐN/Huế/CT/HCM)?`);
+    addBubble(`Bạn muốn ăn <b>${DISH_LABELS[STATE.dish]||STATE.dish}</b>, vậy bạn đang ở <b>thành phố nào</b>? (HN/HP/ĐN/Huế/CT/HCM)`);
     return;
   }
 }
