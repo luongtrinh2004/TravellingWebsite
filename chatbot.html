@@ -48,6 +48,10 @@ button:active{transform:scale(.98)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .chip{border:1px solid var(--border);background:#fff;border-radius:999px;padding:6px 10px;cursor:pointer;font-weight:600}
 .chip:hover{background:#f3f4f6}
+.mini .actions{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap }
+.btn.ghost{ background:#fff; color:#1a2a5c; border:1px solid #e5e7eb }
+.btn.ghost:hover{ background:#f3f4f6 }
+
   </style>
 </head>
 <body>
@@ -71,7 +75,7 @@ button:active{transform:scale(.98)}
   <main>
     <div class="container">
       <div class="card">
-        <div class="header">🤖 Chatbot tư vấn quán ăn (Multi-city)</div>
+        <div class="header">Chatbot tư vấn quán ăn</div>
         <div id="chat" class="chat"></div>
         <div class="input">
           <input id="q" type="text" placeholder="Bạn muốn ăn gì? Ví dụ: 'Bún cá cay ở Hải Phòng, trưa nay, ~35k/bát'"/>
@@ -117,6 +121,7 @@ function addBubble(html, who='bot'){
   chat.appendChild(row); chat.scrollTop = chat.scrollHeight;
   return row.querySelector('.bubble');
 }
+
 const esc   = s => s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const rmAcc = s =>
   s.normalize('NFD')
@@ -125,10 +130,19 @@ const rmAcc = s =>
    .replace(/Đ/g, 'd')
    .toLowerCase();
 
+   function norm(s){
+  return rmAcc(String(s || ''));   // chuẩn hoá + lowercase + bỏ dấu
+}
+
 // ===== say-once (chống lặp) =====
-let LAST_PROMPT = null;
-function sayOnce(type, html){ if (LAST_PROMPT === type) return; LAST_PROMPT = type; addBubble(html,'bot'); }
-function clearPromptFlag(){ LAST_PROMPT = null; }
+let LAST = {type:null, count:0}; // nhớ loại prompt gần nhất và số lần lặp
+function sayOnce(type, html){
+  if (LAST.type === type && LAST.count >= 1) return; // cùng prompt -> nói tối đa 2 lượt
+  if (LAST.type === type) LAST.count++; else { LAST.type = type; LAST.count = 0; }
+  addBubble(html, 'bot');
+}
+function clearPromptFlag(){ LAST = {type:null, count:0}; }
+
 
 // ===== state =====
 let STATE = { city:null, dish:null, area:null, budget:null, dow:null, minuteOfDay:null, askDishPending:false };
@@ -210,12 +224,68 @@ const CITY_SIGNATURES = {
 };
 
 // ===== parsing =====
+function detectIntent(raw){
+  const t = rmAcc(raw).trim();
+
+  // Chào hỏi / tạm biệt
+  if (/^(hi+|hello+|xin chao|chao+|yo|he+l+o+)$/.test(t)) return {type:'greet'};
+  if (/^(bye|tam biet|see you|ngu ngon|hen gap)$/.test(t)) return {type:'bye'};
+
+  // Giới thiệu bản thân / hỏi về bot
+  if (/(toi|minh|tao)\s+(ten|la)\b/.test(t)) return {type:'intro'};
+  if (/(may|ban|bot)\s+(la ai|ten gi|ai tao|an gi|lam gi)/.test(t)) return {type:'about'};
+
+  // Xin gợi ý chung (“đói quá”, “tư vấn món đi”)
+  if (/(doi qua|an gi|goi y|tu van|cho minh vai quan|keo di an)/.test(t)) return {type:'ask_suggest'};
+
+  return {type:'normal'};
+}
+
 function parseBudgetVND(text){
-  const t = rmAcc(text).replace(/\s/g,'');
-  const mRange = t.match(/(\d{2,4})-?(\d{2,4})k/);
-  if(mRange) return {min:+mRange[1]*1000, max:+mRange[2]*1000};
+  const t = norm(text).replace(/(vnd|dong|đ)/g,'').replace(/\s/g,'');
+  // 2 người / n người
+  let people = 1;
+  const pm = t.match(/(\d+)\s*(nguoi|ng)/); if (pm) people = Math.max(1, +pm[1]);
+
+  // 40-60, 40–60, 40k-60k, 100-150
+  let m = t.match(/(\d{2,4})k?[–-](\d{2,4})k?/);
+  if (m) {
+    const lo = +m[1]*1000, hi = +m[2]*1000;
+    return {min: lo*people, max: hi*people, raw: `${m[1]}–${m[2]}k${people>1?`/~${people}p`:''}`};
+  }
+  // ~50k, tầm70, 1xx
+  m = t.match(/(~|tam|khoang)?(\d{2,3})(xx)?k?/);
+  if (m){
+    let v = +m[2];
+    if (m[3]==='xx') v = v*10+0; // 1xx -> 100
+    v *= 1000;
+    const span = Math.round(v*0.2);
+    return {min:(v-span)*people, max:(v+span)*people, raw:`~${Math.round(v/1000)}k${people>1?`/~${people}p`:''}`};
+  }
   return null;
 }
+
+
+
+function placePriceSpan(p){
+  const lo = p.price_min || 0, hi = p.price_max || (p.price_min || 0);
+  return {lo, hi, mid: lo && hi ? Math.round((lo+hi)/2) : (lo || hi || 0)};
+}
+function budgetOverlap(place, budget){
+  if(!budget) return 'unknown';
+  const {lo,hi,mid} = placePriceSpan(place);
+  if(!lo && !hi) return 'unknown';
+  // khớp khi khoảng giá giao nhau
+  const overlap = !(hi < budget.min || lo > budget.max);
+  if (overlap) return 'fit';
+  // “near” nếu mid nằm trong ±20% so với biên gần nhất của budget
+  const edge = (mid < budget.min) ? budget.min : budget.max;
+  const diff = Math.abs(mid - edge);
+  const near = diff <= edge * 0.2; // <=20%
+  return near ? 'near' : 'off';
+}
+
+
 function parseTime(text){
   const t = rmAcc(text);
   const today = new Date().getDay();
@@ -249,24 +319,25 @@ const CITY_TOKENS = KNOWN_CITIES.map(name => {
 });
 
 function parseCity(text){
-  const t = rmAcc(text);
-
-  // 1) Ưu tiên alias/viết tắt thủ công
-  for (const [re, city] of CITY_ALIASES) {
-    if (re.test(t)) return city;
+  const t = norm(text);
+  // “ở hcm”, “đang ở hà nội”, “qua đà nẵng”
+  const cityHit = t.match(/\b(o|o|dang o|qua|tai)\s+([a-z\s\.]+)$/);
+  const candidates = [
+    [/ha\s*noi|hn|hanoi/, 'Hà Nội'],
+    [/hai\s*phong|hp|haiphong/, 'Hải Phòng'],
+    [/da\s*nang|dn|danang/, 'Đà Nẵng'],
+    [/\bhue\b/, 'Huế'],
+    [/can\s*tho|ct|cantho/, 'Cần Thơ'],
+    [/ho\s*chi\s*minh|tp\.?\s*hcm|tphcm|hcm|sai\s*gon|sg/, 'Hồ Chí Minh'],
+  ];
+  for (const [re, name] of candidates) if (re.test(t)) return name;
+  if (cityHit){
+    const tail = cityHit[2];
+    for (const [re, name] of candidates) if (re.test(tail)) return name;
   }
-
-  // 2) Tự động khớp theo danh sách city hiện có trong PLACES
-  for (const { name, token, initials } of CITY_TOKENS) {
-    // khớp full tên "hai phong" hoặc viết tắt "hp"
-    if (t.includes(token) || new RegExp(`\\b${initials}\\b`).test(t)) {
-      return name;
-    }
-  }
-
-  // 3) Không thấy => null (để flow hỏi lại)
   return null;
 }
+
 
 function parseDish(text){
   const t = rmAcc(text);
@@ -301,13 +372,15 @@ function saidYes(text){
 
 // ===== matching =====
 function isOpenAt(place,dow,minuteOfDay){
-  if(minuteOfDay==null) return true;
   const segs = place.hours?.[dow] || place.hours?.[0] || [];
-  return segs.some(([from,to])=>{
-    const [fh,fm]=from.split(':').map(Number), [th,tm]=to.split(':').map(Number);
-    const f=fh*60+fm, e=th*60+tm; return minuteOfDay>=f && minuteOfDay<=e;
+  if (!segs.length) return null; // unknown
+  if (minuteOfDay==null) return true;
+  return segs.some(([f,t])=>{
+    const [fh,fm]=f.split(':').map(Number), [th,tm]=t.split(':').map(Number);
+    const S=fh*60+fm, E=th*60+tm; return minuteOfDay>=S && minuteOfDay<=E;
   });
 }
+
 function budgetOk(place,budget){
   if(!budget) return true;
   const lo=place.price_min||0, hi=place.price_max||1e9;
@@ -325,28 +398,63 @@ function formatHours(h){
   if(!segs.length) return 'Giờ tham khảo';
   return segs.map(([f,t])=>`${f}–${t}`).join(', ');
 }
-function searchPlaces(city,dish,filtersText=''){
-  const budget=parseBudgetVND(filtersText);
-  const {dow,minuteOfDay}=parseTime(filtersText);
-  return PLACES.filter(p=>(!city||p.city===city)&&(!dish||p.dish===dish))
-    .map(p=>{let score=0; if(dish&&p.dish===dish)score+=3; if(isOpenAt(p,dow,minuteOfDay))score+=1; if(budgetOk(p,budget))score+=1; return {p,score};})
-    .sort((a,b)=>b.score-a.score).slice(0,3).map(x=>x.p);
+function gmapUrl(place){
+  // dùng Directions API link để mở app Google Maps tốt hơn
+  return 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(place.address);
 }
 
+function searchPlaces(city, dish, filtersText=''){
+  const budget = parseBudgetVND(filtersText);
+  const {dow, minuteOfDay} = parseTime(filtersText);
+
+  const candidates = PLACES
+    .filter(p => (!city || p.city === city) && (!dish || p.dish === dish))
+    .map(p => {
+      let score = 0;
+      if (dish && p.dish === dish) score += 3;
+      if (isOpenAt(p, dow, minuteOfDay)) score += 1;
+
+      let fit = budgetOverlap(p, budget);
+      if (fit === 'fit') score += 6;        // mạnh tay ưu tiên đúng ngân sách
+      else if (fit === 'near') score += 2;  // gần ngân sách
+      else if (fit === 'unknown') score += 0;
+
+      return {p, score, fit};
+    })
+    .sort((a,b)=> b.score - a.score);
+
+  // tách 3 nhóm
+  const fits   = candidates.filter(x => x.fit === 'fit').map(x=>x.p);
+  const nears  = candidates.filter(x => x.fit === 'near').map(x=>x.p);
+  const others = candidates.filter(x => x.fit !== 'fit' && x.fit !== 'near').map(x=>x.p);
+
+  return { fits: fits.slice(0,3), nears: nears.slice(0,3), others: others.slice(0,3), budget };
+}
+
+
 // ===== UI builders =====
-function placeCards(title, places){
+function placeCards(title, places, fitMap={}){
   return `
     <div><strong>${title}</strong></div>
     <div class="mini-grid">
-      ${places.map(p=>`
+      ${places.map(p=>{
+        const badge = fitMap[p.name] || '';
+        return `
         <div class="mini">
           <h4>${p.name}</h4>
           <p>📍 ${p.area}<br>🗺️ ${p.address}<br>🕒 ${formatHours(p.hours)}<br>💸 ${formatPrice(p)}</p>
-          <p style="margin-top:6px">${p.why||''}</p>
-        </div>`).join('')}
+          ${badge ? `<p style="margin-top:6px"><b>${badge}</b></p>` : `<p style="margin-top:6px">${p.why||''}</p>`}
+          <div class="actions">
+            <a class="btn ghost" href="${gmapUrl(p)}" target="_blank" rel="noopener">📍 Chỉ đường</a>
+          </div>
+        </div>`}).join('')}
     </div>
     <p class="small">💡 Tip: Gõ “món + thành phố + thời gian + ngân sách”. Ví dụ: “bún chả Hoàn Kiếm trưa nay 40–50k”.</p>`;
 }
+
+
+
+
 function cityChips(title='Bạn muốn xem thành phố khác?'){
   const cities=['Hà Nội','Hải Phòng','Đà Nẵng','Huế','Cần Thơ','Hồ Chí Minh'];
   const el = addBubble(`
@@ -362,9 +470,14 @@ function cityChips(title='Bạn muốn xem thành phố khác?'){
   });
 }
 function dishSuggestCards(city){
-  const dishes=CITY_SIGNATURES[city]||[];
-  const picks=dishes.map(d=>({dish:d,sample:searchPlaces(city,d)[0]})).filter(x=>x.sample);
-  const html=`
+  const dishes = CITY_SIGNATURES[city] || [];
+  const picks = dishes.map(d => {
+    const {fits, nears, others} = searchPlaces(city, d);
+    const sample = (fits[0] || nears[0] || others[0]) || null;
+    return { dish: d, sample };
+  }).filter(x => x.sample);
+
+  const html = `
     <div><strong>Món nổi bật ở ${city}</strong></div>
     <div class="mini-grid">
       ${picks.map(x=>`
@@ -375,28 +488,54 @@ function dishSuggestCards(city){
         </div>`).join('')}
     </div>
     <p class="small">Bạn có thể bấm chọn hoặc gõ món khác tuỳ thích.</p>`;
-  const el=addBubble(html,'bot');
+  const el = addBubble(html,'bot');
   el.querySelectorAll('[data-choose]').forEach(b=>{
+    const d=b.getAttribute('data-choose');
     b.addEventListener('click', ()=>{
-      const d=b.getAttribute('data-choose');
       STATE.dish=d; STATE.askDishPending=false; clearPromptFlag();
       showResultsForCityDish(STATE.city,d);
     });
   });
   LAST_PROMPT='suggestions';
 }
+
 function offerNextActions(){
   addBubble('Nếu bạn đã chọn quán rồi, chúc bạn <b>ăn ngon miệng</b> 😋. Muốn khám phá ở thành phố khác không?');
   cityChips('Khám phá thành phố khác');
 }
-function showResultsForCityDish(city,dish,extras=''){
-  const res=searchPlaces(city,dish,extras);
-  if(!res.length){ addBubble('Chưa thấy quán khớp. Bạn thử món khác hoặc nới ngân sách nhé.'); return; }
-  LAST_RESULTS = res;
-  addBubble(placeCards(`${DISH_LABELS[dish]} ở ${city}: gợi ý hợp gu`,res));
+function showResultsForCityDish(city, dish, extras=''){
+  const {fits, nears, others, budget} = searchPlaces(city, dish, extras);
+
+  // map nhãn
+  const fitMap = {};
+  fits.forEach(p => fitMap[p.name]  = '✅ Hợp ngân sách');
+  nears.forEach(p => fitMap[p.name] = '↗ Hơi vượt một chút (≈±20%)');
+
+  if (budget && !fits.length) {
+    // Không có quán đúng ngân sách
+    const title = `${DISH_LABELS[dish]} ở ${city}: gần với tầm giá bạn đưa`;
+    const picks = (nears.length ? nears : others).slice(0,3);
+
+    addBubble(
+      `Tiếc quá, mình <b>chưa tìm được quán đúng tầm ${budget.raw}</b> 😢. 
+      Nhưng đây là vài chỗ <b>gần nhất</b> (chênh nhẹ hoặc giá phổ biến hơn):`,
+      'bot'
+    );
+    addBubble(placeCards(title, picks, fitMap));
+    offerNextActions();
+    LAST_RESULTS = picks;
+    return;
+  }
+
+  const list = fits.length ? fits : (nears.length ? nears : others);
+  if(!list.length){ addBubble('Chưa thấy quán khớp. Bạn thử món khác hoặc nới ngân sách nhé.'); return; }
+
+  LAST_RESULTS = list;
+const title = `${DISH_LABELS[dish]} ở ${city}${budget ? ` (lọc theo ${budget.raw})` : ''}`;
+  addBubble(placeCards(title, list, fitMap));
   offerNextActions();
-  // Không reset toàn bộ để có thể hiểu “chọn quán X” ngay sau đó
 }
+
 
 // ===== hiểu người dùng “chọn quán này/ok/đi” =====
 function tryDetectChosenPlace(text){
@@ -414,66 +553,140 @@ function tryDetectChosenPlace(text){
 }
 
 // ===== conversation =====
-function isGreeting(s){ return /(hi|hello|xin chao|chao|chao ban)/i.test(rmAcc(s)); }
+function detectIntent(raw){
+  const t = norm(raw);
+
+  // greeting/bye
+  if (/^(hi+|hello+|xin chao|chao|yo|he+l+o+)$/.test(t)) return {type:'greet'};
+  if (/^(bye|tam biet|see you|toitruoc|ngu ngon)$/.test(t)) return {type:'bye'};
+
+  // giới thiệu bản thân / trêu
+  if (/(toi|minh|tao)\s+(ten|la)\b/.test(t)) return {type:'intro'};
+  if (/(may|ban|bot)\s+(la ai|ten gi|an gi|lam gi|ai tao)/.test(t)) return {type:'about'};
+
+  // xin gợi ý chung kiểu “đói quá”, “tư vấn món đi”
+  if (/(doi qua|an gi|goi y|tu van|cho minh vai quan|keo di an)/.test(t)) return {type:'ask_suggest'};
+
+  return {type:'normal'};
+}
+
+
+function replyNoData(){
+  addBubble(
+    'Ui, khu đó mình <b>chưa có dữ liệu</b> 😅. Hiện mình “rành” <b>Hà Nội, Hải Phòng, Đà Nẵng, Huế, Cần Thơ, TP.HCM</b> thôi nha 🍜.',
+    'bot'
+  );
+  cityChips('Chọn thành phố gần bạn nhất:');
+}
+
+
 
 function ask(msg){
   const userText = msg.trim();
-  if(!userText) return;
+  if (!userText) return;
+
+  // --- 1) Nhận diện small-talk & điều hướng sớm
+  const intent = detectIntent(userText);
+  if (intent.type !== 'normal') {
+    addBubble(esc(userText),'user');
+    const cityList = '<b>Hà Nội, Hải Phòng, Đà Nẵng, Huế, Cần Thơ, TP.HCM</b>';
+
+    if (intent.type === 'greet') {
+      return sayOnce('intro',
+        'Chào bạn 👋 Mình chuyên gợi ý quán theo <b>món/khu/giờ/ngân sách</b>. Bạn đang ở thành phố nào để mình bật mode “thổ địa” nè?');
+    }
+    if (intent.type === 'bye') {
+      return addBubble('Hẹn bạn bữa sau nha 👋 Lúc đói cứ gọi mình!', 'bot');
+    }
+    if (intent.type === 'intro') {
+      return addBubble('Rất vui được gặp bạn 😊 Cho mình biết bạn đang ở đâu để giới thiệu đặc sản quanh đó nhé?', 'bot');
+    }
+    if (intent.type === 'about') {
+      return addBubble(`Mình là trợ lý ăn ngon 🍜 – hiện “rành” ${cityList}. Cứ nói <b>món + thành phố</b>, mình lọc quán hợp giờ & túi tiền cho bạn.`, 'bot');
+    }
+    if (intent.type === 'ask_suggest') {
+      addBubble('Ok, bật radar đồ ăn 🍽️. Bạn đang ở thành phố nào để mình khoanh vùng ạ?','bot');
+      return cityChips('Chọn nhanh thành phố của bạn');
+    }
+  }
+
+  // --- 2) Ghi lại lời người dùng
   addBubble(esc(userText),'user');
 
-  // Nếu người dùng vừa chốt quán
+  // --- 3) Người dùng “chốt quán”
   const chosen = tryDetectChosenPlace(userText);
-  if(chosen){
+  if (chosen) {
     addBubble(`Tuyệt! <b>${chosen.name}</b> là lựa chọn ổn đó. Chúc bạn <b>ăn ngon miệng</b> 😋.`, 'bot');
     cityChips('Bạn muốn mình gợi ý ở thành phố khác không?');
-    resetState(); // làm sạch để cuộc trò chuyện mới mượt hơn
+    resetState();
     return;
   }
 
-  if(isGreeting(userText)){
-    sayOnce('intro','Chào bạn 👋 Mình là chatbot gợi ý quán ăn theo <b>món/khu/giờ/ngân sách</b> tại HN, HP, ĐN, Huế, CT, HCM. Bạn đang ở <b>thành phố/khu nào</b> và <b>đã dự định ăn món gì chưa</b>?');
-    return;
-  }
-
-  // fill slots
+  // --- 4) PARSE: city + dish
+  const prevCity = STATE.city;
   const city = parseCity(userText);
   const dish = parseDish(userText);
-  if(city && city!==STATE.city){ STATE.city=city; clearPromptFlag(); }
-  if(dish){ STATE.dish=dish; STATE.askDishPending=false; clearPromptFlag(); }
 
-  // Nếu đang chờ trả lời về món
-  if(STATE.askDishPending){
-    if(dish){ showResultsForCityDish(STATE.city, STATE.dish, userText); return; }
-    if(saidNoDish(userText)){ STATE.askDishPending=false; dishSuggestCards(STATE.city); return; }
-    if(saidYes(userText)){ sayOnce('askWhich', 'Bạn định ăn <b>món nào</b>? (vd: bún chả, phở, mì quảng...)'); return; }
-    sayOnce('clarify','Bạn đã có món dự định chưa? Có thì gõ tên món; chưa thì gõ "chưa biết" để mình gợi ý.');
+// Heuristic: người dùng gõ 1 địa danh ngắn không nằm trong danh sách
+const pure = norm(userText).replace(/[^a-z\s]/g,' ').trim();
+const words = pure.split(/\s+/).filter(Boolean);
+// không bắt được city & dish, chuỗi ngắn (1–3 từ) -> coi như địa danh ngoài vùng dữ liệu
+if (!city && !dish && words.length > 0 && words.length <= 3) {
+  return replyNoData();
+}
+
+
+  // 4a) Nhắc tới địa danh ngoài vùng dữ liệu → mời chọn TP hỗ trợ
+  if (!city && /\b(tinh|thanh|huyen|xa|thi tran|pho|o\s+[a-z]+)/.test(rmAcc(userText))) {
+    return replyNoData(); // helper hiển thị message + cityChips(...)
+  }
+
+  // 4b) Cập nhật state
+  if (city && city !== STATE.city) { STATE.city = city; clearPromptFlag(); }
+  if (dish) { STATE.dish = dish; STATE.askDishPending = false; clearPromptFlag(); }
+
+  // 4c) Đang hỏi món mà user đổi city → chuyển mạch khéo
+  if (STATE.askDishPending && city && city !== prevCity) {
+    STATE.city = city;
+    if (!dish) {
+      return sayOnce('askDish', `Ok, chuyển sang <b>${STATE.city}</b> nha. Bạn <b>định ăn món gì</b>? (vd: phở, bún chả, mì quảng...)`);
+    }
+    showResultsForCityDish(STATE.city, dish, userText);
     return;
   }
 
-  // City nhưng chưa dish
-  if(STATE.city && !STATE.dish){
+  // --- 5) FLOW hội thoại theo slot
+  // 5a) Đang chờ người dùng nói món
+  if (STATE.askDishPending) {
+    if (dish) { showResultsForCityDish(STATE.city, STATE.dish, userText); return; }
+    if (saidNoDish(userText)) { STATE.askDishPending = false; dishSuggestCards(STATE.city); return; }
+    if (saidYes(userText)) { return sayOnce('askWhich','Bạn định ăn <b>món nào</b>? (vd: bún chả, phở, mì quảng...)'); }
+    return sayOnce('clarify','Bạn đã có món dự định chưa? Có thì gõ tên món; chưa thì gõ "chưa biết" để mình gợi ý.');
+  }
+
+  // 5b) Có city nhưng chưa dish → hỏi món
+  if (STATE.city && !STATE.dish) {
     STATE.askDishPending = true;
-    sayOnce('askDish', `Bạn đang ở <b>${STATE.city}</b>. Bạn <b>đã dự định ăn món gì chưa</b>? (Có: gõ tên món • Chưa: gõ "chưa biết" để mình gợi ý)`);
-    return;
+    return sayOnce('askDish', `Bạn đang ở <b>${STATE.city}</b>. Bạn <b>đã dự định ăn món gì chưa</b>? (Có: gõ tên món • Chưa: gõ "chưa biết" để mình gợi ý)`);
   }
 
-  // Đủ city + dish
-  if(STATE.city && STATE.dish){
+  // 5c) Đủ city + dish → show kết quả (lọc giờ/ngân sách)
+  if (STATE.city && STATE.dish) {
     showResultsForCityDish(STATE.city, STATE.dish, userText);
     return;
   }
 
-  // Thiếu cả hai
-  if(!STATE.city && !STATE.dish){
-    sayOnce('askCityDish','Bạn đang ở <b>thành phố nào</b> (HN/HP/ĐN/Huế/CT/HCM) và <b>đã dự định ăn món gì chưa</b>?');
-    return;
+  // 5d) Thiếu cả hai → hỏi city & món
+  if (!STATE.city && !STATE.dish) {
+    return sayOnce('askCityDish','Bạn đang ở <b>thành phố nào</b> (HN/HP/ĐN/Huế/CT/HCM) và <b>đã dự định ăn món gì chưa</b>?');
   }
 
-  // Có dish nhưng chưa city
-  if(!STATE.city && STATE.dish){
-    sayOnce('askCity',`Bạn muốn ăn <b>${DISH_LABELS[STATE.dish]||STATE.dish}</b>, vậy bạn đang ở <b>thành phố nào</b>? (HN/HP/ĐN/Huế/CT/HCM)`);
+  // 5e) Có dish nhưng chưa city
+  if (!STATE.city && STATE.dish) {
+    return sayOnce('askCity', `Bạn muốn ăn <b>${DISH_LABELS[STATE.dish]||STATE.dish}</b>, vậy bạn đang ở <b>thành phố nào</b>? (HN/HP/ĐN/Huế/CT/HCM)`);
   }
 }
+
 
 // events
 btn.addEventListener('click', ()=>{ if(q.value.trim()){ ask(q.value); q.value=''; }});
