@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tinh hoa hương vị Việt — 10 bài review chuẩn SEO</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="images/pho.png?v=1" />
+
+  <!-- SEO -->
+  <meta name="description" content="Tổng hợp 10 bài viết chuẩn SEO về các món/quán đặc sắc trên khắp Việt Nam: Phở, Bún chả, Chả cá, Bánh mì, Xôi, Cà phê, Mì Quảng, Bánh đập, Bánh tráng cuốn thịt heo..." />
+  <meta property="og:title" content="Tinh hoa hương vị Việt — 10 bài review chuẩn SEO" />
+  <meta property="og:description" content="Bộ sưu tập 10 bài review ẩm thực thuần Việt, nội dung chân thực, tối ưu SEO." />
+  <meta property="og:image" content="images/Home/BG1.jpg" />
+  <meta name="theme-color" content="#ffffff" />
+
+  <!-- Fonts (VN-ready) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Noto+Serif+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Kaushan+Script&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- ===== Nâng cấp giao diện: danh mục bài + bài viết ===== -->
+  <style>
+    :root{
+      --ink:#1f2937; --muted:#6b7280; --border:#e9e9ee; --brand:#1a5cff; --accent:#f59e0b;
+    }
+    html,body{scroll-behavior:smooth}
+    body{background:#fff;color:var(--ink)}
+    .container{max-width:1080px;margin:0 auto;padding:0 16px}
+
+    /* Header */
+    .site-header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--border)}
+    .header-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+    .site-title{font:800 1.05rem/1 "Inter",system-ui;letter-spacing:.2px}
+    .primary .nav-link{margin-left:12px;text-decoration:none;color:#374151;font-weight:700}
+    .primary .nav-link[aria-current="page"]{color:var(--brand)}
+
+    /* Hero */
+    .hero{background:#f8fafc url('images/Home/BG5.png') center/cover no-repeat;padding:64px 0;margin-bottom:12px}
+    .hero-title{font:800 clamp(24px,4vw,42px)/1.15 "Noto Serif Display",serif;margin:0 0 8px}
+    .hero-sub{color:#4b5563;margin:0;font:600 1rem/1.5 "Inter",system-ui}
+    .hero .hero-content{max-width:760px;margin:0 auto;text-align:center}
+
+    /* Mục lục bài viết */
+    .toc{background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;margin:24px auto}
+    .toc h2{font:800 1.1rem/1.2 "Inter",system-ui;margin:0 0 8px}
+    .toc ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:0;padding:0;list-style:none}
+    .toc a{display:block;border:1px solid var(--border);border-radius:999px;padding:10px 14px;text-decoration:none;color:#111;font:700 .95rem/1 "Inter",system-ui}
+    .toc a:hover{background:#f9fafb}
+
+    /* Bài viết */
+    .posts{display:grid;gap:22px;margin:28px 0 44px}
+    article.post{background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.04)}
+    .post-head{display:grid;grid-template-columns:1.2fr 1fr;gap:0}
+    .post-media{width:100%;height:100%;object-fit:cover;aspect-ratio:16/10}
+    .post-meta{padding:14px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
+    .badge{display:inline-block;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;border-radius:999px;padding:6px 12px;font:800 .82rem/1 "Inter",system-ui;width:max-content}
+    .post-body{padding:14px 16px 16px}
+    .post h2{font:800 1.5rem/1.25 "Noto Serif Display",serif;margin:10px 0;color:#0f172a}
+    .post h3{font:800 1.05rem/1.3 "Inter",system-ui;margin:18px 0 8px;color:#111827}
+    .post p{color:#111827}
+    .post .note{color:#374151;background:#f9fafb;border-left:3px solid var(--brand);padding:10px 12px;border-radius:8px}
+    .post .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+    .tag{border:1px dashed #d1d5db;border-radius:999px;padding:6px 10px;font:700 .8rem/1 "Inter",system-ui;color:#374151}
+
+    /* Cards địa chỉ gợi ý */
+    .addr{display:grid;gap:10px}
+    .addr li{list-style:none;border:1px solid var(--border);border-radius:12px;padding:10px 12px}
+
+    /* Footer */
+    footer{border-top:1px solid var(--border);padding:24px 0;margin-top:36px}
+    footer .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+    a.btn{border:1px solid #e5e7eb;padding:10px 14px;border-radius:999px;font:700 .95rem/1 "Inter",system-ui;text-decoration:none}
+    a.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+    @media (max-width:900px){
+      .post-head{grid-template-columns:1fr}
+      .post-meta{border-left:none;border-top:1px solid var(--border)}
+    }
+  </style>
+
+  <!-- JSON-LD cơ bản cho WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebSite",
+    "name":"Tinh hoa hương vị Việt",
+    "url":"https://example.com",
+    "potentialAction":{
+      "@type":"SearchAction",
+      "target":"https://example.com/?q={search_term_string}",
+      "query-input":"required name=search_term_string"
+    }
+  }
+  </script>
+</head>
+<body>
+  <a class="visually-hidden" href="#main">Bỏ qua nội dung</a>
+
+  <!-- Header -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <div class="site-title">TINH HOA HƯƠNG VỊ VIỆT</div>
+      <nav class="primary" aria-label="Chính">
+        <a class="nav-link" href="#" aria-current="page">Trang chủ</a>
+        <a class="nav-link" href="#toc">Mục lục</a>
+        <a class="nav-link" href="#main">Bài viết</a>
+        <a class="nav-link" href="#contact">Liên hệ</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" aria-label="Ảnh nền chủ đề ẩm thực">
+    <div class="hero-content">
+      <h1 class="hero-title">Bộ sưu tập 10 bài viết ẩm thực chuẩn SEO</h1>
+      <p class="hero-sub">Nội dung biên soạn từ các file Word bạn cung cấp • Dễ đọc • Tối ưu heading, thẻ alt, và internal links</p>
+    </div>
+  </section>
+
+  <!-- Mục lục -->
+  <section class="container toc" id="toc" aria-label="Mục lục bài viết">
+    <h2>Mục lục nhanh</h2>
+    <ul>
+      <li><a href="#pho-ha-noi">Phở Hà Nội</a></li>
+      <li><a href="#bun-cha">Bún chả Hà Nội</a></li>
+      <li><a href="#cha-ca">Chả cá Hà Nội</a></li>
+      <li><a href="#banh-mi">Bánh mì Hà Nội</a></li>
+      <li><a href="#xoi-ha-noi">Xôi Hà Nội</a></li>
+      <li><a href="#cafe-ha-noi">Cà phê Hà Nội</a></li>
+      <li><a href="#mi-quang">Mì Quảng Đà Nẵng</a></li>
+      <li><a href="#banh-dap">Bánh đập Đà Nẵng</a></li>
+      <li><a href="#banh-trang-cuon">Bánh tráng cuốn thịt heo</a></li>
+      <li><a href="#bai-10">[Đang chờ nội dung #10]</a></li>
+    </ul>
+  </section>
+
+  <main id="main" class="container">
+    <div class="posts">
+
+      <!-- 1. PHỞ HÀ NỘI -->
+      <article class="post" id="pho-ha-noi" itemscope itemtype="https://schema.org/Article">
+        <div class="post-head">
+          <img class="post-media" src="images/articles/pho-ha-noi.jpg" alt="Bát phở Hà Nội bốc khói với thịt bò tái và hành lá" loading="lazy" itemprop="image">
+          <div class="post-meta">
+            <span class="badge">Phở Hà Nội</span>
+            <div class="note">Bài viết chuẩn SEO: mô tả, từ khóa dài, heading rõ ràng, hình ảnh có thẻ alt.</div>
+            <div class="tags">
+              <span class="tag">#phở</span>
+              <span class="tag">#hà_nội</span>
+              <span class="tag">#món_truyền_thống</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-body" itemprop="articleBody">
+          <h2 itemprop="headline">Phở Hà Nội – Món ăn chạm đến trái tim người Việt</h2>
+          <p>Phở Hà Nội là một biểu tượng ẩm thực với <strong>nước dùng trong, ngọt thanh</strong>, <strong>sợi phở mềm</strong> và <strong>gia vị tinh tế</strong>. Từ gánh hàng rong đầu thế kỷ XX đến những thương hiệu nổi tiếng ngày nay, phở vẫn giữ trọn cái hồn thanh nhã khó lẫn. :contentReference[oaicite:0]{index=0}</p>
+
+          <h3>Điều làm nên hương vị khó quên</h3>
+          <p>Nước dùng ninh xương nhiều giờ, sợi phở mỏng dẻo, thịt tươi (tái, chín, gầu) và hành, quế hồi, lá chanh… tất cả hòa quyện thành bản giao hưởng vị giác. Những biến tấu như <em>phở bò tái chín</em>, <em>phở gà</em>, <em>phở sốt vang</em> đều hấp dẫn. :contentReference[oaicite:1]{index=1}</p>
+
+          <h3>Địa chỉ gợi ý</h3>
+          <ul class="addr">
+            <li>Phở Thìn Lò Đúc • phở tái lăn thơm ngậy</li>
+            <li>Phở Bát Đàn • hương vị truyền thống, thường phải xếp hàng</li>
+            <li>Phở Gà Nguyệt • phở gà thanh tao</li>
+            <li>Phở Lý Quốc Sư • thương hiệu quen thuộc</li>
+          </ul>
+          <p class="note">Mẹo SEO: dùng cụm từ dài như “phở Hà Nội nước dùng trong ngọt thanh”, “quán phở ngon Hà Nội” trong tiêu đề phụ/alt ảnh. :contentReference[oaicite:2]{index=2}</p>
+        </div>
+      </article>
+
+      <!-- 2. BÚN CHẢ HÀ NỘI -->
+      <article class="post" id="bun-cha" itemscope itemtype="https://schema.org/Article">
+        <div class="post-head">
+          <img class="post-media" src="images/articles/bun-cha.jpg" alt="Suất bún chả Hà Nội với thịt nướng, bún trắng và bát nước chấm" loading="lazy" itemprop="image">
+          <div class="post-meta">
+            <span class="badge">Bún chả Hà Nội</span>
+            <div class="tags">
+              <span class="tag">#bún_chả</span>
+              <span class="tag">#đặc_sản_hà_nội</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-body" itemprop="articleBody">
+          <h2 itemprop="headline">Bún chả Hà Nội – Món ăn đậm hồn Tràng An</h2>
+          <p>Thịt nướng thơm lừng trên than hoa, nước chấm hài hòa đủ vị, bún trắng mềm và rổ rau sống xanh mướt tạo nên suất bún chả trứ danh, từ vỉa hè đến nhà hàng sang trọng. :contentReference[oaicite:3]{index=3}</p>
+          <h3>Vì sao bún chả “gây thương nhớ”</h3>
+          <p>Ba chỉ/nạc vai tẩm ướp khéo léo nướng vàng cạnh, nước mắm pha đu đủ xanh – cà rốt chua ngọt, ăn kèm rau thơm khiến món ăn cân bằng, dễ ăn. :contentReference[oaicite:4]{index=4}</p>
+          <h3>Địa chỉ gợi ý</h3>
+          <ul class="addr">
+            <li>Bún chả Hàng Quạt • vị truyền thống</li>
+            <li>Bún chả Bà Hằng Béo • suất đầy đặn</li>
+            <li>Bún chả Hương Liên • “bún chả Obama” nổi tiếng</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 3. CHẢ CÁ HÀ NỘI -->
+      <article class="post" id="cha-ca" itemscope itemtype="https://schema.org/Article">
+        <div class="post-head">
+          <img class="post-media" src="images/articles/cha-ca.jpg" alt="Chảo chả cá lăng, thì là và hành lá kiểu Hà Nội" loading="lazy" itemprop="image">
+          <div class="post-meta">
+            <span class="badge">Chả cá Hà Nội</span>
+            <div class="tags">
+              <span class="tag">#chả_cá_lã_vọng</span>
+              <span class="tag">#cá_lăng</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-body" itemprop="articleBody">
+          <h2 itemprop="headline">Chả cá Hà Nội – Tinh hoa ẩm thực đất kinh kỳ</h2>
+          <p>Miếng cá lăng ướp riềng, nghệ, mẻ, mắm tôm… nướng than rồi xào cùng thì là, hành lá; ăn kèm bún rối, lạc rang và bát mắm tôm pha chanh ớt “dậy mùi” — đúng điệu Hà Nội. :contentReference[oaicite:5]{index=5}</p>
+          <h3>Địa chỉ gợi ý</h3>
+          <ul class="addr">
+            <li>Chả cá Hàng Sơn • giữ vị truyền thống</li>
+            <li>Chả cá Phan • không gian ấm cúng, chế biến cầu kỳ</li>
+            <li>Chả cá Thăng Long • phục vụ nhanh, ổn định</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 4. BÁNH MÌ HÀ NỘI -->
+      <article class="post" id="banh-mi" itemscope itemtype="https://schema.org/Article">
+        <div class="post-head">
+          <img class="post-media" src="images/articles/banh-mi.jpg" alt="Ổ bánh mì Hà Nội vỏ giòn, nhân pate và thịt nướng" loading="lazy" itemprop="image">
+          <div class="post-meta">
+            <span class="badge">Bánh mì Hà Nội</span>
+            <div class="tags">
+              <span class="tag">#bánh_mì</span>
+              <span class="tag">#đường_phố</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-body" itemprop="articleBody">
+          <h2 itemprop="headline">Bánh mì Hà Nội – Bình dị mà “ghiền”</h2>
+          <p>Vỏ bánh vàng ươm, giòn rụm ôm trọn phần nhân phong phú: pate, chả, thịt nướng, trứng… thêm dưa góp chua ngọt và rau thơm cân bằng, giá lại “hạt dẻ” — khó ai cưỡng nổi. :contentReference[oaicite:6]{index=6}</p>
+          <h3>Địa chỉ gợi ý</h3>
+          <ul class="addr">
+            <li>Bánh mì Dũng Mạnh • pate béo, ổ đầy</li>
+            <li>Bánh mì Hương Lan • phong cách truyền thống</li>
+            <li>Thebanhmi Lò Rèn • biến tấu Á – Âu hiện đại</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 5. XÔI HÀ NỘI -->
+      <article class="post" id="xoi-ha-noi" itemscope itemtype="https://schema.org/Article">
+        <div class="post-head">
+          <img class="post-media" src="images/articles/xoi.jpg" alt="Gói xôi Hà Nội với hành phi và đậu xanh nghiền" loading="lazy" itemprop="image">
+        <div class="post-meta">
+            <span class="badge">Xôi Hà Nội</span>
+            <div class="tags">
+              <span class="tag">#xôi_xéo</span>
+              <span class="tag">#xôi_thập_cẩm</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-body" itemprop="articleBody">
+          <h2 itemprop="headline">Xôi Hà Nội – Dân dã mà tinh tế</h2>
+          <p>Đồ từ nếp cái hoa vàng, hạt xôi dẻo thơm, không nát; biến tấu đa dạng như xôi xéo, xôi gà xé, xôi thập cẩm… phù hợp mọi bữa trong ngày, gắn bó ký ức nhiều thế hệ. :contentReference[oaicite:7]{index=7}</p>
+          <h3>Địa chỉ gợi ý</h3>
+          <ul class="addr">
+            <li>Xôi Bự • topping “siêu đầy”</li>
+            <li>Xôi Cô Thảo • thập cẩm ngon, giá phải chăng</li>
+            <li>Xôi Bàn Thờ • suất “khủng”, gây tò mò</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 6. CÀ PHÊ HÀ NỘI -->
+      <article class="post" id="cafe-ha-noi" itemscope itemtype="https://schema.org/Article">
+        <div class="post-head">
+          <img class="post-media" src="images/articles/cafe.jpg" alt="Ly cà phê trứng Hà Nội với lớp kem trứng sánh mịn" loading="lazy" itemprop="image">
+          <div class="post-meta">
+            <span class="badge">Cà phê Hà Nội</span>
+            <div class="tags">
+              <span class="tag">#cà_phê_trứng</span>
+              <span class="tag">#phin_truyền_thống</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-body" itemprop="articleBody">
+          <h2 itemprop="headline">Cà phê Hà Nội – Hương vị níu bước chân</h2>
+          <p>Vị đắng đậm, hậu ngọt thanh từ phin nhỏ giọt; đặc biệt là <em>cà phê trứng</em> — kết hợp lớp trứng đánh bông béo ngậy với cà phê đậm vị, trở thành trải nghiệm “must-try” với du khách. :contentReference[oaicite:8]{index=8}</p>
+          <h3>Gợi ý quán</h3>
+          <ul class="addr">
+            <li>Cà phê Giảng • nơi khai sinh cà phê trứng</li>
+            <li>Highlands Coffee Bưu điện Hà Nội • không gian cổ kính – hiện đại</li>
+            <li>Little Forest Coffee • khu “đường tàu” đặc sắc</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 7. MÌ QUẢNG ĐÀ NẴNG -->
+      <article class="post" id="mi-quang" itemscope itemtype="https://schema.org/Article">
+        <div class="post-head">
+          <img class="post-media" src="images/articles/mi-quang.jpg" alt="Tô mì Quảng Đà Nẵng với tôm thịt, đậu phộng và bánh tráng nướng" loading="lazy" itemprop="image">
+          <div class="post-meta">
+            <span class="badge">Mì Quảng Đà Nẵng</span>
+            <div class="tags">
+              <span class="tag">#mì_quảng</span>
+              <span class="tag">#đà_nẵng</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-body" itemprop="articleBody">
+          <h2 itemprop="headline">Mì Quảng Đà Nẵng – Hồn quê trong từng sợi mì</h2>
+          <p>Sợi mì vàng óng, chan xăm xắp nước dùng đậm đà từ xương – tôm – thịt/gà, thêm tôm, trứng cút, đậu phộng rang, bánh tráng; rau sống, ớt, chanh làm nên tô mì “đậm tình xứ Quảng”. :contentReference[oaicite:9]{index=9}</p>
+          <h3>Địa chỉ gợi ý</h3>
+          <ul class="addr">
+            <li>Mì Quảng Bà Mua • truyền thống</li>
+            <li>Mì Quảng Bà Vị • phong vị xưa</li>
+            <li>Mì Quảng 1A Hải Phòng (ĐN) • quen thuộc dân địa phương</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 8. BÁNH ĐẬP ĐÀ NẴNG -->
+      <article class="post" id="banh-dap" itemscope itemtype="https://schema.org/Article">
+        <div class="post-head">
+          <img class="post-media" src="images/articles/banh-dap.jpg" alt="Bánh đập: bánh tráng nướng kẹp bánh ướt, chấm mắm nêm" loading="lazy" itemprop="image">
+          <div class="post-meta">
+            <span class="badge">Bánh đập</span>
+            <div class="tags">
+              <span class="tag">#bánh_đập</span>
+              <span class="tag">#mắm_nêm</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-body" itemprop="articleBody">
+          <h2 itemprop="headline">Bánh Đập Đà Nẵng – Giản dị mà khó quên</h2>
+          <p>Kẹp lớp bánh tráng nướng giòn với bánh ướt mềm, chấm mắm nêm cá đậm đà — món ăn dân dã mà “ăn là nhớ”, gợi ký ức tuổi thơ xứ Quảng – Đà. :contentReference[oaicite:10]{index=10}</p>
+          <h3>Địa chỉ gợi ý</h3>
+          <ul class="addr">
+            <li>Quán Bà Lữ • mắm nêm chuẩn vị</li>
+            <li>Quán Bà Bé • bánh giòn tan</li>
+            <li>Các quán ven sông Hàn • không khí mộc mạc</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 9. BÁNH TRÁNG CUỐN THỊT HEO -->
+      <article class="post" id="banh-trang-cuon" itemscope itemtype="https://schema.org/Article">
+        <div class="post-head">
+          <img class="post-media" src="images/articles/banh-trang-cuon-thit-heo.jpg" alt="Đĩa bánh tráng cuốn thịt heo, rau sống và chén mắm nêm" loading="lazy" itemprop="image">
+          <div class="post-meta">
+            <span class="badge">Bánh tráng cuốn thịt heo</span>
+            <div class="tags">
+              <span class="tag">#đặc_sản_đà_nẵng</span>
+              <span class="tag">#mắm_nêm</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-body" itemprop="articleBody">
+          <h2 itemprop="headline">Bánh Tráng Cuốn Thịt Heo – Tinh hoa miền Trung</h2>
+          <p>Thịt heo luộc “hai đầu da” thái mỏng, cuốn cùng bánh tráng, rau sống, chuối xanh, dưa leo; chấm mắm nêm thơm nồng — vị thanh mát, béo nhẹ mà không ngấy. :contentReference[oaicite:11]{index=11}</p>
+          <h3>Địa chỉ gợi ý</h3>
+          <ul class="addr">
+            <li>Trần • thương hiệu nổi tiếng tại Đà Nẵng</li>
+            <li>Mậu • đậm vị truyền thống</li>
+            <li>Bà Hường • rau sạch, nước chấm tròn vị</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 10. PLACEHOLDER BÀI VIẾT #10 -->
+      <article class="post" id="bai-10" itemscope itemtype="https://schema.org/Article">
+        <div class="post-head">
+          <img class="post-media" src="images/articles/placeholder.jpg" alt="Ảnh chờ cập nhật nội dung bài viết số 10" loading="lazy" itemprop="image">
+          <div class="post-meta">
+            <span class="badge">[Bài #10]</span>
+            <div class="note">Phần này sẽ tự khớp giao diện khi bạn thêm nội dung từ file Word thứ 10.</div>
+          </div>
+        </div>
+        <div class="post-body" itemprop="articleBody">
+          <h2 itemprop="headline">[Đang chờ file Word #10]</h2>
+          <p>Hãy dán nội dung vào đây (giữ cấu trúc: mô tả mở bài, các heading H3 “Nguồn gốc/Điểm đặc sắc/Địa chỉ gợi ý”, kèm alt ảnh, thẻ <code>&lt;ul class="addr"&gt;</code> nếu có địa chỉ). Thêm từ khóa dài ở tiêu đề, đoạn đầu và thẻ alt để tối ưu SEO nội dung.</p>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer role="contentinfo" id="contact">
+    <div class="container">
+      <div class="grid">
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Tinh hoa hương vị Việt</strong>
+          <p class="section-desc">Kho nội dung ẩm thực Việt được biên soạn & tối ưu SEO. Giữ nguyên trích dẫn nguồn theo file bạn gửi.</p>
+        </div>
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Liên kết</strong>
+          <p class="section-desc"><a href="#">Điều khoản</a> • <a href="#">Bảo mật</a> • <a href="#toc">Mục lục</a></p>
+        </div>
+        <div>
+          <strong style="font-family:'Noto Serif Display',serif">Cập nhật</strong>
+          <p class="section-desc">Thêm bài mới mỗi tuần. Gửi thêm file Word, mình sẽ map vào khung sẵn có.</p>
+        </div>
+      </div>
+      <p style="margin-top:12px;color:var(--muted)">© <span id="year"></span> AnNgon3Mien. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
