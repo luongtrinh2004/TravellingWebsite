@@ -3,16 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ẩm thực miền Trung — Đà Nẵng & Huế</title>
+  <title>Ẩm thực miền Trung — Review quán ngon</title>
   <link rel="icon" type="image/png" href="images/mi-quang.png?v=1" />
-  <meta name="description" content="Khám phá ẩm thực miền Trung: Đà Nẵng và Huế. Ảnh, món ăn gợi ý, bối cảnh lịch sử." />
+  <meta name="description" content="Review quán ngon ở Đà Nẵng & Huế. Nội dung chuẩn SEO, tập trung vào món đặc trưng từng quán." />
+
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Noto+Serif+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Kaushan+Script&display=swap" rel="stylesheet">
+
   <!-- Base site CSS -->
   <link rel="stylesheet" href="css/styles.css" />
+
   <style>
-    /* ====== Trang thành phố: phong cách review (giống y trang Bắc) ====== */
+    /* Utility: ẩn phần tử nhưng vẫn hỗ trợ truy cập bàn phím/đọc màn hình */
+    .visually-hidden {
+      position: absolute !important;
+      height: 1px; width: 1px;
+      overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
+      white-space: nowrap;
+    }
+
+    /* 1 cột nội dung, giữ phong cách cũ */
     .city {
       background: var(--surface);
       border-radius: 22px;
@@ -21,116 +32,41 @@
       box-shadow: 0 14px 34px rgba(0,0,0,.08);
       border: none;
     }
-    .city-head { text-align: center; padding: 2px 6px 14px; border: none; background: transparent; }
-    .city-title {
-      margin: 0;
-      font-family: "Noto Serif Display", serif;
-      font-weight: 800;
-      letter-spacing: .3px;
-      font-size: clamp(1.8rem, 1.2rem + 2.2vw, 2.6rem);
-      color: var(--gold);
-      text-shadow: 0 2px 10px rgba(0,0,0,.06);
-    }
-    .city-grid {
-      display: grid;
-      grid-template-columns: minmax(320px, 400px) 1fr;
-      gap: clamp(18px, 3vw, 32px);
-      align-items: start;
-    }
-    @media (max-width: 980px) { .city-grid { grid-template-columns: 1fr; } }
-
-    .city-left { display: grid; gap: 16px; }
-    .city-left > * { width: 100%; }
-
-    .city-photo {
-      overflow: hidden;
-      border-radius: 16px;
-      background: var(--surface-2);
-      border: 1px dashed var(--border);
-      box-shadow: var(--shadow-sm);
-      aspect-ratio: 4/5;
-      display: grid;
-      place-items: center;
-      color: var(--muted);
-      font-style: italic;
-      padding: 14px;
-    }
-    .city-dishes {
-      padding: 16px;
-      border-radius: 16px;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-    }
-    .dish { margin: 0 0 18px; }
-    .dish:last-child { margin-bottom: 6px; }
-    .dish h4 {
-      margin: 0 0 10px;
-      font-family: "Noto Serif Display", serif;
-      font-size: 1.08rem;
-      letter-spacing: .2px;
-    }
-    .dish-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    @media (max-width: 560px) { .dish-grid { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 380px) { .dish-grid { grid-template-columns: 1fr; } }
-
-    .eat-card {
-      display: block;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 12px 10px;
-      text-decoration: none;
-      box-shadow: 0 6px 14px rgba(0,0,0,.06);
-      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-      height: 100%;
-    }
-    .eat-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 24px rgba(0,0,0,.12);
-      border-color: color-mix(in oklab, var(--primary), var(--border) 60%);
-    }
-    .eat-title {
-      font-weight: 800;
-      font-family: "Noto Serif Display", serif;
-      letter-spacing: .2px;
-      margin: 0 0 6px;
-      line-height: 1.25;
-    }
-    .eat-meta { color: var(--muted); font-size: .98rem; line-height: 1.45; }
-
-    .more { display: inline-flex; align-items: center; gap: 6px; font-size: .96rem; color: var(--primary); font-weight: 700; text-decoration: none; }
-    .more::after { content: "➜"; transform: translateY(1px); }
-
-    .city-text { padding: 0; max-width: 760px; line-height: 1.8; }
-    .city-text > p { margin: 0 0 10px; }
-    .city-text h3, .city-text h4 { font-family: "Noto Serif Display", serif; letter-spacing: .2px; margin: 14px 0 8px; }
-    .city-text h3 { font-size: clamp(1.3rem, 1rem + 1vw, 1.6rem); color: var(--text); }
-    .city-text h4 { font-size: 1.14rem; color: var(--primary); }
-
     .city::before {
-      content: ""; display: block; height: 6px; width: 88px; margin: 0 auto 18px;
+      content: "";
+      display: block;
+      height: 6px; width: 88px;
+      margin: 0 auto 18px;
       border-radius: 999px;
       background: linear-gradient(90deg, var(--gold), #d6b375, var(--gold));
       opacity: .9;
     }
+    .city-head { text-align: center; padding: 2px 6px 14px; border: none; background: transparent; }
+    .city-title {
+      margin: 0;
+      font-family: "Noto Serif Display", serif; font-weight: 800; letter-spacing: .3px;
+      font-size: clamp(1.8rem, 1.2rem + 2.2vw, 2.6rem);
+      color: var(--gold);
+      text-shadow: 0 2px 10px rgba(0,0,0,.06);
+    }
+    .city-text { padding: 0; max-width: 860px; margin: 0 auto; line-height: 1.85; }
+    .city-text > p { margin: 0 0 10px; }
+    .city-text h3, .city-text h4 { font-family: "Noto Serif Display", serif; letter-spacing: .2px; margin: 14px 0 8px; }
+    .city-text h3 { font-size: clamp(1.22rem, 1rem + .8vw, 1.5rem); color: var(--text); }
+    .city-text h4 { font-size: 1.12rem; color: var(--primary); }
+    .note { color: #374151; background: #f9fafb; border-left: 3px solid var(--primary); padding: 10px 12px; border-radius: 8px; }
   </style>
 </head>
 <body>
   <a class="visually-hidden" href="#main">Bỏ qua nội dung</a>
-
-  <!-- Header chung của site -->
+  <!-- Header -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
-      <div class="site-title">ẨM THỰC MIỀN TRUNG</div>
+      <div class="site-title">TINH HOA HƯƠNG VỊ VIỆT</div>
       <nav class="primary" aria-label="Chính">
-        <a class="nav-link" href="index.html">Trang chủ</a>
-        <a class="nav-link" href="congdong.html">Cộng đồng</a>
+        <a class="nav-link" href="index.html" aria-current="page">Trang chủ</a>
+        <a class="nav-link" href="chatbot.html">Chatbot Tư Vấn Thông Minh</a>
+        <a class="nav-link" href="congdong.html">Mở Rộng</a>
         <a class="nav-link" href="contactus.html">Về chúng tôi</a>
       </nav>
     </div>
@@ -138,150 +74,264 @@
 
   <main id="main">
     <section class="container" style="padding:28px 0">
+<article class="city" id="banh-mi-ha-noi">
+  <header class="city-head"><h2 class="city-title">Bánh Mì Hà Nội</h2></header>
+  <div class="city-text">
+    <p>Giữa nhịp sống hối hả, bánh mì Hà Nội vẫn giữ cho mình một chỗ đứng rất riêng. Không chỉ là bữa sáng nhanh gọn, ổ bánh mì giòn rụm còn là món ăn gắn bó với bao thế hệ người dân thủ đô. Chỉ cần cắn một miếng, hương vị pate béo ngậy, thịt đậm đà hòa cùng rau thơm, dưa góp giòn tan đủ khiến bất kỳ ai cũng phải lưu luyến.</p>
 
-      <!-- ===== ĐÀ NẴNG ===== -->
-      <article class="city" id="da-nang">
-        <header class="city-head">
-          <h2 class="city-title">Đà Nẵng</h2>
-        </header>
+    <h4>Nguồn gốc &amp; hành trình của bánh mì Hà Nội</h4>
+    <p>Bánh mì xuất hiện ở Việt Nam từ thời Pháp thuộc, nhưng phải đến Hà Nội, món ăn này mới mang một sắc thái rất riêng. Ban đầu chỉ là ổ bánh mì kẹp pate hay trứng đơn giản, sau dần được sáng tạo với vô vàn nhân khác nhau. Trải qua hàng chục năm, bánh mì Hà Nội vẫn giữ được nét mộc mạc, trở thành một phần không thể thiếu trong đời sống hàng ngày.</p>
 
-        <div class="city-grid">
-          <!-- Trái: (Không dùng ảnh theo yêu cầu) + danh sách món giữ nguyên -->
-          <div class="city-left">
-            <div class="city-photo" aria-label="Ảnh ẩm thực Đà Nẵng">
-              <!-- Không chèn ảnh theo yêu cầu -->
-              <div>Không sử dụng ảnh</div>
-            </div>
+    <h4>Điều làm nên sức hấp dẫn của bánh mì Hà Nội</h4>
+    <ul>
+      <li><strong>Vỏ bánh giòn rụm:</strong> Ổ bánh vàng ươm, giòn tan nhưng không quá cứng, vừa đủ để ôm trọn phần nhân bên trong.</li>
+      <li><strong>Nhân phong phú, đậm đà:</strong> Từ pate béo ngậy, chả lụa, thịt nướng, trứng ốp la cho đến xúc xích, thịt bò sốt vang – tất cả tạo nên sự đa dạng và hấp dẫn khó cưỡng.</li>
+      <li><strong>Rau và gia vị cân bằng:</strong> Dưa góp chua ngọt, dưa leo mát lành, rau thơm xanh mướt cùng chút tương ớt cay nồng khiến ổ bánh mì thêm tròn vị.</li>
+      <li><strong>Giá thành bình dân:</strong> Chỉ từ 15.000 – 30.000 VNĐ, bạn đã có ngay một bữa ăn nhanh gọn, đầy đủ dinh dưỡng.</li>
+    </ul>
 
-            <div class="city-dishes">
-              <!-- Mì Quảng -->
-              <div class="dish">
-                <h4>Mì Quảng</h4>
-                <div class="dish-grid">
-                  <a class="eat-card" href="shop/mi-quang-bet.html"><div class="eat-title">Mì Quảng Bệt</div><div class="eat-meta">19 Trần Bình Trọng</div></a>
-                  <a class="eat-card" href="shop/mi-quang-ba-lu.html"><div class="eat-title">Mì Quảng Bà Lữ</div><div class="eat-meta">1A Hải Phòng</div></a>
-                  <a class="eat-card" href="shop/mi-quang-co-sau.html"><div class="eat-title">Mì Quảng Cô Sáu</div><div class="eat-meta">26 Thái Phiên</div></a>
-                </div>
-                <a class="more" href="mi-quang-da-nang.html">Xem thêm</a>
-              </div>
+    <h4>Những biến tấu thú vị của bánh mì Hà Nội</h4>
+    <ul>
+      <li>Bánh mì pate truyền thống – mộc mạc nhưng đậm đà, gắn bó với tuổi thơ của nhiều người.</li>
+      <li>Bánh mì thịt nướng – thịt ướp đậm vị, nướng trên than hoa thơm lừng.</li>
+      <li>Bánh mì trứng – đơn giản, no lâu, được nhiều học sinh – sinh viên ưa chuộng.</li>
+      <li>Bánh mì sốt vang – độc đáo, kết hợp giữa hương vị Pháp và sự sáng tạo của người Hà Nội.</li>
+    </ul>
 
-              <!-- Bánh tráng cuốn thịt heo -->
-              <div class="dish">
-                <h4>Bánh tráng cuốn thịt heo</h4>
-                <div class="dish-grid">
-                  <a class="eat-card" href="shop/banh-trang-com-dai-loc.html"><div class="eat-title">Quán Cốm Đại Lộc</div><div class="eat-meta">23/14 Trần Kế Xương</div></a>
-                  <a class="eat-card" href="shop/banh-trang-heo-ba-huong.html"><div class="eat-title">Bánh tráng thịt heo Bà Hường</div><div class="eat-meta">K77/4 Lê Độ</div></a>
-                  <a class="eat-card" href="shop/banh-trang-heo-ba-thu.html"><div class="eat-title">Bánh tráng thịt heo Bà Thu</div><div class="eat-meta">K77/4 Lê Độ</div></a>
-                </div>
-                <a class="more" href="banh-trang-thit-heo-da-nang.html">Xem thêm</a>
-              </div>
+    <h4>Bánh mì trong nếp sống người Hà Nội</h4>
+    <p>Từ sáng sớm đến tối muộn, bạn dễ dàng bắt gặp những xe bánh mì rong trên góc phố, trước cổng trường hay chợ nhỏ. Với người dân Hà Nội, bánh mì không chỉ là bữa ăn sáng tiện lợi mà còn là “người bạn đồng hành” trong những buổi chiều tan ca hay tối muộn.</p>
 
-              <!-- Bún chả cá -->
-              <div class="dish">
-                <h4>Bún chả cá</h4>
-                <div class="dish-grid">
-                  <a class="eat-card" href="shop/bun-cha-ca-109.html"><div class="eat-title">Bún chả cá 109</div><div class="eat-meta">109 Nguyễn Chí Thanh</div></a>
-                  <a class="eat-card" href="shop/bun-cha-ca-ba-rao.html"><div class="eat-title">Bún chả cá Bà Ráo</div><div class="eat-meta">Lô 14 Phạm Hồng Thái</div></a>
-                  <a class="eat-card" href="shop/bun-cha-ca-da-nang-khac.html"><div class="eat-title">Quán bún chả cá</div><div class="eat-meta">Khu Hải Châu</div></a>
-                </div>
-                <a class="more" href="bun-mam-nem-da-nang.html">Xem thêm</a>
-              </div>
-            </div>
-          </div>
+    <h4>Một số địa chỉ bánh mì nổi tiếng ở Hà Nội</h4>
+    <ul>
+      <li>Bánh mì Dũng Mạnh – ổ bánh đầy đặn, pate béo ngậy, chả và thịt nướng đậm đà.</li>
+      <li>Bánh mì Hương Lan – nổi tiếng với phong cách truyền thống, vỏ giòn rụm, nhân đa dạng.</li>
+      <li>Thebanhmi Lò Rèn – mang hơi thở hiện đại, kết hợp phong cách Á – Âu trong từng ổ bánh.</li>
+    </ul>
 
-          <!-- Phải: Bài viết (đã thay toàn bộ bằng nội dung từ file Word bạn gửi) -->
-          <div class="city-text">
-            <p><strong>Ẩm thực Đà Nẵng – Bản hùng ca hương vị miền Trung.</strong> Giữa vô vàn món ngon, ẩm thực Đà Nẵng gây thương nhớ bởi sự dân dã, đậm đà mà vẫn thanh mát — từ tô mì Quảng xăm xắp nước đến miếng bánh đập giòn rụm chấm mắm nêm. Dưới đây là 3 món “phải thử”, tổng hợp & biên soạn từ các tài liệu bạn cung cấp.</p>
+    <h4>Bánh mì Hà Nội trong mắt bạn bè quốc tế</h4>
+    <p>Không chỉ được người Việt yêu thích, bánh mì Hà Nội còn khiến nhiều du khách nước ngoài ấn tượng. Nhiều trang du lịch uy tín ca ngợi bánh mì là “fast food kiểu Việt” – vừa tiện lợi, vừa đậm đà bản sắc. Du khách thường thích thú khi được ngồi bên vỉa hè, thưởng thức ổ bánh mì nóng hổi và ngắm nhìn nhịp sống phố cổ.</p>
 
-            <h3>Mì Quảng Đà Nẵng – Hồn quê trong từng sợi mì</h3>
-            <p>Sợi mì vàng óng, mềm mà dai; nước dùng chan xăm xắp nhưng đậm đà từ xương – tôm – thịt/gà; mặt tô rắc đậu phộng rang, kèm bánh tráng nướng, rau sống, ớt, chanh… tạo nên bản hòa tấu hương vị quyến rũ. Ngày nay có nhiều biến tấu như mì Quảng gà, tôm thịt, cá lóc — vẫn giữ điểm chung dân dã, đậm tình xứ Quảng. :contentReference[oaicite:1]{index=1}</p>
-            <p><em>Địa chỉ gợi ý:</em> Mì Quảng Bà Mua; Mì Quảng Bà Vị; Mì Quảng 1A Hải Phòng. :contentReference[oaicite:2]{index=2}</p>
+    <h4>Cách thưởng thức bánh mì Hà Nội trọn vẹn</h4>
+    <p>Ổ bánh mì ngon nhất là khi còn nóng, vỏ giòn tan, nhân mềm ấm áp, thêm chút tương ớt cay cay hoặc sốt mayonnaise béo ngậy. Thưởng thức cùng một cốc trà đá vỉa hè hay cà phê sữa đá, bạn sẽ thấy rõ cái “hồn” bình dị của Hà Nội.</p>
 
-            <h3>Bánh Tráng Cuốn Thịt Heo – Tinh hoa ẩm thực miền Trung</h3>
-            <p>Thịt heo luộc “hai đầu da” thái mỏng, cuốn bánh tráng mềm với rau sống, chuối xanh, dưa leo; chấm mắm nêm lên men thơm nồng. Vị thanh mát, béo nhẹ mà không ngấy; món ăn giản dị nhưng tinh tế, gắn với nếp ăn quây quần của người Đà Nẵng. :contentReference[oaicite:3]{index=3}</p>
-            <p><em>Địa chỉ gợi ý:</em> Trần; Mậu; Bà Hường. :contentReference[oaicite:4]{index=4}</p>
+    <h4>Kết lời</h4>
+    <p>Bánh mì Hà Nội không chỉ là món ăn nhanh mà còn là biểu tượng của sự dung dị, gắn liền với ký ức và cuộc sống hàng ngày. Nếu có dịp ghé thăm thủ đô, đừng quên thưởng thức một ổ bánh mì giòn rụm để cảm nhận trọn vẹn hương vị bình dân mà đầy tự hào của người Việt.</p>
+  </div>
+</article>
 
-            <h3>Bánh Đập Đà Nẵng – Giản dị mà khó quên</h3>
-            <p>Bánh tráng nướng giòn “đập” cùng bánh ướt mềm; khi ăn kẹp hai lớp chấm mắm nêm/mắm cá đậm đà. Cái giòn rụm hòa cùng cái dẻo dai tạo khoái cảm rất “đã”; món bình dân mà đầy cuốn hút, gợi ký ức tuổi thơ xứ Quảng – Đà. :contentReference[oaicite:5]{index=5}</p>
-            <p><em>Địa chỉ gợi ý:</em> Bà Lữ; Bà Bé; một số quán nhỏ ven sông Hàn. :contentReference[oaicite:6]{index=6}</p>
 
-            <p><strong>Kết lời:</strong> Từ hàng quán vỉa hè đến những địa chỉ lâu năm, ẩm thực Đà Nẵng mang trong mình sự mộc mạc nhưng đầy tinh tế — “ăn là nhớ”.</p>
-          </div>
-        </div>
-      </article>
 
-      <!-- ===== HUẾ ===== -->
-      <article class="city" id="hue">
-        <header class="city-head">
-          <h2 class="city-title">Huế</h2>
-        </header>
+<article class="city" id="bun-cha-ha-noi">
+  <header class="city-head"><h2 class="city-title">Bún Chả Hà Nội</h2></header>
+  <div class="city-text">
+    <p>Nếu phở là tinh hoa của ẩm thực Việt thì bún chả lại là món ăn gắn liền với nếp sống thường ngày của người Hà Nội. Giản dị, dân dã nhưng giàu hương vị, bún chả đã trở thành một phần ký ức và niềm tự hào của thủ đô. Một suất bún chả với bát nước chấm vàng óng, thịt nướng thơm lừng và bún trắng tinh khiến bất cứ ai cũng khó lòng cưỡng lại.</p>
 
-        <div class="city-grid">
-          <div class="city-left">
-            <div class="city-photo" aria-label="Ảnh ẩm thực Huế">
-              <!-- Không chèn ảnh theo yêu cầu -->
-              <div>Không sử dụng ảnh</div>
-            </div>
+    <h4>Nguồn gốc &amp; hành trình của bún chả Hà Nội</h4>
+    <p>Bún chả được cho là đã xuất hiện từ thế kỷ XIX và nhanh chóng trở thành món ăn phổ biến của người dân kinh kỳ. Ban đầu, chỉ là vài gánh hàng rong nhỏ, nhưng qua thời gian, bún chả trở thành món ăn quốc dân, có mặt từ quán vỉa hè đến những nhà hàng sang trọng. Ngày nay, bún chả Hà Nội còn nổi tiếng trên toàn thế giới, đặc biệt sau khi Tổng thống Mỹ Barack Obama cùng đầu bếp Anthony Bourdain thưởng thức vào năm 2016.</p>
 
-            <div class="city-dishes">
-              <!-- Bún bò Huế -->
-              <div class="dish">
-                <h4>Bún bò Huế</h4>
-                <div class="dish-grid">
-                  <a class="eat-card" href="shop/bun-bo-ba-nga.html"><div class="eat-title">Bún bò Bà Nga</div><div class="eat-meta">20 Bà Triệu</div></a>
-                  <a class="eat-card" href="shop/bun-bo-my-tam.html"><div class="eat-title">Bún bò Mỹ Tâm</div><div class="eat-meta">Đường Nguyễn Du</div></a>
-                  <a class="eat-card" href="shop/bun-bo-o-lieu.html"><div class="eat-title">Bún bò O Liễu</div><div class="eat-meta">Khu Đông Ba</div></a>
-                </div>
-                <a class="more" href="bun-bo-hue.html">Xem thêm</a>
-              </div>
+    <h4>Điều làm nên sức hấp dẫn khó quên của bún chả Hà Nội</h4>
+    <ul>
+      <li><strong>Chả nướng thơm lừng:</strong> Thịt ba chỉ hoặc thịt nạc vai được tẩm ướp khéo léo, nướng trên than hoa, tỏa hương thơm ngào ngạt. Miếng chả cháy cạnh vàng ươm, bên trong mềm mọng, đậm vị.</li>
+      <li><strong>Nước chấm hài hòa:</strong> Nước mắm được pha vừa miệng, thêm đu đủ xanh ngâm chua ngọt, cà rốt, chanh và ớt – tạo nên vị chua cay mặn ngọt hài hòa.</li>
+      <li><strong>Bún trắng mềm mại:</strong> Sợi bún nhỏ, trắng và dai nhẹ, khi ăn cùng thịt nướng và nước chấm tạo cảm giác thanh mát, dễ chịu.</li>
+      <li><strong>Rau sống tươi xanh:</strong> Một rổ rau sống gồm xà lách, rau thơm, tía tô, kinh giới… góp phần làm món ăn thêm tròn vị.</li>
+    </ul>
 
-              <!-- Chè cung đình -->
-              <div class="dish">
-                <h4>Chè cung đình</h4>
-                <div class="dish-grid">
-                  <a class="eat-card" href="shop/che-cam.html"><div class="eat-title">Chè Cầm</div><div class="eat-meta">Ẩm thực bánh Huế</div></a>
-                  <a class="eat-card" href="shop/che-hue-20-mon.html"><div class="eat-title">Chè Huế 20 món</div><div class="eat-meta">Huế</div></a>
-                  <a class="eat-card" href="shop/che-ong-lac.html"><div class="eat-title">Chè Ông Lạc</div><div class="eat-meta">Kim Long</div></a>
-                </div>
-                <a class="more" href="banh-beo-nam-loc-hue.html">Xem thêm</a>
-              </div>
+    <h4>Những biến tấu của bún chả Hà Nội</h4>
+    <ul>
+      <li><strong>Bún chả truyền thống:</strong> Thịt nướng ăn kèm bún và nước chấm.</li>
+      <li><strong>Bún chả kèm nem cua bể:</strong> Sự kết hợp thêm nem rán giòn tan, nhân cua bể béo ngậy.</li>
+      <li><strong>Bún chả “Obama”:</strong> Gắn liền với trải nghiệm của cựu Tổng thống Mỹ, trở thành món ăn nổi tiếng quốc tế.</li>
+    </ul>
 
-              <!-- Cơm hến -->
-              <div class="dish">
-                <h4>Cơm hến</h4>
-                <div class="dish-grid">
-                  <a class="eat-card" href="shop/com-hen-hoa-dong.html"><div class="eat-title">Cơm hến Hoa Đông</div><div class="eat-meta">Hàn Mặc Tử</div></a>
-                  <a class="eat-card" href="shop/com-hen-ba-cam.html"><div class="eat-title">Cơm hến Bà Cam</div><div class="eat-meta">Vĩ Dạ – Huế</div></a>
-                  <a class="eat-card" href="shop/com-hen-be-liem.html"><div class="eat-title">Cơm hến Bé Liêm</div><div class="eat-meta">Mạc Đĩnh Chi</div></a>
-                </div>
-                <a class="more" href="com-hen-hue.html">Xem thêm</a>
-              </div>
-            </div>
-          </div>
+    <h4>Bún chả trong đời sống người Hà Nội</h4>
+    <p>Người Hà Nội có thể ăn bún chả vào bữa trưa, bữa tối hoặc thậm chí cả những hôm trời se lạnh. Món ăn không chỉ là lựa chọn quen thuộc của dân địa phương mà còn là trải nghiệm không thể thiếu với du khách khi đặt chân đến thủ đô.</p>
 
-          <!-- Phải: Giữ nguyên nội dung giới thiệu Huế của bạn (chỉ bỏ ảnh) -->
-          <div class="city-text">
-            <p><strong>Ẩm Thực Huế: Hành trình khám phá hương vị cung đình và dân dã.</strong> Là kinh đô triều Nguyễn, Huế mang phong cách ẩm thực riêng: cầu kỳ trong chế biến, đẹp mắt trong trình bày, đậm đà mà vẫn thanh tao.</p>
+    <h4>Một số địa chỉ bún chả nổi tiếng ở Hà Nội</h4>
+    <ul>
+      <li>Bún chả Hàng Quạt – nổi tiếng với hương vị truyền thống, quán nhỏ nhưng luôn đông khách.</li>
+      <li>Bún chả Bà Hằng Béo – suất bún đầy đặn, thịt nướng dày miếng, nước chấm vừa vặn.</li>
+      <li>Bún chả Hương Liên – nơi Tổng thống Obama từng thưởng thức, nay trở thành điểm dừng chân “huyền thoại” với du khách.</li>
+    </ul>
 
-            <h4>Top các món ngon “phải thử”</h4>
-            <ul>
-              <li><strong>Bún bò Huế — linh hồn xứ Huế:</strong> Vị cay nồng của ớt, thơm sả, mặn mà nước mắm, ngọt đậm từ xương. Tô đầy đủ có giò heo, thịt bò, tiết luộc; đôi nơi dùng chút mắm tôm. <em>Địa chỉ gợi ý:</em> O Cuông (20 Lý Thường Kiệt), Bà Tuyết (47 Bà Triệu), Cô Dung (05 Ký Con).</li>
-              <li><strong>Cơm hến — dân dã mà quyến rũ:</strong> Cơm nguội trộn hến xào, rau sống, nước mắm hến, mắm ruốc; hòa vị cay–chua–mặn–ngọt–béo khó quên. <em>Địa chỉ gợi ý:</em> Cô Mười (16 Lê Lợi), Mười Ràng (2 Phan Bội Châu).</li>
-              <li><strong>Bánh bèo — chén nhỏ vị lớn:</strong> Trên mặt tôm cháy, da heo chiên giòn, hành phi; chan nước mắm pha vừa miệng. <em>Địa chỉ gợi ý:</em> Quán Bà Đỏ (08 Kiệt 75 Nguyễn Công Trứ), “Bánh bèo Hẻm” (Kiot 1–2 Công viên 3/2, Lê Lợi).</li>
-              <li><strong>Chè cung đình Huế — ngọt thanh tao:</strong> Chè hạt sen, long nhãn, bột lọc… đa dạng và tinh tế. <em>Địa chỉ gợi ý:</em> Chè Hẻm (94/6 Phan Đình Phùng), Chè Cung Đình Hương Mai (150 Nguyễn Huệ).</li>
-            </ul>
+    <h4>Bún chả Hà Nội trong mắt bạn bè quốc tế</h4>
+    <p>Không ít du khách cho rằng bún chả chính là món ăn khiến họ nhớ mãi khi rời Việt Nam. Từ những quán nhỏ giản dị, bún chả đã bước ra thế giới, trở thành đại diện tiêu biểu của ẩm thực Việt Nam.</p>
 
-            <h4>Bí quyết ăn như người sành Huế</h4>
-            <ul>
-              <li><strong>Đừng ngại cay:</strong> Thêm ớt tương/ớt bột hoặc mắm ớt tươi để đúng điệu Huế.</li>
-              <li><strong>Ăn kèm rau sống:</strong> Rau muống chẻ, chuối chát, khế… giúp cân bằng vị và tăng trải nghiệm.</li>
-              <li><strong>Thử quán ven sông Hương:</strong> Không gian mát, thơ mộng nâng tầm bữa ăn.</li>
-            </ul>
+    <h4>Cách thưởng thức bún chả Hà Nội trọn vẹn</h4>
+    <p>Một suất bún chả ngon nhất là khi ăn ngay lúc thịt còn nóng, nước chấm bốc khói nhẹ, chan đều lên bún và rau. Vị chua ngọt mặn cay hòa quyện, miếng thịt nướng giòn cạnh xen lẫn bún mềm, rau tươi sẽ cho bạn trải nghiệm khó quên.</p>
 
-            <p>Ẩm thực Huế không chỉ là ăn uống mà là một nét văn hóa, câu chuyện lịch sử kể bằng hương vị — tinh tế, hoài niệm và khó quên.</p>
-          </div>
-        </div>
-      </article>
+    <h4>Kết lời</h4>
+    <p>Bún chả Hà Nội không chỉ là món ăn để no bụng mà còn là linh hồn ẩm thực phố cổ. Nếu có dịp ghé thăm thủ đô, hãy một lần ngồi trong quán bún chả nhỏ, gọi một suất đầy đủ và tận hưởng hương vị mộc mạc nhưng đầy tinh tế của món ăn trứ danh này.</p>
+  </div>
+</article>
+
+
+
+
+<article class="city" id="cao-lau-da-nang">
+  <header class="city-head"><h2 class="city-title">Cao Lầu Đà Nẵng</h2></header>
+  <div class="city-text">
+    <p>Trong hành trình khám phá ẩm thực miền Trung, cao lầu là món ăn độc đáo mang đậm dấu ấn văn hóa, khiến du khách khó lòng quên. Dù có nguồn gốc từ Hội An, nhưng tại Đà Nẵng, cao lầu vẫn giữ được sức hút riêng bởi hương vị tinh tế và cách chế biến công phu.</p>
+
+    <h4>Nguồn gốc &amp; hành trình hình thành</h4>
+    <p>Cao lầu được cho là ra đời từ thế kỷ XVII tại thương cảng Hội An. Sợi mì được làm từ gạo ngâm với nước tro từ củi cây lấy ở Cù Lao Chàm, tạo nên màu vàng óng và độ dai đặc trưng. Khi du nhập vào Đà Nẵng, món ăn được biến tấu đôi chút để phù hợp khẩu vị, nhưng vẫn giữ nguyên hồn cốt truyền thống.</p>
+
+    <h4>Điều làm nên hương vị khó quên của cao lầu</h4>
+    <p>Sợi mì dày, vàng và dai, ăn cùng thịt xá xíu đậm vị, tóp mỡ giòn rụm, rau sống tươi xanh. Tất cả hòa quyện với nước sốt đặc sánh, thơm lừng mùi gia vị. Không giống như bún hay phở, cao lầu không có nước chan mà chỉ thấm vừa đủ trong sợi mì, khiến thực khách cảm nhận được vị đậm đà tinh tế.</p>
+
+    <h4>Cao lầu trong đời sống người Đà Nẵng</h4>
+    <p>Người Đà Nẵng yêu cao lầu bởi sự dân dã nhưng cầu kỳ của nó. Đây không chỉ là món ăn no bụng mà còn là biểu tượng của sự giao thoa văn hóa giữa phố Hội cổ kính và thành phố biển năng động.</p>
+
+    <h4>Địa chỉ gợi ý</h4>
+    <ul>
+      <li>Cao Lầu Thanh – hương vị truyền thống giữa lòng Đà Nẵng.</li>
+      <li>Cao Lầu Hoài Phố – mang phong vị Hội An xưa.</li>
+      <li>Quán Bà Bé – món cao lầu đậm đà, được nhiều du khách yêu thích.</li>
+    </ul>
+
+    <h4>Kết lời</h4>
+    <p>Cao Lầu Đà Nẵng là món ăn thể hiện sự tinh tế trong ẩm thực miền Trung. Từng sợi mì, từng lát thịt, từng giọt nước sốt đều chứa đựng công phu và tình cảm của người làm bếp. Một lần thưởng thức cao lầu là một lần nhớ mãi hương vị phố Hội giữa lòng Đà thành.</p>
+  </div>
+</article>
+
+
+<article class="city" id="ca-phe-ha-noi">
+  <header class="city-head"><h2 class="city-title">Cà Phê Hà Nội</h2></header>
+  <div class="city-text">
+    <p>Cà phê Hà Nội không chỉ là một thức uống quen thuộc mà còn là một nét văn hóa đã ăn sâu vào đời sống của người dân thủ đô. Giữa nhịp sống vội vã, người ta vẫn tìm đến quán cà phê như một nơi để lắng lại, thưởng thức và cảm nhận sự bình yên rất riêng của Hà Nội.</p>
+
+    <h4>Hương vị cà phê Hà Nội đặc trưng</h4>
+    <p>Khác với cà phê ở nhiều vùng miền khác, cà phê Hà Nội mang nét riêng với sự kết hợp hài hòa giữa vị đắng đậm, hậu ngọt thanh và hương thơm quyến rũ. Từ ly cà phê phin nhỏ giọt tí tách cho đến những biến tấu độc đáo như cà phê trứng, tất cả đều chứa đựng tinh thần sáng tạo và sự tinh tế của người Hà Nội.</p>
+
+    <h4>Những loại cà phê nổi bật</h4>
+    <ul>
+      <li><strong>Cà phê phin truyền thống:</strong> Được pha bằng phin nhôm nhỏ, từng giọt cà phê chậm rãi rơi xuống, tạo nên hương vị đậm đà và mộc mạc.</li>
+      <li><strong>Cà phê trứng:</strong> Đặc sản nổi tiếng, là sự kết hợp giữa cà phê đậm vị và lớp trứng đánh bông béo ngậy, ngọt dịu, mang đến trải nghiệm ẩm thực khó quên.</li>
+      <li><strong>Cà phê sữa đá:</strong> Lựa chọn quen thuộc của người Hà Nội trong những ngày hè oi ả, vừa đậm đà vừa mát lạnh.</li>
+    </ul>
+
+    <h4>Cà phê trong đời sống người Hà Nội</h4>
+    <p>Người Hà Nội không chỉ uống cà phê để tỉnh táo, mà còn để trò chuyện, làm việc hay đơn giản là tận hưởng khoảnh khắc riêng tư. Những quán cà phê nằm len lỏi trong các con phố nhỏ, từ vỉa hè giản dị đến không gian hiện đại, đều góp phần tạo nên một mảng màu đặc biệt trong bức tranh văn hóa đô thị.</p>
+
+    <h4>Một số quán cà phê nổi tiếng ở Hà Nội</h4>
+    <ul>
+      <li><strong>Cà phê Giảng:</strong> Nơi khai sinh ra cà phê trứng trứ danh, thu hút đông đảo du khách trong và ngoài nước.</li>
+      <li><strong>Highlands Coffee Hanoi Post Office:</strong> Nằm trong Bưu điện Hà Nội, không gian vừa cổ kính vừa hiện đại, mang đến trải nghiệm thú vị khi nhâm nhi tách cà phê.</li>
+      <li><strong>Little Forest Coffee:</strong> Tọa lạc tại khu phố cà phê đường tàu nổi tiếng, nơi bạn có thể vừa thưởng thức cà phê vừa ngắm nhìn đoàn tàu chạy sát qua – một trải nghiệm rất riêng chỉ có ở Hà Nội.</li>
+    </ul>
+
+    <h4>Cà phê Hà Nội trong mắt du khách quốc tế</h4>
+    <p>Nhiều du khách khi đến Hà Nội đều coi việc ngồi bên một quán cà phê nhỏ, nhâm nhi ly cà phê nóng và quan sát dòng người qua lại là trải nghiệm đáng nhớ. Đặc biệt, cà phê trứng của Hà Nội đã trở thành niềm tự hào khi liên tục xuất hiện trong danh sách những món cà phê độc đáo nhất thế giới.</p>
+
+    <h4>Kết lời</h4>
+    <p>Cà phê Hà Nội không chỉ là thức uống, mà còn là cầu nối giữa con người với nhau, giữa hiện tại và ký ức, giữa truyền thống và hiện đại. Nếu có dịp ghé thăm thủ đô, đừng quên dành chút thời gian thưởng thức một ly cà phê để cảm nhận trọn vẹn nét tinh tế trong văn hóa ẩm thực Hà Nội.</p>
+  </div>
+</article>
+
+
+<article class="city" id="banh-xeo-can-tho">
+  <header class="city-head"><h2 class="city-title">Bánh Xèo Cần Thơ</h2></header>
+  <div class="city-text">
+    <p>Giữa lòng Tây Đô, tiếng “xèo xèo” vang lên từ chảo nóng dường như đã trở thành âm thanh quen thuộc. Bánh xèo Cần Thơ – món ăn dân dã mà chứa đựng biết bao tinh hoa ẩm thực miền sông nước. Chỉ cần một lần thưởng thức, ai cũng khó quên được lớp vỏ vàng giòn, nhân tôm thịt thơm lừng, cuốn cùng rau sống xanh mướt và chấm nước mắm chua ngọt hài hòa.</p>
+
+    <h4>Nguồn gốc &amp; hành trình của bánh xèo Cần Thơ</h4>
+    <p>Bánh xèo xuất hiện từ lâu đời ở miền Tây Nam Bộ và nhanh chóng trở thành món ăn đặc trưng của vùng sông nước. Riêng tại Cần Thơ, bánh xèo được biến tấu khéo léo, mang hương vị riêng biệt nhờ nguyên liệu tươi ngon và cách đổ bánh điêu luyện. Món ăn không chỉ là đặc sản nổi tiếng mà còn là niềm tự hào của người dân nơi đây, thể hiện tinh thần mộc mạc mà nồng hậu của đất Tây Đô.</p>
+
+    <h4>Điều làm nên hương vị đặc trưng của bánh xèo Cần Thơ</h4>
+    <ul>
+      <li><strong>Vỏ bánh vàng giòn, thơm béo:</strong> Bột gạo được pha cùng nước cốt dừa và nghệ tạo màu vàng óng. Khi đổ lên chảo nóng, bánh phát ra tiếng “xèo” vui tai – cũng là lý do cái tên “bánh xèo” ra đời. Vỏ bánh giòn tan nhưng vẫn mềm ở giữa, tỏa hương béo thơm hấp dẫn.</li>
+      <li><strong>Nhân bánh tươi ngon, đa dạng:</strong> Tùy vùng mà nhân bánh có thể khác nhau, nhưng bánh xèo Cần Thơ thường có tôm đất, thịt heo, giá đỗ và đậu xanh, tất cả được xào chín vừa tới để giữ trọn vị ngọt tự nhiên.</li>
+      <li><strong>Rau sống &amp; nước chấm hòa quyện hoàn hảo:</strong> Bánh xèo ngon phải đi kèm rổ rau tươi xanh gồm xà lách, cải bẹ, diếp cá, húng quế… cùng chén nước mắm chua ngọt cay nhẹ. Vị béo, giòn, chua, cay hòa quyện tạo nên tổng thể khó quên.</li>
+    </ul>
+
+    <h4>Những biến tấu hấp dẫn của bánh xèo Cần Thơ</h4>
+    <ul>
+      <li>Bánh xèo nhân tôm thịt truyền thống – hương vị quen thuộc, giòn béo vừa miệng.</li>
+      <li>Bánh xèo hải sản – kết hợp mực, tôm, cá, mang lại hương vị mới lạ, đậm chất miền sông nước.</li>
+      <li>Bánh xèo chay – sử dụng nấm, đậu xanh, giá đỗ; thanh đạm mà vẫn thơm ngon.</li>
+    </ul>
+
+    <h4>Bánh xèo trong đời sống người dân Cần Thơ</h4>
+    <p>Với người Cần Thơ, bánh xèo không chỉ là món ăn mà còn là biểu tượng của sự sum vầy. Mỗi cuối tuần, gia đình lại quây quần bên bếp than, đổ bánh, nói cười rôm rả. Với du khách, được thưởng thức chiếc bánh xèo nóng hổi ngay tại quán nhỏ ven sông là một trải nghiệm trọn vẹn hương vị miền Tây – mộc mạc, gần gũi và đậm tình.</p>
+
+    <h4>Một số địa chỉ bánh xèo nổi tiếng ở Cần Thơ</h4>
+    <ul>
+      <li>Bánh Xèo 7 Tới (Lộ Vòng Cung) – nổi tiếng giòn lâu, nhân đầy đặn, rau sống tươi.</li>
+      <li>Bánh Xèo Mai Vàng – không gian dân dã, hương vị truyền thống.</li>
+      <li>Bánh Xèo Ngọc Ngân – được du khách yêu thích vì nước chấm đặc biệt.</li>
+    </ul>
+
+    <h4>Kết lời</h4>
+    <p>Bánh xèo Cần Thơ là món ăn kết tinh từ bàn tay khéo léo và tấm lòng hiếu khách của người dân miền Tây. Một chiếc bánh giòn tan, thơm béo cũng đủ khiến ai một lần thưởng thức đều nhớ mãi hương vị xứ Tây Đô.</p>
+  </div>
+</article>
+
+<article class="city" id="lau-mam-can-tho">
+  <header class="city-head"><h2 class="city-title">Lẩu Mắm Cần Thơ</h2></header>
+  <div class="city-text">
+    <p>Nhắc đến ẩm thực miền Tây, không thể không nhắc tới lẩu mắm Cần Thơ – món ăn dân dã nhưng đậm đà, kết tinh trọn vẹn hương vị đặc trưng của vùng đất sông nước. Nồi lẩu nghi ngút khói, thơm nức mùi mắm, quyện cùng vị ngọt của cá đồng, tôm, thịt và rau đồng quê, tạo nên trải nghiệm ẩm thực khó quên với bất kỳ ai từng thưởng thức.</p>
+
+    <h4>Nguồn gốc &amp; hành trình của lẩu mắm Cần Thơ</h4>
+    <p>Lẩu mắm bắt nguồn từ vùng Châu Đốc – An Giang, sau đó lan tỏa khắp miền Tây Nam Bộ, trong đó Cần Thơ là nơi gìn giữ và phát triển món ăn này lên tầm đặc sản. Trải qua thời gian, lẩu mắm không chỉ là món ăn quen thuộc của người dân mà còn trở thành biểu tượng của ẩm thực miền Tây, thể hiện sự hào sảng, hiếu khách và chân tình của con người nơi đây.</p>
+
+    <h4>Bí quyết làm nên hương vị độc đáo của lẩu mắm Cần Thơ</h4>
+    <p>Lẩu mắm Cần Thơ được chế biến từ mắm cá linh hoặc mắm cá sặc – hai loại mắm nổi tiếng miền Tây. Mắm được nấu kỹ, lọc lấy nước trong rồi kết hợp với sả, ớt, tỏi và nước dừa tươi để tạo nên vị đậm đà nhưng không gắt.</p>
+    <p>Trong nồi lẩu là sự hòa quyện của cá basa, tôm, mực, thịt ba chỉ và đa dạng rau đồng quê như bông súng, rau đắng, rau nhút, kèo nèo, cà tím, bạc hà… Chính sự phong phú ấy làm nên bản giao hưởng hương vị – vừa dân dã, vừa hài hòa và đặc biệt khó quên.</p>
+
+    <h4>Những biến tấu hấp dẫn của lẩu mắm Cần Thơ</h4>
+    <ul>
+      <li><strong>Lẩu mắm cá linh:</strong> Đậm hương vị truyền thống, thơm nồng mùi mắm.</li>
+      <li><strong>Lẩu mắm hải sản:</strong> Kết hợp hải sản tươi ngon, vị ngọt thanh dễ ăn.</li>
+      <li><strong>Lẩu mắm chay:</strong> Thanh đạm, nhẹ nhàng nhưng vẫn đậm đà hương vị quê.</li>
+    </ul>
+    <p>Dù ở phiên bản nào, món ăn vẫn giữ được linh hồn đặc trưng – đậm vị mắm, thơm ngọt tự nhiên và chứa chan tình quê.</p>
+
+    <h4>Lẩu mắm trong đời sống người dân Cần Thơ</h4>
+    <p>Với người dân Tây Đô, lẩu mắm không chỉ là món ăn mà còn là biểu tượng của sự đoàn tụ và sẻ chia. Vào những dịp cuối tuần hay lễ Tết, cả gia đình quây quần bên nồi lẩu nóng hổi, vừa ăn vừa trò chuyện rôm rả – đó chính là hình ảnh thân thương, gần gũi của miền Tây sông nước.</p>
+
+    <h4>Địa chỉ thưởng thức lẩu mắm ngon ở Cần Thơ</h4>
+    <ul>
+      <li><strong>Lẩu Mắm Cần Thơ:</strong> Thương hiệu nổi tiếng, nồi lẩu đậm đà chuẩn vị miền Tây.</li>
+      <li><strong>Quán Lẩu Mắm Kiều Trinh:</strong> Không gian bình dân, hương vị truyền thống.</li>
+      <li><strong>Quán Lẩu Mắm Quê Mi:</strong> Phục vụ lẩu mắm trong không gian sang trọng, thoáng mát.</li>
+    </ul>
+
+    <h4>Kết lời</h4>
+    <p>Lẩu mắm Cần Thơ là món ăn hội tụ đủ hương – sắc – vị của miền sông nước. Mỗi nguyên liệu, mỗi mùi hương đều góp phần kể câu chuyện về con người Tây Đô hiền hậu, nghĩa tình. Thưởng thức lẩu mắm một lần, bạn sẽ hiểu vì sao món ăn này lại khiến bao du khách vấn vương mãi không quên.</p>
+  </div>
+</article>
+
+<article class="city" id="nem-cua-be-hai-phong">
+  <header class="city-head"><h2 class="city-title">Nem Cua Bể Hải Phòng</h2></header>
+  <div class="city-text">
+    <p>Nếu phải chọn ra một món ăn thể hiện trọn vẹn tinh hoa ẩm thực Hải Phòng, chắc chắn không thể bỏ qua nem cua bể – đặc sản nổi tiếng gần xa. Khác với nem rán ở các vùng miền khác, nem cua bể Hải Phòng mang vị ngọt của hải sản, vị béo của thịt, hương thơm của rau củ; tất cả hòa quyện trong lớp bánh tráng vàng giòn rụm khiến ai ăn một lần cũng nhớ mãi.</p>
+
+    <h4>Nguồn gốc &amp; nét đặc trưng</h4>
+    <p>Nem cua bể xuất phát từ những gia đình ngư dân vùng biển Hải Phòng – nơi cua biển tươi ngon luôn sẵn có. Từ nguyên liệu dân dã, người dân đã sáng tạo nên món nem rán <em>hình vuông</em> độc đáo, mang hương vị rất riêng của đất cảng.</p>
+
+    <h4>Điểm đặc trưng của nem cua bể Hải Phòng</h4>
+    <ul>
+      <li><strong>Nhân nem đầy đặn:</strong> thịt nạc, cua biển, tôm tươi, trứng, miến, nấm hương và rau củ.</li>
+      <li><strong>Hình vuông đặc trưng:</strong> khác biệt so với nem dài phổ biến ở miền Bắc.</li>
+      <li><strong>Vỏ chiên vàng giòn:</strong> giòn tan nhưng không ngấy.</li>
+      <li><strong>Nước chấm chua ngọt:</strong> pha theo công thức riêng, thêm tỏi, ớt và đu đủ xanh bào sợi.</li>
+    </ul>
+    <p>Mỗi chiếc nem như chứa đựng tình yêu biển cả và sự khéo léo của người dân đất cảng.</p>
+
+    <h4>Cách thưởng thức chuẩn vị</h4>
+    <p>Một phần nem cua bể thường ăn kèm bún, rau sống, dưa góp và bát nước mắm chua ngọt. Khi thưởng thức, bạn sẽ cảm nhận vị ngọt thanh của cua biển, độ giòn rụm của lớp vỏ, hương thơm dịu của rau củ và gia vị hòa quyện thành tổng thể đậm đà khó cưỡng. Đặc biệt, người Hải Phòng thường chiên nem ngay trước khi phục vụ để nem luôn nóng giòn, thơm lừng.</p>
+
+    <h4>Địa chỉ gợi ý ở Hải Phòng</h4>
+    <ul>
+      <li><strong>Nem Cua Bể Bà Cụ – 92 Cầu Đất:</strong> quán lâu đời, chuẩn vị truyền thống.</li>
+      <li><strong>Nem Cua Bể Cát Dài:</strong> hương vị đậm đà, giòn tan.</li>
+      <li><strong>Nem Cua Bể Hàng Kênh:</strong> quán bình dân, được người địa phương yêu thích.</li>
+    </ul>
+
+    <h4>Kết lời</h4>
+    <p>Nem cua bể Hải Phòng không chỉ ngon miệng mà còn là biểu tượng của sự khéo léo và sáng tạo trong ẩm thực đất cảng. Với hương vị hài hòa, giòn rụm, đậm đà, món ăn này đã làm say lòng biết bao thực khách. Nếu có dịp đến thành phố hoa phượng đỏ, đừng quên thưởng thức nem cua bể để cảm nhận trọn vẹn tinh hoa ẩm thực biển cả.</p>
+  </div>
+</article>
 
     </section>
   </main>
@@ -307,8 +357,10 @@
   </footer>
 
   <script>
-    // Cập nhật năm tự động (phòng khi main.js chưa set)
-    (function(){ var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear(); })();
+    (function () {
+      var y = document.getElementById('year');
+      if (y) y.textContent = new Date().getFullYear();
+    })();
   </script>
   <script src="js/main.js"></script>
 </body>
