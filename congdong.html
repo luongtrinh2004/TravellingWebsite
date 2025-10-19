@@ -55,6 +55,56 @@
     .city-text h3 { font-size: clamp(1.22rem, 1rem + .8vw, 1.5rem); color: var(--text); }
     .city-text h4 { font-size: 1.12rem; color: var(--primary); }
     .note { color: #374151; background: #f9fafb; border-left: 3px solid var(--primary); padding: 10px 12px; border-radius: 8px; }
+  /* --- Collapse / Expand --- */
+  .city {
+    position: relative;
+  }
+  .city .city-text {
+    transition: max-height .35s ease, padding-bottom .2s ease;
+    overflow: hidden;
+  }
+  /* trạng thái rút gọn */
+  .city.is-collapsed .city-text {
+    max-height: 520px; /* chỉnh tùy ý */
+  }
+  /* lớp mờ dưới cùng khi rút gọn */
+  .city.is-collapsed .city-text::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 64px; /* chừa chỗ cho nút */
+    height: 80px;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), var(--surface, #fff));
+  }
+
+  /* nút xem thêm */
+  .city-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px auto 0;
+    padding: 10px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--gold, #d4af37);
+    background: #fff;
+    cursor: pointer;
+    font: 600 14px/1.1 "Inter", system-ui, sans-serif;
+    color: var(--primary, #7a5b2b);
+    box-shadow: 0 6px 16px rgba(0,0,0,.06);
+  }
+  .city-toggle:hover { filter: brightness(1.02); }
+  .city-toggle:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--gold, #d4af37) 50%, transparent);
+    outline-offset: 2px;
+  }
+  /* bọc nút, căn giữa */
+  .city-toggle-wrap {
+    display: flex; justify-content: center;
+    margin-top: 10px;
+  }
+  /* ẩn nút nếu nội dung không đủ dài */
+  .city.has-short .city-toggle-wrap { display: none; }
+    
   </style>
 </head>
 <body>
@@ -64,10 +114,10 @@
     <div class="container header-inner">
       <div class="site-title">TINH HOA HƯƠNG VỊ VIỆT</div>
       <nav class="primary" aria-label="Chính">
-        <a class="nav-link" href="index.html" aria-current="page">Trang chủ</a>
-        <a class="nav-link" href="chatbot.html">Chatbot Tư Vấn Thông Minh</a>
-        <a class="nav-link" href="congdong.html">Mở Rộng</a>
-        <a class="nav-link" href="contactus.html">Về chúng tôi</a>
+        <a class="nav-link" href="/index.html" aria-current="page">Trang chủ</a>
+        <a class="nav-link" href="/chatbot.html">Chatbot Tư Vấn Thông Minh</a>
+        <a class="nav-link" href="/congdong.html">Mở Rộng</a>
+        <a class="nav-link" href="/contactus.html">Về chúng tôi</a>
       </nav>
     </div>
   </header>
@@ -363,5 +413,85 @@
     })();
   </script>
   <script src="js/main.js"></script>
+  <script>
+(function () {
+  const COLLAPSED_MAX = 520; // px — chiều cao hiển thị khi rút gọn
+
+  function setupCityToggles() {
+    const cities = document.querySelectorAll('article.city');
+    cities.forEach((city, idx) => {
+      const content = city.querySelector('.city-text');
+      if (!content) return;
+
+      // Đo chiều cao thật
+      const fullHeight = content.scrollHeight;
+
+      // Nếu nội dung ngắn hơn ngưỡng thì bỏ qua
+      if (fullHeight <= COLLAPSED_MAX + 30) {
+        city.classList.add('has-short');
+        return;
+      }
+
+      // Bật trạng thái rút gọn mặc định
+      city.classList.add('is-collapsed');
+      content.style.maxHeight = COLLAPSED_MAX + 'px';
+      content.style.position = 'relative';
+
+      // Tạo nút toggle
+      const wrap = document.createElement('div');
+      wrap.className = 'city-toggle-wrap';
+
+      const btn = document.createElement('button');
+      btn.className = 'city-toggle';
+      btn.type = 'button';
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-controls', content.id || `city-text-${idx}`);
+      if (!content.id) content.id = `city-text-${idx}`;
+      btn.textContent = 'Xem thêm';
+
+      // Hành vi toggle
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        if (expanded) {
+          // Thu gọn
+          btn.setAttribute('aria-expanded', 'false');
+          btn.textContent = 'Xem thêm';
+          city.classList.add('is-collapsed');
+          content.style.maxHeight = COLLAPSED_MAX + 'px';
+        } else {
+          // Mở rộng
+          btn.setAttribute('aria-expanded', 'true');
+          btn.textContent = 'Thu gọn';
+          city.classList.remove('is-collapsed');
+          content.style.maxHeight = fullHeight + 'px';
+
+          // Sau khi mở, bỏ giới hạn để nội dung tự giãn nếu ảnh/DOM thay đổi
+          setTimeout(() => { content.style.maxHeight = 'none'; }, 380);
+        }
+      });
+
+      wrap.appendChild(btn);
+      city.appendChild(wrap);
+    });
+
+    // Nếu người dùng truy cập với #hash tới 1 món, tự mở món đó
+    if (location.hash) {
+      const target = document.querySelector(location.hash);
+      if (target?.classList.contains('city')) {
+        const btn = target.querySelector('.city-toggle');
+        btn?.click();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupCityToggles);
+  } else {
+    setupCityToggles();
+  }
+})();
+</script>
+
 </body>
 </html>
